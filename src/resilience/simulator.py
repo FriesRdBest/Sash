@@ -12,7 +12,7 @@ from src.events.engine import (
     process_webhook,
 )
 from src.events.errors import DuplicateEventError, OutOfOrderEventError
-from src.integration.errors import ProviderApiError, ProviderRateLimitError, ProviderTimeoutError
+from src.integration.errors import ProviderRateLimitError, ProviderTimeoutError
 from src.integration.lab import IntegrationLab
 from src.integration.provider import ProviderRequest
 from src.resilience.errors import (
@@ -21,7 +21,11 @@ from src.resilience.errors import (
     QueueBacklogError,
     WebhookOutageError,
 )
-from src.resilience.scenarios import FailureScenario, ScenarioDefinition, get_scenario_definition
+from src.resilience.scenarios import (
+    FailureScenario,
+    ScenarioDefinition,
+    get_scenario_definition,
+)
 from src.workflow.designer import WorkflowConfig, create_sample_workflow
 
 

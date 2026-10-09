@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.resilience.scenarios import FailureScenario, SCENARIOS
+from src.resilience.scenarios import SCENARIOS, FailureScenario
 from src.resilience.simulator import FailureSimulator
 from src.workflow.designer import create_sample_workflow
 
