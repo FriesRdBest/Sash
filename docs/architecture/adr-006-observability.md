@@ -42,6 +42,7 @@ import json
 
 logger = logging.getLogger(__name__)
 
+
 def log_event(event: NormalizedEvent):
     logger.info(
         "event_processed",
