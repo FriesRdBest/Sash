@@ -61,7 +61,9 @@ class CheckResult:
             "evidence_url": self.evidence_url or self.definition.evidence_path,
             "config_path": self.definition.config_path,
             "started_at": self.started_at.isoformat(),
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+            "completed_at": self.completed_at.isoformat()
+            if self.completed_at
+            else None,
         }
 
 
@@ -98,7 +100,9 @@ class ScorecardResult:
             "dimensions": [d.to_dict() for d in self.dimensions],
             "blocking_items": [b.to_dict() for b in self.blocking_items],
             "started_at": self.started_at.isoformat(),
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+            "completed_at": self.completed_at.isoformat()
+            if self.completed_at
+            else None,
             "metadata": self.metadata,
         }
 
@@ -145,7 +149,9 @@ class ScorecardResult:
                     f"(weight={check.definition.weight:.2f})"
                 )
                 if check.evidence_url or check.definition.evidence_path:
-                    lines.append(f"  - Evidence: `{check.evidence_url or check.definition.evidence_path}`")
+                    lines.append(
+                        f"  - Evidence: `{check.evidence_url or check.definition.evidence_path}`"
+                    )
             lines.append("")
 
         return "\n".join(lines)
@@ -468,7 +474,9 @@ class ScorecardEngine:
             return CheckStatus.FAIL
         return CheckStatus.PASS
 
-    def _message_for_status(self, definition: CheckDefinition, status: CheckStatus) -> str:
+    def _message_for_status(
+        self, definition: CheckDefinition, status: CheckStatus
+    ) -> str:
         if status == CheckStatus.PASS:
             return "Check passed."
         if status == CheckStatus.BLOCKING:

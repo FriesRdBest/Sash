@@ -1,0 +1,16 @@
+%% Sash local reference/demo architecture. Verify against the exact candidate before release.
+flowchart LR
+    Evaluator[Evaluator] --> UI[Streamlit app]
+    UI --> Qualification[Qualification rules]
+    UI --> Workflow[Workflow designer and execution]
+    Workflow --> Provider[Provider adapter: mock-first]
+    Provider --> Events[Event normalization and processing]
+    Events --> Idempotency[Idempotency and ordering]
+    Events --> Store[(SQLite demo persistence)]
+    Store --> Timeline[Timeline and audit queries]
+    UI --> FailureLab[Deterministic failure simulator]
+    UI --> Scorecard[Readiness scorecard]
+    UI --> Security[Security review]
+    UI --> Handoff[Handoff generator]
+    OptionalAPI[Optional FastAPI module] -. deployment/use unverified .-> Workflow
+    RealProvider[Real provider account] -. not established by local test evidence .-> Provider

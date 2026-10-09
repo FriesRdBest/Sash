@@ -14,7 +14,9 @@ def get_events_by_correlation(correlation_id: str) -> list[dict[str, Any]]:
     # Scan executions for matching correlation_id
     executions = execution_repo.get_all()
     matching_exec_ids = [
-        ex["id"] for ex in executions if ex.get("metadata", {}).get("correlation_id") == correlation_id
+        ex["id"]
+        for ex in executions
+        if ex.get("metadata", {}).get("correlation_id") == correlation_id
     ]
 
     events = []
@@ -97,7 +99,11 @@ def compute_metrics(correlation_id: str) -> dict[str, Any]:
     failed_events = sum(1 for e in events if e.get("status") == "failed")
 
     avg_latency_ms = 0.0
-    latencies = [e.get("metadata", {}).get("latency_ms", 0) for e in events if e.get("metadata", {}).get("latency_ms")]
+    latencies = [
+        e.get("metadata", {}).get("latency_ms", 0)
+        for e in events
+        if e.get("metadata", {}).get("latency_ms")
+    ]
     if latencies:
         avg_latency_ms = sum(latencies) / len(latencies)
 
@@ -112,7 +118,9 @@ def compute_metrics(correlation_id: str) -> dict[str, Any]:
         "avg_latency_ms": round(avg_latency_ms, 2),
         # Simulated metrics (labelled)
         "simulated": {
-            "delivery_rate_pct": round((delivered_events / max(total_events, 1)) * 100, 1),
+            "delivery_rate_pct": round(
+                (delivered_events / max(total_events, 1)) * 100, 1
+            ),
             "first_response_time_ms": 150.0,  # simulated
             "end_to_end_time_ms": 1250.0,  # simulated
         },

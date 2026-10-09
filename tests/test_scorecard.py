@@ -66,7 +66,8 @@ def test_webhook_blocking_failure_is_recorded(engine):
     webhook_dim = next(d for d in result.dimensions if d.dimension == Dimension.WEBHOOK)
     assert webhook_dim.blocking_count == 1
     assert any(
-        c.definition.id == "webhook_signature_verification" and c.status == CheckStatus.BLOCKING
+        c.definition.id == "webhook_signature_verification"
+        and c.status == CheckStatus.BLOCKING
         for c in webhook_dim.checks
     )
 

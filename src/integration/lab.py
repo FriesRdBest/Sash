@@ -64,7 +64,9 @@ class IntegrationLab:
             success=False,
         )
 
-        logger.info(f"[INTEGRATION_LAB] Starting workflow {workflow.name} for {correlation_id}")
+        logger.info(
+            f"[INTEGRATION_LAB] Starting workflow {workflow.name} for {correlation_id}"
+        )
 
         for step in workflow.steps:
             try:
@@ -73,12 +75,21 @@ class IntegrationLab:
                 result.total_latency_ms += event.metadata.get("latency_ms", 0.0)
 
                 if event.status == EventStatus.FAILED:
-                    result.errors.append(f"Step {step.name} failed: {event.metadata.get('failure_reason', 'unknown')}")
+                    result.errors.append(
+                        f"Step {step.name} failed: {event.metadata.get('failure_reason', 'unknown')}"
+                    )
                     if step.fallback_to:
-                        logger.info(f"[INTEGRATION_LAB] Triggering fallback for step {step.name}")
-                        fallback_step = next((s for s in workflow.steps if s.id == step.fallback_to), None)
+                        logger.info(
+                            f"[INTEGRATION_LAB] Triggering fallback for step {step.name}"
+                        )
+                        fallback_step = next(
+                            (s for s in workflow.steps if s.id == step.fallback_to),
+                            None,
+                        )
                         if fallback_step:
-                            fallback_event = self._execute_step(fallback_step, customer_phone, correlation_id)
+                            fallback_event = self._execute_step(
+                                fallback_step, customer_phone, correlation_id
+                            )
                             result.events.append(fallback_event)
                             if fallback_event.status == EventStatus.SENT:
                                 result.success = True
@@ -99,8 +110,12 @@ class IntegrationLab:
                 break
 
         result.completed_at = datetime.now(timezone.utc)
-        result.success = result.success or all(e.status in {EventStatus.SENT, EventStatus.DELIVERED} for e in result.events)
-        logger.info(f"[INTEGRATION_LAB] Completed workflow {workflow.name} with success={result.success}")
+        result.success = result.success or all(
+            e.status in {EventStatus.SENT, EventStatus.DELIVERED} for e in result.events
+        )
+        logger.info(
+            f"[INTEGRATION_LAB] Completed workflow {workflow.name} with success={result.success}"
+        )
         return result
 
     def _execute_step(self, step: WorkflowStep, to: str, correlation_id: str) -> Event:
@@ -136,10 +151,14 @@ class IntegrationLab:
                 if response.success:
                     return event
                 else:
-                    last_error = Exception(response.error_message or "Unknown provider error")
+                    last_error = Exception(
+                        response.error_message or "Unknown provider error"
+                    )
             except ProviderTimeoutError as e:
                 last_error = e
-                logger.warning(f"[INTEGRATION_LAB] Timeout on attempt {attempt + 1} for step {step.name}")
+                logger.warning(
+                    f"[INTEGRATION_LAB] Timeout on attempt {attempt + 1} for step {step.name}"
+                )
             except ProviderRateLimitError as e:
                 last_error = e
                 delay = min(e.retry_after_seconds, self.retry_config.max_delay_seconds)
@@ -151,13 +170,24 @@ class IntegrationLab:
                 break
 
             if attempt < self.retry_config.max_attempts - 1:
-                delay = min(self.retry_config.base_delay_seconds * (2 ** attempt), self.retry_config.max_delay_seconds)
-                logger.info(f"[INTEGRATION_LAB] Retrying in {delay}s (attempt {attempt + 1}/{self.retry_config.max_attempts})")
+                delay = min(
+                    self.retry_config.base_delay_seconds * (2**attempt),
+                    self.retry_config.max_delay_seconds,
+                )
+                logger.info(
+                    f"[INTEGRATION_LAB] Retrying in {delay}s (attempt {attempt + 1}/{self.retry_config.max_attempts})"
+                )
                 time.sleep(delay)
 
         event.status = EventStatus.FAILED
-        event.metadata["failure_reason"] = str(last_error) if last_error else "Unknown error"
-        raise MessageDeliveryError(channel=step.channel, reason=event.metadata["failure_reason"], last_error=last_error)
+        event.metadata["failure_reason"] = (
+            str(last_error) if last_error else "Unknown error"
+        )
+        raise MessageDeliveryError(
+            channel=step.channel,
+            reason=event.metadata["failure_reason"],
+            last_error=last_error,
+        )
 
 
 # Convenience function for simple usage

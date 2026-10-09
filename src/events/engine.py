@@ -75,7 +75,9 @@ def validate_webhook_payload(payload: dict[str, Any]) -> None:
         raise InvalidPayloadError("Timestamp must be ISO string", field="timestamp")
 
 
-def verify_signature(payload_bytes: bytes, signature: str | None, secret: str = "mock-secret") -> bool:
+def verify_signature(
+    payload_bytes: bytes, signature: str | None, secret: str = "mock-secret"
+) -> bool:
     """Verify webhook signature (HMAC-SHA256). Mockable for tests."""
     if not signature:
         raise SignatureValidationError("Missing signature header")
@@ -124,7 +126,9 @@ def check_idempotency(event_id: str) -> None:
         raise DuplicateEventError(event_id)
 
 
-def record_idempotency(event: NormalizedEvent, status: str, error: str | None = None) -> None:
+def record_idempotency(
+    event: NormalizedEvent, status: str, error: str | None = None
+) -> None:
     """Record event as processed in idempotency store."""
     _idempotency_store[event.id] = IdempotencyRecord(
         event_id=event.id,
@@ -136,14 +140,18 @@ def record_idempotency(event: NormalizedEvent, status: str, error: str | None = 
     )
 
 
-def check_ordering(event: NormalizedEvent, policy: Literal["strict", "relaxed"] = "relaxed") -> None:
+def check_ordering(
+    event: NormalizedEvent, policy: Literal["strict", "relaxed"] = "relaxed"
+) -> None:
     """Check event ordering; raise OutOfOrderEventError if violated (strict mode)."""
     last_seq = _event_sequence.get(event.correlation_id, 0)
     if event.sequence <= last_seq:
         if policy == "strict":
             raise OutOfOrderEventError(event.id, last_seq + 1, event.sequence)
         else:
-            logger.warning(f"[WEBHOOK] Out-of-order event {event.id} (seq {event.sequence} <= {last_seq}), accepting in relaxed mode")
+            logger.warning(
+                f"[WEBHOOK] Out-of-order event {event.id} (seq {event.sequence} <= {last_seq}), accepting in relaxed mode"
+            )
     _event_sequence[event.correlation_id] = max(last_seq, event.sequence)
 
 
@@ -217,7 +225,9 @@ def process_webhook(
     # Mark as processed
     record_idempotency(event, status="processed")
 
-    logger.info(f"[WEBHOOK] Processed event {event.id} type={event.event_type} status={event.status.value}")
+    logger.info(
+        f"[WEBHOOK] Processed event {event.id} type={event.event_type} status={event.status.value}"
+    )
     return event
 
 

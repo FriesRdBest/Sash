@@ -1,6 +1,5 @@
 """Sash: Production readiness and deployment accelerator for programmable customer communications."""
 
-
 from datetime import datetime
 
 import streamlit as st
@@ -75,211 +74,33 @@ st.sidebar.markdown("**Phase:** 18 - Quality, Accessibility & Polish")
 if page == "Home":
     st.title("Sash")
     st.subheader(
-        "Production readiness and deployment accelerator for programmable customer communications"
+        "A reference and demo app for programmable customer-communications workflows"
     )
-
-    # Status banner
-    status_col1, status_col2 = st.columns([3, 1])
-    with status_col1:
-        st.markdown(
-            f"""
-            <div style="background-color: {COLOR_PRIMARY}10; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid {COLOR_PRIMARY};">
-                <strong>🚧 Under Active Development</strong><br>
-                Phase 10: workflow design, mock execution, webhooks, and event/audit timelines available.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with status_col2:
-        st.markdown(
-            """
-            <div style="text-align: right;">
-                <span class="status-badge status-info">v0.10.0</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("---")
-
-    # Main content sections
-    st.markdown("## 🎯 Purpose")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown(
-            """
-            Sash demonstrates how an engineer can:
-            
-            - **Qualify** customer engagements
-            - **Design** API-driven architectures
-            - **Build** resilient communication workflows
-            - **Test** failure modes
-            - **Instrument** operations
-            - **Produce** customer handoff packages
-            
-            Built for the **Senior Forward Deployed Engineer** role at Sinch.
-            """
-        )
-
-    with col2:
-        st.markdown(
-            """
-            ### Flagship Scenario
-            
-            **Aurora Marketplace** user verification:
-            
-            1. SMS primary channel
-            2. WhatsApp or email fallback
-            3. Delivery-status webhooks
-            4. Internal customer database
-            5. Operations dashboard
-            6. Fraud and abuse controls
-            7. Supportable production deployment
-            """
-        )
-
-    st.markdown("---")
-
-    # Feature roadmap
-    st.markdown("## 📋 Feature Roadmap")
-
-    roadmap_col1, roadmap_col2, roadmap_col3 = st.columns(3)
-
-    with roadmap_col1:
-        st.markdown(
-            f"""
-            <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">✅ Phase 0-10 Complete</h4>
-                <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Operating charter</li>
-                    <li>Repository foundation</li>
-                    <li>Research and domain model</li>
-                    <li>Architecture and ADRs</li>
-                    <li>Design system</li>
-                    <li><strong>Domain & persistence core</strong></li>
-                    <li><strong>Engagement qualification</strong></li>
-                    <li><strong>Workflow designer</strong></li>
-                    <li><strong>Mock provider integration</strong></li>
-                    <li><strong>Aurora end-to-end happy path</strong></li>
-                    <li><strong>Webhook event engine</strong></li>
-                    <li><strong>Event timeline & audit view</strong></li>
-                </ul>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with roadmap_col2:
-        st.markdown(
-            f"""
-            <div class="sash-card">
-                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">🚧 Current Capabilities</h4>
-                <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Retry and fallback policies</li>
-                    <li>Duplicate webhook detection</li>
-                    <li>Dead-letter inspection and replay primitives</li>
-                </ul>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with roadmap_col3:
-        st.markdown(
-            f"""
-            <div class="sash-card">
-                <h4 style="color: {COLOR_TEXT_MUTED}; margin-top: 0;">⏳ Planned</h4>
-                <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Failure and resilience lab</li>
-                    <li>Production-readiness scorecard</li>
-                    <li>Observability console</li>
-                    <li>Handoff package generator</li>
-                </ul>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("---")
-
-    # Quick links
-    st.markdown("## 🔗 Quick Links")
-
-    link_col1, link_col2, link_col3, link_col4 = st.columns(4)
-
-    with link_col1:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
-                <strong>README</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col2:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
-                <strong>Changelog</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col3:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏗️</div>
-                <strong>Architecture</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col4:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
-                <strong>Research</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("---")
-
-    # Next steps
-    st.markdown("## ▶️ Next Steps")
 
     st.markdown(
-        f"""
-        <div class="sash-card">
-            <p><strong>Available now:</strong></p>
-            <ol>
-                <li>Workflow designer with JSON export</li>
-                <li>Mock Sinch provider execution</li>
-                <li>Event timeline and correlation audit view</li>
-            </ol>
-            <p style="margin-top: 1rem; color: {COLOR_TEXT_MUTED};">
-                This application will grow rapidly. Check back frequently to see new features being added.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        """
+        ## What Sash is
+        Sash helps users explore how a customer communications workflow can be qualified,
+        designed, tested, observed, and handed off. It uses an example user-verification
+        journey to make engineering decisions and operational trade-offs concrete.
 
+        ## What you can use it for
+        - Explore an example workflow, channel choices, fallback paths, and consent considerations.
+        - Run deterministic mock scenarios and inspect events, failures, timelines, and readiness checks.
+        - Review integration boundaries, operational concerns, security questions, and handoff materials.
+        - Use the demo to discuss implementation trade-offs and what production deployment would require.
+
+        ## What Sash is not
+        - It is not a production messaging gateway or a substitute for Sinch APIs.
+        - Mock sends, metrics, and failure scenarios are simulations—not live provider delivery or production telemetry.
+        - It does not certify a workflow as secure, compliant, accessible, or production-ready.
+        - It does not replace customer-specific integration, deployment, testing, or operational review.
+
+        **Built for the Senior Forward Deployed Engineer role at Sinch by Robin Sylvester.**
+
+        Use synthetic data and mock mode. Treat outputs as demonstration evidence, not production guarantees.
+        """
+    )
 elif page == "Domain Models":
     st.title("Domain Models")
     st.markdown("Core entities and value objects in the Sash domain.")
@@ -587,7 +408,9 @@ elif page == "Workflows":
 
 elif page == "Run Workflow":
     st.title("▶️ Run Workflow")
-    st.markdown("Run the Aurora Marketplace verification journey in deterministic mock mode.")
+    st.markdown(
+        "Run the Aurora Marketplace verification journey in deterministic mock mode."
+    )
 
     with st.form("run_workflow_form"):
         phone = st.text_input("Customer phone number", value="+12065550123")
@@ -621,13 +444,9 @@ elif page == "Run Workflow":
                     "Step": index + 1,
                     "Channel": event.channel,
                     "Status": event.status.value,
-                    "Latency (ms)": round(
-                        event.metadata.get("latency_ms", 0.0), 2
-                    ),
+                    "Latency (ms)": round(event.metadata.get("latency_ms", 0.0), 2),
                     "Message ID": event.metadata.get("message_id", "—"),
-                    "Failure reason": event.metadata.get(
-                        "failure_reason", "—"
-                    ),
+                    "Failure reason": event.metadata.get("failure_reason", "—"),
                 }
                 for index, event in enumerate(session.execution_result.events)
             ]
@@ -701,7 +520,7 @@ elif page == "Event Timeline":
                     unsafe_allow_html=True,
                 )
 
-                with st.expander(f'Details: {entry["summary"]}'):
+                with st.expander(f"Details: {entry['summary']}"):
                     st.json(entry["details"])
         else:
             st.warning(
@@ -843,7 +662,7 @@ elif page == "Failure Lab":
 
         for result in results:
             icon = "✅" if result["passed"] else "❌"
-            with st.expander(f'{icon} {result["scenario"]}'):
+            with st.expander(f"{icon} {result['scenario']}"):
                 st.markdown(f"**Correlation ID:** `{result['correlation_id']}`")
                 st.markdown(f"**Behavior:** {result['behavior']}")
 
@@ -856,12 +675,8 @@ elif page == "Failure Lab":
 
                 with details_right:
                     st.markdown(f"**Recovery:** {result['recovery']}")
-                    st.markdown(
-                        f"**Residual risk:** {result['residual_risk']}"
-                    )
-                    st.markdown(
-                        f"**State corrupted:** `{result['state_corrupted']}`"
-                    )
+                    st.markdown(f"**Residual risk:** {result['residual_risk']}")
+                    st.markdown(f"**State corrupted:** `{result['state_corrupted']}`")
 
                 st.markdown("**Evidence**")
                 st.json(result["evidence"])
@@ -891,7 +706,9 @@ elif page == "Scorecard":
     col_run, col_export = st.columns([1, 1])
 
     with col_run:
-        run_checks = st.button("Run scorecard", type="primary", use_container_width=True)
+        run_checks = st.button(
+            "Run scorecard", type="primary", use_container_width=True
+        )
 
     with col_export:
         export_format = st.selectbox("Export format", ["json", "markdown"])
@@ -1126,9 +943,9 @@ elif page == "Observability":
                     f"""
                     <div style="background-color: {color}10; padding: 0.75rem;
                     border-radius: 0.5rem; border-left: 3px solid {color};">
-                        <strong>{k['name']}</strong><br>
-                        <span style="font-size: 1.25rem;">{k['value']}</span>
-                        {f'<br><small>{k["delta"]}</small>' if k['delta'] else ''}
+                        <strong>{k["name"]}</strong><br>
+                        <span style="font-size: 1.25rem;">{k["value"]}</span>
+                        {f"<br><small>{k["delta"]}</small>" if k["delta"] else ""}
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -1147,9 +964,9 @@ elif page == "Observability":
                     <div style="background-color: {color}10; padding: 0.75rem;
                     border-radius: 0.5rem; border-left: 3px solid {color};
                     margin-bottom: 0.5rem;">
-                        <strong>{a['title']}</strong>: {a['message']}
-                        {f'<br><small>Correlation: `{a["correlation_id"]}`</small>' if a['correlation_id'] else ''}
-                        <br><small>Next action: {a['suggested_action']}</small>
+                        <strong>{a["title"]}</strong>: {a["message"]}
+                        {f"<br><small>Correlation: `{a["correlation_id"]}`</small>" if a["correlation_id"] else ""}
+                        <br><small>Next action: {a["suggested_action"]}</small>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -1158,10 +975,11 @@ elif page == "Observability":
         if snap_data["recommendations"]:
             st.markdown("### Recommendations")
             for r in snap_data["recommendations"]:
-                icon = {"low": "🟢", "medium": "🟠", "high": "🔴"}.get(r["priority"], "⚪")
+                icon = {"low": "🟢", "medium": "🟠", "high": "🔴"}.get(
+                    r["priority"], "⚪"
+                )
                 st.markdown(
-                    f"{icon} **{r['title']}** — {r['reason']} "
-                    f"(action: {r['action']})"
+                    f"{icon} **{r['title']}** — {r['reason']} (action: {r['action']})"
                 )
 
         st.markdown("### Channel breakdown")
@@ -1254,12 +1072,16 @@ elif page == "Security Review":
         if review_data["findings"]:
             st.markdown("### Findings")
             for f in review_data["findings"]:
-                st.markdown(f"- **{f['title']}**: {f['description']} (risk: {f['risk']})")
+                st.markdown(
+                    f"- **{f['title']}**: {f['description']} (risk: {f['risk']})"
+                )
 
         if review_data["recommendations"]:
             st.markdown("### Recommendations")
             for r in review_data["recommendations"]:
-                st.markdown(f"- **{r['title']}**: {r['action']} (priority: {r['priority']})")
+                st.markdown(
+                    f"- **{r['title']}**: {r['action']} (priority: {r['priority']})"
+                )
 
         if st.button("Download Markdown report"):
             md = st.session_state.get("last_security_review_md", "")
@@ -1298,7 +1120,7 @@ elif page == "AI Review":
         files = [
             (
                 "demo_secret.py",
-                "api_key = \"sk_live_1234567890abcdef\"",
+                'api_key = "sk_live_1234567890abcdef"',
             ),
             (
                 "demo_imports.py",
@@ -1309,7 +1131,9 @@ elif page == "AI Review":
                 "def long():\n" + "    pass\n" * 50,
             ),
         ]
-        result = run_ai_review(files, enable_ai_explanations=enable_ai, model_hint="demo-model")
+        result = run_ai_review(
+            files, enable_ai_explanations=enable_ai, model_hint="demo-model"
+        )
         st.session_state["last_ai_review"] = result.to_dict()
         st.session_state["last_ai_review_md"] = result.to_markdown()
 
@@ -1317,7 +1141,9 @@ elif page == "AI Review":
     if not review_data:
         st.info("Click Run AI review to generate findings.")
     else:
-        st.caption(f"Files scanned: {review_data['metadata'].get('files_scanned', 'N/A')}")
+        st.caption(
+            f"Files scanned: {review_data['metadata'].get('files_scanned', 'N/A')}"
+        )
 
         st.markdown("### Findings")
         if not review_data["findings"]:
@@ -1383,19 +1209,21 @@ elif page == "Handoff Package":
         st.caption(f"Generated at: {pkg_data['generated_at']}")
 
         st.markdown("### Documents")
-        doc_tabs = st.tabs([
-            "Architecture",
-            "Workflow",
-            "Configuration",
-            "Deployment",
-            "Runbook",
-            "Test Evidence",
-            "Alerts",
-            "Ownership",
-            "Rollback",
-            "Training",
-            "Risks",
-        ])
+        doc_tabs = st.tabs(
+            [
+                "Architecture",
+                "Workflow",
+                "Configuration",
+                "Deployment",
+                "Runbook",
+                "Test Evidence",
+                "Alerts",
+                "Ownership",
+                "Rollback",
+                "Training",
+                "Risks",
+            ]
+        )
 
         with doc_tabs[0]:
             st.markdown(pkg_data["architecture_md"])
@@ -1472,7 +1300,9 @@ elif page == "Deployment":
     st.markdown("### Health status")
     # Demo health check (no real endpoint in Streamlit; simulate OK)
     st.success("UI health: OK (demo status)")
-    st.caption("In production, monitor /health on the API service and container health checks.")
+    st.caption(
+        "In production, monitor /health on the API service and container health checks."
+    )
 
     st.markdown("### Environment configuration")
     st.markdown(
@@ -1484,13 +1314,17 @@ elif page == "Deployment":
         - `PROVIDER_API_KEY`, `WEBHOOK_SECRET`, `DATABASE_URL`: production only
         """
     )
-    st.info("No secrets are committed. Configure production secrets via your secret manager.")
+    st.info(
+        "No secrets are committed. Configure production secrets via your secret manager."
+    )
 
     st.markdown("### Demo reset")
     if st.button("Reset demo state (simulate)"):
         # In real deployment, this would call a backend reset or clear volumes.
         st.session_state["demo_reset_done"] = True
-        st.success("Demo reset simulated. In production, run `scripts/reset_demo.sh` or clear volumes.")
+        st.success(
+            "Demo reset simulated. In production, run `scripts/reset_demo.sh` or clear volumes."
+        )
 
     if st.session_state.get("demo_reset_done"):
         st.caption("Baseline state restored for the next demo run.")

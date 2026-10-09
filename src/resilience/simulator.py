@@ -61,7 +61,9 @@ class ResilienceResult:
             "recovery": definition.recovery if definition else "",
             "residual_risk": definition.residual_risk if definition else "",
             "started_at": self.started_at.isoformat(),
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+            "completed_at": self.completed_at.isoformat()
+            if self.completed_at
+            else None,
         }
 
 
@@ -181,7 +183,10 @@ class FailureSimulator:
                 correlation_id,
                 definition,
                 "Rate limit detected; request was not accepted as sent.",
-                {"exception": type(error).__name__, "retry_after_seconds": error.retry_after_seconds},
+                {
+                    "exception": type(error).__name__,
+                    "retry_after_seconds": error.retry_after_seconds,
+                },
             )
         return self._result(
             FailureScenario.RATE_LIMIT,
@@ -211,7 +216,10 @@ class FailureSimulator:
                 correlation_id,
                 definition,
                 "Callback preserved in dead-letter state for replay.",
-                {"exception": type(error).__name__, "dead_letter_count": len(dead_letters)},
+                {
+                    "exception": type(error).__name__,
+                    "dead_letter_count": len(dead_letters),
+                },
             )
 
     def _duplicate_callback(
@@ -259,7 +267,11 @@ class FailureSimulator:
                 correlation_id,
                 definition,
                 "Strict sequence policy rejected the stale callback.",
-                {"exception": type(error).__name__, "expected_sequence": error.expected_sequence, "actual_sequence": error.actual_sequence},
+                {
+                    "exception": type(error).__name__,
+                    "expected_sequence": error.expected_sequence,
+                    "actual_sequence": error.actual_sequence,
+                },
             )
         return self._result(
             FailureScenario.OUT_OF_ORDER_EVENT,
@@ -320,7 +332,11 @@ class FailureSimulator:
                 correlation_id,
                 definition,
                 "Work deferred; no message was sent while the queue was over threshold.",
-                {"exception": type(error).__name__, "depth": error.depth, "threshold": error.threshold},
+                {
+                    "exception": type(error).__name__,
+                    "depth": error.depth,
+                    "threshold": error.threshold,
+                },
             )
 
     def _fallback_execution(

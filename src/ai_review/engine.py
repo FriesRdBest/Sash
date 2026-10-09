@@ -139,7 +139,9 @@ def sanitize_code_snippet(code: str) -> str:
     code = re.sub(r"'''[\s\S]*?'''", "'''...'''", code)
     code = re.sub(r'"[^"\n]{8,}"', '"..."', code)
     code = re.sub(r"'[^'\n]{8,}'", "'...'", code)
-    code = re.sub(r"(?i)(api_key|secret|password|token)\s*=\s*[^\n]+", r"\1 = REDACTED", code)
+    code = re.sub(
+        r"(?i)(api_key|secret|password|token)\s*=\s*[^\n]+", r"\1 = REDACTED", code
+    )
     return code
 
 
@@ -167,7 +169,7 @@ def run_deterministic_checks(file_path: str, source: str) -> list[Finding]:
             if re.search(pattern, line):
                 findings.append(
                     Finding(
-                        id=f"SEC_{len(findings)+1:03d}",
+                        id=f"SEC_{len(findings) + 1:03d}",
                         title=title,
                         description="Potential secret detected in source.",
                         severity=Severity.CRITICAL,
@@ -205,7 +207,7 @@ def run_deterministic_checks(file_path: str, source: str) -> list[Finding]:
                 if alias.name.split(".")[0] in unsafe_imports:
                     findings.append(
                         Finding(
-                            id=f"IMP_{len(findings)+1:03d}",
+                            id=f"IMP_{len(findings) + 1:03d}",
                             title=f"Potentially unsafe import: {alias.name}",
                             description="This module can be dangerous if used with untrusted data.",
                             severity=Severity.MEDIUM,
@@ -216,10 +218,14 @@ def run_deterministic_checks(file_path: str, source: str) -> list[Finding]:
                             remediation="Ensure strict input validation and least privilege.",
                         )
                     )
-        elif isinstance(node, ast.ImportFrom) and node.module and node.module.split(".")[0] in unsafe_imports:
+        elif (
+            isinstance(node, ast.ImportFrom)
+            and node.module
+            and node.module.split(".")[0] in unsafe_imports
+        ):
             findings.append(
                 Finding(
-                    id=f"IMP_{len(findings)+1:03d}",
+                    id=f"IMP_{len(findings) + 1:03d}",
                     title=f"Potentially unsafe import: from {node.module}",
                     description="This module can be dangerous if used with untrusted data.",
                     severity=Severity.MEDIUM,
@@ -239,7 +245,7 @@ def run_deterministic_checks(file_path: str, source: str) -> list[Finding]:
             if length > 40:
                 findings.append(
                     Finding(
-                        id=f"LEN_{len(findings)+1:03d}",
+                        id=f"LEN_{len(findings) + 1:03d}",
                         title=f"Long function: {node.name}",
                         description=f"Function length is {length} lines (threshold 40).",
                         severity=Severity.LOW,
