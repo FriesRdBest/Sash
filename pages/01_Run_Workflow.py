@@ -7,6 +7,23 @@ from src.workflow.designer import create_sample_workflow
 page_config(title="Run Workflow", layout="wide")
 local_css()
 
+# Top navigation tabs
+pages = {
+    "Home": "app.py",
+    "Run Workflow": "pages/01_Run_Workflow.py",
+    "Timeline": "pages/02_Timeline.py",
+    "Scorecard": "pages/03_Scorecard.py",
+    "Admin": "pages/04_Admin.py",
+}
+
+tabs = st.tabs(list(pages.keys()))
+for i, (label, path) in enumerate(pages.items()):
+    with tabs[i]:
+        if label == "Run Workflow":
+            pass  # current page content below
+        else:
+            st.page_link(path, label=f"Open {label}")
+
 st.markdown("<h1>Run Workflow</h1>", unsafe_allow_html=True)
 
 with st.form("run_workflow_form", clear_on_submit=False):

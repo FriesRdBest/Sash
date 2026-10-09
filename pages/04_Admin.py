@@ -6,6 +6,23 @@ from src.styles import page_config, local_css
 page_config(title="Admin", layout="wide")
 local_css()
 
+# Top navigation tabs
+pages = {
+    "Home": "app.py",
+    "Run Workflow": "pages/01_Run_Workflow.py",
+    "Timeline": "pages/02_Timeline.py",
+    "Scorecard": "pages/03_Scorecard.py",
+    "Admin": "pages/04_Admin.py",
+}
+
+tabs = st.tabs(list(pages.keys()))
+for i, (label, path) in enumerate(pages.items()):
+    with tabs[i]:
+        if label == "Admin":
+            pass  # current page content below
+        else:
+            st.page_link(path, label=f"Open {label}")
+
 st.markdown("<h1>Admin</h1>", unsafe_allow_html=True)
 
 st.markdown(
