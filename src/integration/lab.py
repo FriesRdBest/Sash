@@ -4,16 +4,17 @@ import logging
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any
+from uuid import uuid4
 
-from src.domain.models import Event, EventStatus, WorkflowConfig, WorkflowStep
+from src.domain.models import Event, EventStatus
 from src.integration.errors import (
     IntegrationError,
     MessageDeliveryError,
     ProviderRateLimitError,
     ProviderTimeoutError,
 )
-from src.integration.provider import Provider, ProviderRequest, ProviderResponse, create_provider
+from src.integration.provider import Provider, ProviderRequest, create_provider
+from src.workflow.designer import WorkflowConfig, WorkflowStep
 
 logger = logging.getLogger(__name__)
 
@@ -56,8 +57,6 @@ class IntegrationLab:
         correlation_id: str | None = None,
     ) -> ExecutionResult:
         """Execute a workflow for a given customer."""
-        from uuid import uuid4
-
         correlation_id = correlation_id or str(uuid4())
         result = ExecutionResult(
             workflow_id=workflow.id,

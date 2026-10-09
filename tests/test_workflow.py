@@ -1,12 +1,13 @@
 """Unit tests for workflow designer."""
 
 import pytest
+
 from src.workflow.designer import (
+    RetryPolicy,
     WorkflowConfig,
     WorkflowStep,
-    RetryPolicy,
-    validate_workflow,
     create_sample_workflow,
+    validate_workflow,
     WorkflowValidationError,
 )
 
@@ -18,11 +19,11 @@ class TestRetryPolicy:
         assert policy.backoff_seconds == [5, 30, 120]
 
     def test_invalid_max_attempts(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             RetryPolicy(max_attempts=0)
 
     def test_invalid_backoff(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             RetryPolicy(backoff_seconds=[])
 
 
@@ -37,7 +38,7 @@ class TestWorkflowStep:
         assert step.timeout_seconds == 90
 
     def test_invalid_channel(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             WorkflowStep(name="Test", channel="telegram", template="Hi")
 
 
@@ -70,7 +71,7 @@ class TestWorkflowConfig:
         assert len(wf2.steps) == len(wf.steps)
 
     def test_invalid_no_steps(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             WorkflowConfig(name="Empty", steps=[])
 
     def test_invalid_fallback_target(self):
@@ -80,7 +81,7 @@ class TestWorkflowConfig:
             template="Hello",
             fallback_to="nonexistent",
         )
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             WorkflowConfig(name="Bad fallback", steps=[step])
 
 

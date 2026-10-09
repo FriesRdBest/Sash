@@ -1,21 +1,21 @@
 """Unit tests for integration laboratory and mock provider."""
 
 import pytest
-from src.domain.models import WorkflowConfig, WorkflowStep
+
 from src.integration.errors import (
     ProviderApiError,
     ProviderConfigurationError,
     ProviderRateLimitError,
     ProviderTimeoutError,
 )
-from src.integration.lab import IntegrationLab, RetryConfig, run_workflow
+from src.integration.lab import IntegrationLab, run_workflow
 from src.integration.provider import (
     MockSinchProvider,
     ProviderRequest,
-    ProviderResponse,
     create_provider,
     redact_sensitive_data,
 )
+from src.workflow.designer import WorkflowConfig, WorkflowStep
 
 
 class TestRedactSensitiveData:

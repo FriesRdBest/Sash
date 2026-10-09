@@ -4,13 +4,9 @@
 class IntegrationError(Exception):
     """Base class for integration errors."""
 
-    pass
-
 
 class ProviderTimeoutError(IntegrationError):
     """Raised when a provider call exceeds its timeout."""
-
-    pass
 
 
 class ProviderApiError(IntegrationError):
@@ -25,8 +21,6 @@ class ProviderApiError(IntegrationError):
 
 class ProviderConfigurationError(IntegrationError):
     """Raised when provider configuration is invalid or missing."""
-
-    pass
 
 
 class ProviderRateLimitError(IntegrationError):

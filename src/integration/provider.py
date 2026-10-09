@@ -7,12 +7,10 @@ import re
 import time
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from typing import Any, Protocol
+from typing import Protocol
 
-from src.domain.models import ChannelType, EventStatus
+from src.domain.models import EventStatus
 from src.integration.errors import (
-    IntegrationError,
     ProviderApiError,
     ProviderConfigurationError,
     ProviderRateLimitError,

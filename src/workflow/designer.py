@@ -3,7 +3,6 @@
 import json
 import uuid
 from datetime import datetime, timezone
-from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -87,8 +86,6 @@ class WorkflowConfig(BaseModel):
 
 class WorkflowValidationError(Exception):
     """Raised when workflow validation fails."""
-
-    pass
 
 
 def validate_workflow(config: WorkflowConfig) -> list[str]:
