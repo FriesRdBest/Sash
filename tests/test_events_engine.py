@@ -28,15 +28,6 @@ from src.events.errors import (
 )
 
 
-@pytest.fixture(autouse=True)
-def reset_stores():
-    """Reset in-memory stores before each test for isolation."""
-    engine._idempotency_store.clear()
-    engine._dead_letter_store.clear()
-    engine._event_sequence.clear()
-    yield
-
-
 class TestValidateWebhookPayload:
     def test_valid_payload(self):
         payload = {
@@ -113,7 +104,9 @@ class TestNormalizeEvent:
 
 class TestIdempotency:
     def test_duplicate_event_rejected(self):
-        # Use a unique event ID for this test
+        # Ensure clean store for this test
+        engine._idempotency_store.clear()
+
         payload = {
             "event_id": "evt-idempotency-test",
             "event_type": "message.sent",
@@ -128,6 +121,7 @@ class TestIdempotency:
 
 class TestOrdering:
     def test_strict_ordering_rejects_out_of_order(self):
+        engine._event_sequence.clear()
         payload1 = {
             "event_id": "evt-seq1",
             "event_type": "message.sent",
@@ -149,6 +143,7 @@ class TestOrdering:
             check_ordering(event2, policy="strict")  # seq 0 after 1 rejected
 
     def test_relaxed_ordering_accepts_out_of_order(self):
+        engine._event_sequence.clear()
         payload1 = {
             "event_id": "evt-seq1",
             "event_type": "message.sent",
@@ -171,6 +166,7 @@ class TestOrdering:
 
 class TestDeadLetter:
     def test_move_to_dead_letter(self):
+        engine._dead_letter_store.clear()
         payload = {
             "event_id": "evt-dl",
             "event_type": "message.failed",
@@ -185,6 +181,7 @@ class TestDeadLetter:
         assert dead[0].reason == "Test failure"
 
     def test_replay_dead_letter(self):
+        engine._dead_letter_store.clear()
         payload = {
             "event_id": "evt-replay",
             "event_type": "message.failed",
@@ -202,6 +199,7 @@ class TestDeadLetter:
 
 class TestProcessWebhook:
     def test_process_valid_webhook(self):
+        engine._idempotency_store.clear()
         payload = {
             "event_id": "evt-webhook",
             "event_type": "message.sent",
@@ -215,6 +213,7 @@ class TestProcessWebhook:
         assert event.status.value == "sent"
 
     def test_process_duplicate_webhook_rejected(self):
+        engine._idempotency_store.clear()
         payload = {
             "event_id": "evt-dup2",
             "event_type": "message.sent",
@@ -228,6 +227,7 @@ class TestProcessWebhook:
 
 class TestSimulateFailedEvent:
     def test_simulate_failed_event_creates_dead_letter(self):
+        engine._dead_letter_store.clear()
         entry = simulate_failed_event(correlation_id="corr-sim-fail")
         assert isinstance(entry, DeadLetterEntry)
         assert entry.reason == "Simulated failure"
