@@ -4,7 +4,6 @@ import pytest
 
 from src.security.review import (
     ControlStatus,
-    SecurityReviewResult,
     run_security_review,
 )
 
