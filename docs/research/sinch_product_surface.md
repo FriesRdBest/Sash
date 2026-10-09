@@ -28,7 +28,7 @@ Key capabilities:
 - Sender ID configuration
 - Country-specific routing and compliance
 
-Documentation: https://developers.sinch.com/docs/messaging
+Documentation: https://developers.sinch.com/
 
 ### Conversation API
 
@@ -40,7 +40,7 @@ Key capabilities:
 - Unified delivery events
 - Conversation state management
 
-Documentation: https://sinch.com/messaging/conversation-api
+Documentation: https://developers.sinch.com/
 
 ### Voice API
 
@@ -102,5 +102,5 @@ Common patterns for verification workflows:
 ## References
 
 - Sinch Developer Documentation: https://developers.sinch.com
-- Conversation API webhooks: https://sinch.com/messaging/conversation-api/intelligent-routing-webhooks
+- Conversation API webhooks: https://developers.sinch.com/
 - Verification API: https://developers.sinch.com/docs/verification/introduction
