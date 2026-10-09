@@ -12,6 +12,8 @@ from src.timeline.queries import (
     get_state_transitions,
     search_events,
 )
+from src.resilience.scenarios import FailureScenario, get_scenario_definition
+from src.resilience.simulator import FailureSimulator
 from src.qualification.assess import assess_engagement
 from src.styles import (
     COLOR_BORDER,
@@ -47,13 +49,14 @@ page = st.sidebar.radio(
         "Workflows",
         "Run Workflow",
         "Event Timeline",
+        "Failure Lab",
     ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.10.0")
-st.sidebar.markdown("**Phase:** 10 - Timeline & Audit")
+st.sidebar.markdown("**Version:** v0.11.0")
+st.sidebar.markdown("**Phase:** 11 - Failure & Resilience Lab")
 
 # Main content
 if page == "Home":
@@ -717,6 +720,143 @@ elif page == "Event Timeline":
         )
         st.write(f"Found {len(results)} event(s).")
         st.dataframe(results, use_container_width=True)
+
+elif page == "Failure Lab":
+    st.title("🧪 Failure & Resilience Laboratory")
+    st.markdown(
+        "Run deterministic failure simulations against the mock integration "
+        "boundaries. Every result documents detection, behavior, impact, "
+        "alerting, recovery, and residual risk."
+    )
+
+    scenario_labels = {
+        FailureScenario.PROVIDER_TIMEOUT: "Provider timeout",
+        FailureScenario.RATE_LIMIT: "Provider rate limit",
+        FailureScenario.WEBHOOK_OUTAGE: "Webhook receiver outage",
+        FailureScenario.DUPLICATE_CALLBACK: "Duplicate callback",
+        FailureScenario.OUT_OF_ORDER_EVENT: "Out-of-order event",
+        FailureScenario.CRM_FAILURE: "CRM adapter failure",
+        FailureScenario.DATABASE_FAILURE: "Database persistence failure",
+        FailureScenario.QUEUE_BACKLOG: "Queue backlog",
+        FailureScenario.FALLBACK_EXECUTION: "Primary failure + fallback",
+    }
+
+    scenario = st.selectbox(
+        "Failure scenario",
+        list(FailureScenario),
+        format_func=lambda item: scenario_labels[item],
+    )
+
+    definition = get_scenario_definition(scenario)
+
+    st.markdown("### Scenario contract")
+    contract_left, contract_right = st.columns(2)
+
+    with contract_left:
+        st.markdown(
+            f"""
+            <div class="sash-card">
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">
+                    Detection & behavior
+                </h4>
+                <p><strong>Detection:</strong> {definition.detection}</p>
+                <p><strong>Expected behavior:</strong>
+                {definition.expected_behavior}</p>
+                <p><strong>Impact:</strong> {definition.impact}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with contract_right:
+        st.markdown(
+            f"""
+            <div class="sash-card">
+                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">
+                    Operations & recovery
+                </h4>
+                <p><strong>Alert:</strong> {definition.alert}</p>
+                <p><strong>Recovery:</strong> {definition.recovery}</p>
+                <p><strong>Residual risk:</strong> {definition.residual_risk}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    controls_left, controls_right = st.columns(2)
+
+    with controls_left:
+        run_scenario = st.button(
+            "Run selected simulation",
+            type="primary",
+            use_container_width=True,
+        )
+
+    with controls_right:
+        run_all = st.button(
+            "Run all scenarios",
+            use_container_width=True,
+        )
+
+    simulator = FailureSimulator(queue_threshold=3)
+
+    if run_scenario:
+        result = simulator.run(scenario)
+        st.session_state["resilience_results"] = [result.to_dict()]
+
+    if run_all:
+        results = simulator.run_all()
+        st.session_state["resilience_results"] = [
+            result.to_dict() for result in results
+        ]
+
+    results = st.session_state.get("resilience_results", [])
+
+    if results:
+        st.markdown("### Simulation results")
+
+        result_rows = [
+            {
+                "Scenario": result["scenario"],
+                "Passed": result["passed"],
+                "Detected": result["detected"],
+                "State corrupted": result["state_corrupted"],
+                "Correlation ID": result["correlation_id"],
+                "Behavior": result["behavior"],
+            }
+            for result in results
+        ]
+        st.dataframe(result_rows, use_container_width=True)
+
+        for result in results:
+            icon = "✅" if result["passed"] else "❌"
+            with st.expander(f'{icon} {result["scenario"]}'):
+                st.markdown(f"**Correlation ID:** `{result['correlation_id']}`")
+                st.markdown(f"**Behavior:** {result['behavior']}")
+
+                details_left, details_right = st.columns(2)
+
+                with details_left:
+                    st.markdown(f"**Detection:** {result['detection']}")
+                    st.markdown(f"**Impact:** {result['impact']}")
+                    st.markdown(f"**Alert:** {result['alert']}")
+
+                with details_right:
+                    st.markdown(f"**Recovery:** {result['recovery']}")
+                    st.markdown(
+                        f"**Residual risk:** {result['residual_risk']}"
+                    )
+                    st.markdown(
+                        f"**State corrupted:** `{result['state_corrupted']}`"
+                    )
+
+                st.markdown("**Evidence**")
+                st.json(result["evidence"])
+
+        st.caption(
+            "All scenarios use deterministic mock fault injection. "
+            "No real provider, CRM, or queue operations occur."
+        )
 
 # Footer
 st.markdown("---")
