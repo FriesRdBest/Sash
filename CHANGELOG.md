@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Research and domain model documentation
 - Architecture and decision records
 - Design system and application shell
 - Domain and persistence core
@@ -27,6 +26,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quality, accessibility, and polish pass
 - Evidence and release package
 - Interview readiness materials
+
+## [0.2.0] - 2026-10-09
+
+### Added
+- Phase 2 research and domain model completed
+- docs/research/README.md — Research directory overview
+- docs/research/sinch_product_surface.md — Sinch API capabilities for verification, messaging, conversation, and voice
+- docs/research/workflow_states.md — State machine for Aurora Marketplace verification workflow with states: pending, code_sent, verified, failed, expired, fallback_initiated
+- docs/research/event_model.md — Normalized event schema for verification.requested, verification.sent, verification.delivered, verification.failed, verification.code_submitted, verification.completed, verification.expired
+- docs/research/assumptions_register.md — Documented assumptions with validation status including mock mode sufficiency, Aurora realism, SQLite adequacy, Streamlit hosting, GitHub review depth, build timeline, and email outreach strategy
+- docs/research/provider_capability_matrix.md — Comparison of SMS, WhatsApp, and email channels for delivery speed, reliability, cost, user friction, template approval, two-way communication, delivery reports, fallback suitability, regional restrictions, and opt-in requirements
+- docs/research/customer_journey.md — Aurora Marketplace user verification journey with personas, stages, touchpoints, metrics, and pain points addressed
+- docs/research/lifecycle_diagram.md — Event lifecycle from send request to final delivery status with state transitions, idempotency guarantees, and correlation model
+
+### Changed
+- Updated changelog to reflect Phase 2 completion
 
 ## [0.1.0] - 2026-10-09
 
