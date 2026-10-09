@@ -13,6 +13,7 @@ from src.qualification.assess import assess_engagement
 from src.resilience.scenarios import FailureScenario, get_scenario_definition
 from src.resilience.simulator import FailureSimulator
 from src.scorecard.engine import ScorecardEngine
+from src.security.review import run_security_review
 from src.styles import (
     COLOR_BORDER,
     COLOR_ERROR,
@@ -57,13 +58,14 @@ page = st.sidebar.radio(
         "Failure Lab",
         "Scorecard",
         "Observability",
+        "Security Review",
     ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.13.0")
-st.sidebar.markdown("**Phase:** 13 - Observability Console")
+st.sidebar.markdown("**Version:** v0.14.0")
+st.sidebar.markdown("**Phase:** 14 - Security & Compliance Review")
 
 # Main content
 if page == "Home":
@@ -1193,6 +1195,80 @@ elif page == "Observability":
         st.caption(
             "Simulated/demo data is used where real telemetry is unavailable. "
             "In production, connect this view to your event store and metrics backend."
+        )
+
+elif page == "Security Review":
+    st.title("🔒 Security & Compliance Review")
+    st.markdown(
+        "Demonstrate trust-boundary, privacy, consent, and secret-handling discipline. "
+        "No secret is committed; sensitive fields are redacted; threat-model risks map to controls."
+    )
+
+    if st.button("Run security review", type="primary"):
+        review = run_security_review()
+        st.session_state["last_security_review"] = review.to_dict()
+        st.session_state["last_security_review_md"] = review.to_markdown()
+
+    review_data = st.session_state.get("last_security_review")
+    if not review_data:
+        st.info("Click Run security review to generate findings and recommendations.")
+    else:
+        st.caption(f"Generated at: {review_data['generated_at']}")
+
+        st.markdown("### Threat model")
+        for t in review_data["threats"]:
+            icon = {"low": "🟢", "medium": "🟠", "high": "🔴", "critical": "🚫"}.get(
+                t["risk_level"], "⚪"
+            )
+            st.markdown(
+                f"{icon} **{t['title']}** (`{t['id']}`, {t['risk_level']}): "
+                f"{t['description']} (asset: {t['affected_asset']})"
+            )
+
+        st.markdown("### Controls")
+        for c in review_data["controls"]:
+            icon = {
+                "implemented": "✅",
+                "partial": "🟠",
+                "missing": "❌",
+                "not_applicable": "⚪",
+            }.get(c["status"], "❓")
+            st.markdown(
+                f"{icon} **{c['title']}** (`{c['id']}`): {c['description']} "
+                f"(status: {c['status']})"
+            )
+            if c["linked_threats"]:
+                st.caption(f"Linked threats: {', '.join(c['linked_threats'])}")
+
+        st.markdown("### PII classification")
+        for p in review_data["pii_classes"]:
+            st.markdown(
+                f"- **{p['field_name']}** ({p['category']}, {p['sensitivity']}): "
+                f"{p['redaction_rule']}"
+            )
+
+        if review_data["findings"]:
+            st.markdown("### Findings")
+            for f in review_data["findings"]:
+                st.markdown(f"- **{f['title']}**: {f['description']} (risk: {f['risk']})")
+
+        if review_data["recommendations"]:
+            st.markdown("### Recommendations")
+            for r in review_data["recommendations"]:
+                st.markdown(f"- **{r['title']}**: {r['action']} (priority: {r['priority']})")
+
+        if st.button("Download Markdown report"):
+            md = st.session_state.get("last_security_review_md", "")
+            st.download_button(
+                label="Download report",
+                data=md.encode(),
+                file_name=f"security_review_{review_data['run_id']}.md",
+                mime="text/markdown",
+            )
+
+        st.caption(
+            "This review is a starting point. In production, integrate with your "
+            "secret manager, DLP, and compliance tooling."
         )
 
 # Footer
