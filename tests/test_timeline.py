@@ -1,7 +1,5 @@
 """Unit tests for event timeline and audit view."""
 
-from src.events.engine import simulate_failed_event
-from src.persistence.sqlite_repo import audit_repo, event_repo, execution_repo
 from src.timeline.queries import (
     build_timeline,
     compute_metrics,

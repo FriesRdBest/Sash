@@ -3,7 +3,12 @@
 import streamlit as st
 
 from src.styles import COLOR_BORDER, COLOR_PRIMARY, COLOR_TEXT_MUTED, get_custom_css
-from src.timeline.queries import build_timeline, compute_metrics, get_state_transitions, search_events
+from src.timeline.queries import (
+    build_timeline,
+    compute_metrics,
+    get_state_transitions,
+    search_events,
+)
 
 st.set_page_config(page_title="Event Timeline · Sash", page_icon="📜", layout="wide")
 st.markdown(get_custom_css(), unsafe_allow_html=True)

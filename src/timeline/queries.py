@@ -1,11 +1,9 @@
 """Event timeline and audit query utilities."""
 
 import logging
-from datetime import datetime, timezone
-from typing import Any, Literal
+from typing import Any
 
-from src.domain.models import AuditRecord
-from src.events.engine import DeadLetterEntry, get_dead_letters
+from src.events.engine import get_dead_letters
 from src.persistence.sqlite_repo import audit_repo, event_repo, execution_repo
 
 logger = logging.getLogger(__name__)
