@@ -1,6 +1,3 @@
-"""Sash: Production readiness and deployment accelerator for programmable customer communications."""
-
-
 from datetime import datetime
 
 import streamlit as st
@@ -36,7 +33,7 @@ from src.workflow.designer import create_sample_workflow
 
 # Page configuration
 st.set_page_config(
-    page_title="Sash", page_icon="🔗", layout="wide", initial_sidebar_state="expanded"
+    page_title="Sash", page_icon="", layout="wide", initial_sidebar_state="expanded"
 )
 
 # Apply custom CSS
@@ -453,7 +450,7 @@ elif page == "Qualification":
                 unsafe_allow_html=True,
             )
 
-        with score_col3:
+        with col3:
             risk_count = len(assessment.risk_flags)
             risk_color = (
                 COLOR_ERROR
@@ -1515,5 +1512,4 @@ st.markdown(
         <a href="https://github.com/FriesRdBest/Sash" style="color: {COLOR_PRIMARY};">View source on GitHub</a>
     </div>
     """,
-    unsafe_allow_html=True,
-)
+            
