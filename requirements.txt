@@ -1,5 +1,12 @@
-# Sash dependencies
-streamlit>=1.28.0
+# Core dependencies
+streamlit>=1.30.0
 pydantic>=2.0.0
 pytest>=7.0.0
 ruff>=0.1.0
+
+# Optional API server (Phase 17)
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+
+# Observability / utilities (if used in future)
+httpx>=0.24.0
