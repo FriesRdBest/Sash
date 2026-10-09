@@ -50,7 +50,7 @@ def log_event(event: NormalizedEvent):
             "event_type": event.event_type,
             "workflow_id": event.workflow_id,
             "correlation_id": event.correlation_id,
-        }
+        },
     )
 ```
 
@@ -60,10 +60,10 @@ Metrics (in-memory):
 class Metrics:
     def __init__(self):
         self.counters = defaultdict(int)
-    
+
     def increment(self, name: str, value: int = 1):
         self.counters[name] += value
-    
+
     def get(self, name: str) -> int:
         return self.counters[name]
 ```
