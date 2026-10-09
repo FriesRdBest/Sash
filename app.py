@@ -6,6 +6,7 @@ from datetime import datetime
 import streamlit as st
 
 from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline
+from src.observability.engine import ObservabilityEngine
 from src.persistence.seed_data import load_seed_data
 from src.persistence.sqlite_repo import engagement_repo
 from src.qualification.assess import assess_engagement
@@ -55,13 +56,14 @@ page = st.sidebar.radio(
         "Event Timeline",
         "Failure Lab",
         "Scorecard",
+        "Observability",
     ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.12.0")
-st.sidebar.markdown("**Phase:** 12 - Production Readiness Scorecard")
+st.sidebar.markdown("**Version:** v0.13.0")
+st.sidebar.markdown("**Phase:** 13 - Observability Console")
 
 # Main content
 if page == "Home":
@@ -1039,6 +1041,159 @@ elif page == "Scorecard":
                 file_name=f"scorecard_{last_result_data['run_id']}.md",
                 mime="text/markdown",
             )
+
+elif page == "Observability":
+    st.title("📈 Observability Console")
+    st.markdown(
+        "Operator view of system health and next actions. "
+        "Metrics derive from event data; simulated data is labelled."
+    )
+
+    mode = st.radio(
+        "View mode",
+        ["System-wide health", "Single correlation journey"],
+        horizontal=True,
+    )
+
+    correlation_id = None
+    if mode == "Single correlation journey":
+        default_corr = st.session_state.get("selected_correlation", "")
+        correlation_id = st.text_input(
+            "Correlation ID",
+            value=default_corr,
+            placeholder="Paste a correlation ID from Run Workflow or Event Timeline.",
+        )
+
+    engine = ObservabilityEngine(correlation_id=correlation_id or None)
+
+    if st.button("Refresh observability snapshot", type="primary"):
+        snap = engine.snapshot(window_minutes=60)
+        st.session_state["last_observability"] = {
+            "kpis": [
+                {"name": k.name, "value": k.value, "delta": k.delta, "status": k.status}
+                for k in snap.kpis
+            ],
+            "alerts": [
+                {
+                    "severity": a.severity,
+                    "title": a.title,
+                    "message": a.message,
+                    "correlation_id": a.correlation_id,
+                    "suggested_action": a.suggested_action,
+                }
+                for a in snap.alerts
+            ],
+            "recommendations": [
+                {
+                    "title": r.title,
+                    "reason": r.reason,
+                    "action": r.action,
+                    "priority": r.priority,
+                }
+                for r in snap.recommendations
+            ],
+            "channel_breakdown": snap.channel_breakdown,
+            "failure_breakdown": snap.failure_breakdown,
+            "latency_metrics": snap.latency_metrics,
+            "retry_metrics": snap.retry_metrics,
+            "fallback_metrics": snap.fallback_metrics,
+            "recent_events": snap.recent_events,
+            "metadata": snap.metadata,
+        }
+
+    snap_data = st.session_state.get("last_observability")
+    if not snap_data:
+        st.info("Click Refresh to generate an observability snapshot.")
+    else:
+        st.caption(f"Generated at: {snap_data['metadata'].get('label', 'N/A')}")
+
+        st.markdown("### KPI cards")
+        kpi_cols = st.columns(len(snap_data["kpis"]))
+        for i, k in enumerate(snap_data["kpis"]):
+            with kpi_cols[i]:
+                color = {
+                    "ok": COLOR_SUCCESS,
+                    "warning": COLOR_WARNING,
+                    "critical": COLOR_ERROR,
+                }.get(k["status"], COLOR_TEXT_MUTED)
+                st.markdown(
+                    f"""
+                    <div style="background-color: {color}10; padding: 0.75rem;
+                    border-radius: 0.5rem; border-left: 3px solid {color};">
+                        <strong>{k['name']}</strong><br>
+                        <span style="font-size: 1.25rem;">{k['value']}</span>
+                        {f'<br><small>{k["delta"]}</small>' if k['delta'] else ''}
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+        if snap_data["alerts"]:
+            st.markdown("### Alerts")
+            for a in snap_data["alerts"]:
+                color = {
+                    "info": COLOR_PRIMARY,
+                    "warning": COLOR_WARNING,
+                    "critical": COLOR_ERROR,
+                }.get(a["severity"], COLOR_TEXT_MUTED)
+                st.markdown(
+                    f"""
+                    <div style="background-color: {color}10; padding: 0.75rem;
+                    border-radius: 0.5rem; border-left: 3px solid {color};
+                    margin-bottom: 0.5rem;">
+                        <strong>{a['title']}</strong>: {a['message']}
+                        {f'<br><small>Correlation: `{a["correlation_id"]}`</small>' if a['correlation_id'] else ''}
+                        <br><small>Next action: {a['suggested_action']}</small>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+        if snap_data["recommendations"]:
+            st.markdown("### Recommendations")
+            for r in snap_data["recommendations"]:
+                icon = {"low": "🟢", "medium": "🟠", "high": "🔴"}.get(r["priority"], "⚪")
+                st.markdown(
+                    f"{icon} **{r['title']}** — {r['reason']} "
+                    f"(action: {r['action']})"
+                )
+
+        st.markdown("### Channel breakdown")
+        if snap_data["channel_breakdown"]:
+            st.bar_chart(snap_data["channel_breakdown"])
+        else:
+            st.info("No channel data available.")
+
+        st.markdown("### Failure breakdown")
+        if snap_data["failure_breakdown"]:
+            st.bar_chart(snap_data["failure_breakdown"])
+        else:
+            st.info("No failures recorded in this window.")
+
+        st.markdown("### Latency, retry, and fallback metrics")
+        lat_left, lat_right = st.columns(2)
+        with lat_left:
+            st.markdown("**Latency**")
+            st.json(snap_data["latency_metrics"])
+        with lat_right:
+            st.markdown("**Retry & fallback**")
+            st.json(
+                {
+                    "retry": snap_data["retry_metrics"],
+                    "fallback": snap_data["fallback_metrics"],
+                }
+            )
+
+        st.markdown("### Recent events")
+        if snap_data["recent_events"]:
+            st.dataframe(snap_data["recent_events"], use_container_width=True)
+        else:
+            st.info("No recent events in this window.")
+
+        st.caption(
+            "Simulated/demo data is used where real telemetry is unavailable. "
+            "In production, connect this view to your event store and metrics backend."
+        )
 
 # Footer
 st.markdown("---")
