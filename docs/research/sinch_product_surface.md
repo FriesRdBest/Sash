@@ -28,7 +28,7 @@ Key capabilities:
 - Sender ID configuration
 - Country-specific routing and compliance
 
-Documentation: https://developers.sinch.com/docs/messaging
+Documentation: https://developers.sinch.com/
 
 ### Conversation API
 
