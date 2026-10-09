@@ -20,7 +20,9 @@ COLOR_TEXT = "#1F2937"  # Gray 800
 COLOR_TEXT_MUTED = "#6B7280"  # Gray 500
 
 # Typography
-FONT_FAMILY = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+FONT_FAMILY = (
+    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+)
 FONT_MONO = "'JetBrains Mono', 'Fira Code', monospace"
 
 # Spacing
