@@ -1,21 +1,17 @@
 """Sash: Production readiness and deployment accelerator for programmable customer communications."""
 
+
+from datetime import datetime
+
 import streamlit as st
 
+from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline
 from src.persistence.seed_data import load_seed_data
 from src.persistence.sqlite_repo import engagement_repo
-from src.workflow.designer import create_sample_workflow
-from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline
-from src.timeline.queries import (
-    build_timeline,
-    compute_metrics,
-    get_state_transitions,
-    search_events,
-)
-from src.scorecard.engine import ScorecardEngine
+from src.qualification.assess import assess_engagement
 from src.resilience.scenarios import FailureScenario, get_scenario_definition
 from src.resilience.simulator import FailureSimulator
-from src.qualification.assess import assess_engagement
+from src.scorecard.engine import ScorecardEngine
 from src.styles import (
     COLOR_BORDER,
     COLOR_ERROR,
@@ -26,6 +22,13 @@ from src.styles import (
     COLOR_WARNING,
     get_custom_css,
 )
+from src.timeline.queries import (
+    build_timeline,
+    compute_metrics,
+    get_state_transitions,
+    search_events,
+)
+from src.workflow.designer import create_sample_workflow
 
 # Page configuration
 st.set_page_config(
@@ -905,12 +908,12 @@ elif page == "Scorecard":
         st.info("Run the scorecard to see results.")
     else:
         from src.scorecard.engine import (
-            ScorecardResult,
-            DimensionScore,
-            CheckResult,
             CheckDefinition,
-            Dimension,
+            CheckResult,
             CheckStatus,
+            Dimension,
+            DimensionScore,
+            ScorecardResult,
         )
 
         # Reconstruct result object for display.
