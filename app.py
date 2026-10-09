@@ -4,6 +4,14 @@ import streamlit as st
 
 from src.persistence.seed_data import load_seed_data
 from src.persistence.sqlite_repo import engagement_repo
+from src.workflow.designer import create_sample_workflow
+from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline
+from src.timeline.queries import (
+    build_timeline,
+    compute_metrics,
+    get_state_transitions,
+    search_events,
+)
 from src.qualification.assess import assess_engagement
 from src.styles import (
     COLOR_BORDER,
@@ -31,13 +39,21 @@ st.sidebar.markdown("---")
 
 page = st.sidebar.radio(
     "Navigation",
-    ["Home", "Domain Models", "Qualification", "Engagements", "Workflows"],
+    [
+        "Home",
+        "Domain Models",
+        "Qualification",
+        "Engagements",
+        "Workflows",
+        "Run Workflow",
+        "Event Timeline",
+    ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.5.0")
-st.sidebar.markdown("**Phase:** 5 - Domain Core + Qualification")
+st.sidebar.markdown("**Version:** v0.10.0")
+st.sidebar.markdown("**Phase:** 10 - Timeline & Audit")
 
 # Main content
 if page == "Home":
@@ -53,7 +69,7 @@ if page == "Home":
             f"""
             <div style="background-color: {COLOR_PRIMARY}10; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid {COLOR_PRIMARY};">
                 <strong>🚧 Under Active Development</strong><br>
-                Phase 5: Domain/persistence core + Engagement qualification now available.
+                Phase 10: workflow design, mock execution, webhooks, and event/audit timelines available.
             </div>
             """,
             unsafe_allow_html=True,
@@ -63,7 +79,7 @@ if page == "Home":
         st.markdown(
             """
             <div style="text-align: right;">
-                <span class="status-badge status-info">v0.5.0</span>
+                <span class="status-badge status-info">v0.10.0</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -120,7 +136,7 @@ if page == "Home":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">✅ Phase 0-5 Complete</h4>
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">✅ Phase 0-10 Complete</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
                     <li>Operating charter</li>
                     <li>Repository foundation</li>
@@ -129,6 +145,11 @@ if page == "Home":
                     <li>Design system</li>
                     <li><strong>Domain & persistence core</strong></li>
                     <li><strong>Engagement qualification</strong></li>
+                    <li><strong>Workflow designer</strong></li>
+                    <li><strong>Mock provider integration</strong></li>
+                    <li><strong>Aurora end-to-end happy path</strong></li>
+                    <li><strong>Webhook event engine</strong></li>
+                    <li><strong>Event timeline & audit view</strong></li>
                 </ul>
             </div>
             """,
@@ -139,11 +160,11 @@ if page == "Home":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">🚧 In Progress</h4>
+                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">🚧 Current Capabilities</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Workflow designer</li>
-                    <li>Integration laboratory</li>
-                    <li>Event and webhook engine</li>
+                    <li>Retry and fallback policies</li>
+                    <li>Duplicate webhook detection</li>
+                    <li>Dead-letter inspection and replay primitives</li>
                 </ul>
             </div>
             """,
@@ -156,7 +177,6 @@ if page == "Home":
             <div class="sash-card">
                 <h4 style="color: {COLOR_TEXT_MUTED}; margin-top: 0;">⏳ Planned</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>End-to-end happy path</li>
                     <li>Failure and resilience lab</li>
                     <li>Production-readiness scorecard</li>
                     <li>Observability console</li>
@@ -230,11 +250,11 @@ if page == "Home":
     st.markdown(
         f"""
         <div class="sash-card">
-            <p><strong>Coming in the next 24-48 hours:</strong></p>
+            <p><strong>Available now:</strong></p>
             <ol>
                 <li>Workflow designer with JSON export</li>
-                <li>Mock Sinch provider integration</li>
-                <li>Event timeline and audit view</li>
+                <li>Mock Sinch provider execution</li>
+                <li>Event timeline and correlation audit view</li>
             </ol>
             <p style="margin-top: 1rem; color: {COLOR_TEXT_MUTED};">
                 This application will grow rapidly. Check back frequently to see new features being added.
@@ -503,27 +523,200 @@ elif page == "Engagements":
 
 elif page == "Workflows":
     st.title("Workflows")
-    st.markdown("Design and execute communication workflows.")
+    st.markdown("Design, validate, and export a versioned communication workflow.")
 
-    st.markdown("---")
+    if "workflow_draft" not in st.session_state:
+        st.session_state.workflow_draft = create_sample_workflow()
+
+    workflow = st.session_state.workflow_draft
 
     st.markdown(
         f"""
         <div class="sash-card">
             <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">🔀 Workflow Designer</h4>
-            <p>Visual workflow designer with step configuration.</p>
-            <ul>
-                <li>Add/remove steps</li>
-                <li>Configure channels and templates</li>
-                <li>Set conditions and branching</li>
-                <li>Export to JSON</li>
-            </ul>
+            <p><strong>{workflow.name}</strong> — version {workflow.version}</p>
+            <p>{workflow.description}</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.info("💡 Workflow designer UI coming in Phase 6.")
+    st.markdown("### Steps")
+    for index, step in enumerate(workflow.steps, start=1):
+        fallback = step.fallback_to[:8] + "…" if step.fallback_to else "None"
+        st.markdown(
+            f"""
+            <div class="sash-card">
+                <strong>Step {index}: {step.name}</strong><br>
+                Channel: <code>{step.channel}</code> |
+                Timeout: <code>{step.timeout_seconds}s</code> |
+                Retries: <code>{step.retry_policy.max_attempts}</code><br>
+                Template: <code>{step.template}</code><br>
+                Fallback target: <code>{fallback}</code>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.download_button(
+        "⬇️ Download workflow JSON",
+        data=workflow.to_json(),
+        file_name="sash-workflow.json",
+        mime="application/json",
+    )
+
+    if st.button("↻ Reset to Aurora sample workflow"):
+        st.session_state.workflow_draft = create_sample_workflow()
+        st.rerun()
+
+elif page == "Run Workflow":
+    st.title("▶️ Run Workflow")
+    st.markdown("Run the Aurora Marketplace verification journey in deterministic mock mode.")
+
+    with st.form("run_workflow_form"):
+        phone = st.text_input("Customer phone number", value="+12065550123")
+        email = st.text_input("Customer email (optional)", value="")
+        external_id = st.text_input("External ID (optional)", value="")
+        run = st.form_submit_button("Run mock verification")
+
+    if run:
+        if not phone or len(phone) < 10:
+            st.error("Phone number must be at least 10 digits.")
+        else:
+            workflow = st.session_state.get("workflow_draft", create_sample_workflow())
+
+            with st.spinner("Running Aurora verification..."):
+                session = create_aurora_session(
+                    phone_number=phone,
+                    workflow=workflow,
+                    email=email or None,
+                    external_id=external_id or None,
+                    mode="mock",
+                )
+
+            st.session_state["selected_correlation"] = session.correlation_id
+            st.success(
+                f"Verification {session.status}. "
+                f"Correlation ID: {session.correlation_id}"
+            )
+
+            event_rows = [
+                {
+                    "Step": index + 1,
+                    "Channel": event.channel,
+                    "Status": event.status.value,
+                    "Latency (ms)": round(
+                        event.metadata.get("latency_ms", 0.0), 2
+                    ),
+                    "Message ID": event.metadata.get("message_id", "—"),
+                    "Failure reason": event.metadata.get(
+                        "failure_reason", "—"
+                    ),
+                }
+                for index, event in enumerate(session.execution_result.events)
+            ]
+
+            st.markdown("### Events and latency")
+            st.dataframe(event_rows, use_container_width=True)
+
+            st.markdown("### Audit trail")
+            st.dataframe(
+                get_audit_timeline(session.correlation_id),
+                use_container_width=True,
+            )
+
+            st.info(
+                "Open Event Timeline and use this correlation ID for the "
+                "full operator view."
+            )
+
+elif page == "Event Timeline":
+    st.title("📜 Event Timeline & Audit View")
+    st.markdown(
+        "Search a correlation ID to inspect events, audit records, "
+        "state transitions, and derived metrics."
+    )
+
+    default_id = st.session_state.get("selected_correlation", "")
+    correlation_id = st.text_input(
+        "Correlation ID",
+        value=default_id,
+        placeholder="Run a workflow first, then paste its correlation ID here.",
+    )
+
+    if correlation_id:
+        metrics = compute_metrics(correlation_id)
+        metric_1, metric_2, metric_3, metric_4, metric_5 = st.columns(5)
+        metric_1.metric("Total events", metrics["total_events"])
+        metric_2.metric("Sent", metrics["sent_events"])
+        metric_3.metric("Delivered", metrics["delivered_events"])
+        metric_4.metric("Failed", metrics["failed_events"])
+        metric_5.metric("Dead letters", metrics["dead_letter_count"])
+
+        st.caption(
+            "Values grouped under `simulated` are labelled demo values, "
+            "not production telemetry."
+        )
+
+        with st.expander("Metrics detail, including simulated values"):
+            st.json(metrics)
+
+        st.markdown("### Combined event and audit timeline")
+        timeline = build_timeline(correlation_id)
+
+        if timeline:
+            for entry in timeline:
+                color = {
+                    "event": COLOR_PRIMARY,
+                    "audit": COLOR_BORDER,
+                    "dead_letter": COLOR_ERROR,
+                }.get(entry["type"], COLOR_TEXT_MUTED)
+
+                st.markdown(
+                    f"""
+                    <div style="background-color: {color}10; padding: 0.75rem;
+                    border-radius: 0.5rem; border-left: 3px solid {color};
+                    margin-bottom: 0.5rem;">
+                        <strong>{entry["timestamp"]}</strong> —
+                        <code>{entry["type"].upper()}</code>:
+                        {entry["summary"]}
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+                with st.expander(f'Details: {entry["summary"]}'):
+                    st.json(entry["details"])
+        else:
+            st.warning(
+                "No events, audit records, or dead letters were found for "
+                "this correlation ID."
+            )
+
+        st.markdown("### State-transition history")
+        transitions = get_state_transitions(correlation_id)
+        if transitions:
+            st.dataframe(transitions, use_container_width=True)
+        else:
+            st.info("No state transitions were found.")
+
+    st.markdown("### Global event search")
+    query = st.text_input(
+        "Search stored events",
+        placeholder="Execution ID or event content",
+    )
+    status = st.selectbox(
+        "Status filter",
+        ["all", "pending", "sent", "delivered", "failed"],
+    )
+
+    if st.button("Search events"):
+        results = search_events(
+            query=query or None,
+            status=None if status == "all" else status,
+        )
+        st.write(f"Found {len(results)} event(s).")
+        st.dataframe(results, use_container_width=True)
 
 # Footer
 st.markdown("---")
