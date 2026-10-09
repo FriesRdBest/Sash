@@ -2,6 +2,9 @@
 
 import streamlit as st
 from src.styles import get_custom_css, COLOR_PRIMARY, COLOR_SUCCESS, COLOR_WARNING, COLOR_ERROR, COLOR_TEXT_MUTED, COLOR_SURFACE, COLOR_BORDER
+from src.qualification.assess import assess_engagement
+from src.persistence.seed_data import load_seed_data
+from src.persistence.sqlite_repo import engagement_repo
 
 # Page configuration
 st.set_page_config(
@@ -21,13 +24,13 @@ st.sidebar.markdown("---")
 
 page = st.sidebar.radio(
     "Navigation",
-    ["Home", "Domain Models", "Engagements", "Workflows"],
+    ["Home", "Domain Models", "Qualification", "Engagements", "Workflows"],
     index=0
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Version:** v0.5.0")
-st.sidebar.markdown("**Phase:** 5 - Domain Core")
+st.sidebar.markdown("**Phase:** 5 - Domain Core + Qualification")
 
 # Main content
 if page == "Home":
@@ -41,7 +44,7 @@ if page == "Home":
             f"""
             <div style="background-color: {COLOR_PRIMARY}10; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid {COLOR_PRIMARY};">
                 <strong>🚧 Under Active Development</strong><br>
-                Phase 5: Domain and persistence core now available.
+                Phase 5: Domain/persistence core + Engagement qualification now available.
             </div>
             """,
             unsafe_allow_html=True
@@ -116,6 +119,7 @@ if page == "Home":
                     <li>Architecture and ADRs</li>
                     <li>Design system</li>
                     <li><strong>Domain & persistence core</strong></li>
+                    <li><strong>Engagement qualification</strong></li>
                 </ul>
             </div>
             """,
@@ -128,7 +132,6 @@ if page == "Home":
             <div class="sash-card">
                 <h4 style="color: {COLOR_WARNING}; margin-top: 0;">🚧 In Progress</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Engagement qualification</li>
                     <li>Workflow designer</li>
                     <li>Integration laboratory</li>
                     <li>Event and webhook engine</li>
@@ -220,7 +223,6 @@ if page == "Home":
         <div class="sash-card">
             <p><strong>Coming in the next 24-48 hours:</strong></p>
             <ol>
-                <li>Engagement qualification module with scoring</li>
                 <li>Workflow designer with JSON export</li>
                 <li>Mock Sinch provider integration</li>
                 <li>Event timeline and audit view</li>
@@ -252,6 +254,7 @@ elif page == "Domain Models":
                     <li><code>email</code> (optional)</li>
                     <li><code>external_id</code> (optional)</li>
                     <li><code>metadata</code> (dict)</li>
+                    <li><code>correlation_id</code> (tracking)</li>
                 </ul>
             </div>
             """,
@@ -268,7 +271,7 @@ elif page == "Domain Models":
                     <li><code>name</code>, <code>description</code></li>
                     <li><code>steps</code> (list)</li>
                     <li><code>status</code>: draft/active/paused/completed/failed</li>
-                    <li><code>metadata</code> (dict)</li>
+                    <li><code>correlation_id</code> (tracking)</li>
                 </ul>
             </div>
             """,
@@ -287,7 +290,7 @@ elif page == "Domain Models":
                     <li><code>workflow_id</code>, <code>customer_id</code></li>
                     <li><code>status</code></li>
                     <li><code>current_step</code></li>
-                    <li><code>started_at</code>, <code>completed_at</code></li>
+                    <li><code>correlation_id</code> (tracking)</li>
                 </ul>
             </div>
             """,
@@ -304,7 +307,7 @@ elif page == "Domain Models":
                     <li><code>execution_id</code>, <code>step_index</code></li>
                     <li><code>channel</code>: SMS/WhatsApp/Email/Voice</li>
                     <li><code>status</code>: pending/sent/delivered/failed/bounced</li>
-                    <li><code>content</code>, <code>metadata</code></li>
+                    <li><code>correlation_id</code> (tracking)</li>
                 </ul>
             </div>
             """,
@@ -315,18 +318,119 @@ elif page == "Domain Models":
     
     st.markdown(
         """
-        ### Enums
-        
-        - **ChannelType**: SMS, WhatsApp, Email, Voice
-        - **EventStatus**: pending, sent, delivered, failed, bounced
-        - **WorkflowStatus**: draft, active, paused, completed, failed
-        
         ### Persistence
         
-        All entities are stored in in-memory repositories for the demo.
-        Export to JSON is supported via `JsonSerializer`.
+        All entities are stored in SQLite with full audit trail.
+        Data survives application restarts. Correlation IDs enable end-to-end tracing.
         """
     )
+
+elif page == "Qualification":
+    st.title("Engagement Qualification")
+    st.markdown("Assess customer engagements for technical and operational viability.")
+    
+    st.markdown("---")
+    
+    # Intake form
+    st.markdown("### 📝 Intake Form")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        customer_name = st.text_input("Customer Name", "Acme Corp")
+        company = st.text_input("Company", "Acme Corporation")
+        use_case = st.text_area("Use Case", "User verification for marketplace platform", height=100)
+    
+    with col2:
+        priority = st.selectbox("Priority", ["low", "medium", "high", "critical"])
+        channels = st.multiselect("Channels", ["sms", "whatsapp", "email", "voice"], default=["sms"])
+        expected_volume = st.number_input("Expected Monthly Volume", min_value=0, value=5000, step=1000)
+        timeline_days = st.number_input("Timeline (days)", min_value=1, value=30, step=7)
+    
+    notes = st.text_area("Additional Notes", "")
+    
+    if st.button("Assess Engagement", type="primary"):
+        engagement_data = {
+            "customer_name": customer_name,
+            "company": company,
+            "use_case": use_case,
+            "priority": priority,
+            "channels": channels,
+            "expected_volume": expected_volume,
+            "timeline_days": timeline_days,
+            "notes": notes,
+        }
+        
+        assessment = assess_engagement(engagement_data)
+        
+        st.markdown("---")
+        
+        # Score display
+        score_col1, score_col2, score_col3 = st.columns(3)
+        
+        with score_col1:
+            score_color = COLOR_SUCCESS if assessment.score >= 80 else (COLOR_WARNING if assessment.score >= 60 else COLOR_ERROR)
+            st.markdown(
+                f"""
+                <div class="metric-card" style="background: linear-gradient(135deg, {score_color} 0%, #000 100%);">
+                    <div class="metric-value">{assessment.score}</div>
+                    <div class="metric-label">Readiness Score</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        with score_col2:
+            decision_emoji = "✅" if assessment.decision == "proceed" else ("⚠️" if assessment.decision == "proceed_with_conditions" else "❌")
+            st.markdown(
+                f"""
+                <div class="sash-card" style="text-align: center;">
+                    <div style="font-size: 2rem;">{decision_emoji}</div>
+                    <strong>{assessment.decision.replace('_', ' ').title()}</strong>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        with score_col3:
+            risk_count = len(assessment.risk_flags)
+            risk_color = COLOR_ERROR if risk_count > 2 else (COLOR_WARNING if risk_count > 0 else COLOR_SUCCESS)
+            st.markdown(
+                f"""
+                <div class="sash-card" style="text-align: center; border-left: 4px solid {risk_color};">
+                    <div style="font-size: 2rem;">{risk_count}</div>
+                    <strong>Risk Flags</strong>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        st.markdown("---")
+        
+        # Recommendation
+        st.markdown("### 📊 Assessment Details")
+        st.info(assessment.get_recommendation())
+        
+        # Conditions
+        if assessment.conditions:
+            st.markdown("**Conditions:**")
+            for condition in assessment.conditions:
+                st.markdown(f"- {condition}")
+        
+        # Rule results
+        st.markdown("**Rule Results:**")
+        for result in assessment.rule_results:
+            icon = "✅" if result.passed else "❌"
+            st.markdown(f"{icon} **{result.rule_name}**: {result.message}")
+        
+        # Export
+        st.markdown("---")
+        st.download_button(
+            label="📥 Export Report (JSON)",
+            data=assessment.to_json(),
+            file_name=f"qualification_{customer_name.replace(' ', '_')}.json",
+            mime="application/json",
+        )
 
 elif page == "Engagements":
     st.title("Engagements")
@@ -334,24 +438,34 @@ elif page == "Engagements":
     
     st.markdown("---")
     
-    st.markdown(
-        f"""
-        <div class="sash-card">
-            <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">📋 Engagement Entity</h4>
-            <p>Track customer engagements through qualification and delivery.</p>
-            <ul>
-                <li><code>customer_name</code>, <code>company</code></li>
-                <li><code>use_case</code></li>
-                <li><code>priority</code>: low/medium/high/critical</li>
-                <li><code>status</code>: new/qualified/active/completed/archived</li>
-                <li><code>notes</code></li>
-            </ul>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # Load seed data button
+    if st.button("🔄 Load Seed Data"):
+        result = load_seed_data()
+        st.success(f"Loaded {result['engagements']} engagements, {result['customers']} customers, {result['workflows']} workflows")
     
-    st.info("💡 Engagement qualification module coming in Phase 6.")
+    st.markdown("---")
+    
+    # List engagements
+    st.markdown("### 📋 Existing Engagements")
+    
+    engagements = engagement_repo.get_all()
+    
+    if not engagements:
+        st.markdown("<div class='empty-state'><div class='empty-state-icon'>📭</div><p>No engagements yet. Load seed data or create a new assessment.</p></div>", unsafe_allow_html=True)
+    else:
+        for eng in engagements:
+            st.markdown(
+                f"""
+                <div class="sash-card">
+                    <h4 style="margin-top: 0;">{eng.get('customer_name', 'Unknown')} @ {eng.get('company', 'Unknown')}</h4>
+                    <p><strong>Use Case:</strong> {eng.get('use_case', 'N/A')}</p>
+                    <p><strong>Priority:</strong> {eng.get('priority', 'medium')} | <strong>Volume:</strong> {eng.get('expected_volume', 0):,}/mo | <strong>Timeline:</strong> {eng.get('timeline_days', 30)} days</p>
+                    <p><strong>Channels:</strong> {', '.join(eng.get('channels', []))}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-info">{eng.get('status', 'new')}</span></p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 elif page == "Workflows":
     st.title("Workflows")
@@ -375,7 +489,7 @@ elif page == "Workflows":
         unsafe_allow_html=True
     )
     
-    st.info("💡 Workflow designer UI coming in Phase 7.")
+    st.info("💡 Workflow designer UI coming in Phase 6.")
 
 # Footer
 st.markdown("---")

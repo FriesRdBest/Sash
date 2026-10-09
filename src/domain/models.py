@@ -1,13 +1,24 @@
-"""Core domain entities for Sash."""
+"""Core domain entities for Sash with Pydantic validation."""
 
-from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import Optional, Dict, Any, List
 import uuid
 
+try:
+    from pydantic import BaseModel, Field, field_validator
+    PYDANTIC_AVAILABLE = True
+except ImportError:
+    PYDANTIC_AVAILABLE = False
+    # Fallback to dataclasses if pydantic not available
+    from dataclasses import dataclass, field
+    BaseModel = object
+    Field = lambda *args, **kwargs: None
 
-class ChannelType(Enum):
+from src.domain.clock import now
+
+
+class ChannelType(str, Enum):
     """Supported communication channels."""
     SMS = "sms"
     WHATSAPP = "whatsapp"
@@ -15,7 +26,7 @@ class ChannelType(Enum):
     VOICE = "voice"
 
 
-class EventStatus(Enum):
+class EventStatus(str, Enum):
     """Status of a workflow event."""
     PENDING = "pending"
     SENT = "sent"
@@ -24,7 +35,7 @@ class EventStatus(Enum):
     BOUNCED = "bounced"
 
 
-class WorkflowStatus(Enum):
+class WorkflowStatus(str, Enum):
     """Status of a workflow execution."""
     DRAFT = "draft"
     ACTIVE = "active"
@@ -33,107 +44,254 @@ class WorkflowStatus(Enum):
     FAILED = "failed"
 
 
-@dataclass
-class Customer:
-    """Customer entity representing an end-user in a workflow."""
-    phone_number: str
-    email: Optional[str] = None
-    external_id: Optional[str] = None
-    metadata: dict = field(default_factory=dict)
-    
-    def __post_init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
+class QualificationDecision(str, Enum):
+    """Qualification decision for an engagement."""
+    PROCEED = "proceed"
+    PROCEED_WITH_CONDITIONS = "proceed_with_conditions"
+    DECLINE = "decline"
 
 
-@dataclass
-class Workflow:
-    """Workflow definition with steps and configuration."""
-    name: str
-    description: str
-    steps: list = field(default_factory=list)
-    status: WorkflowStatus = WorkflowStatus.DRAFT
-    metadata: dict = field(default_factory=dict)
+if PYDANTIC_AVAILABLE:
+    class Customer(BaseModel):
+        """Customer entity representing an end-user in a workflow."""
+        id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        phone_number: str
+        email: Optional[str] = None
+        external_id: Optional[str] = None
+        metadata: Dict[str, Any] = Field(default_factory=dict)
+        correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = Field(default_factory=now)
+        updated_at: datetime = Field(default_factory=now)
+        
+        @field_validator('phone_number')
+        @classmethod
+        def validate_phone(cls, v: str) -> str:
+            if not v or len(v) < 10:
+                raise ValueError('Phone number must be at least 10 digits')
+            return v
+        
+        class Config:
+            use_enum_values = True
     
-    def __post_init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
     
-    def add_step(self, step: dict):
-        """Add a step to the workflow."""
-        self.steps.append(step)
-        self.updated_at = datetime.utcnow()
+    class Workflow(BaseModel):
+        """Workflow definition with steps and configuration."""
+        id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        name: str
+        description: str
+        steps: List[Dict[str, Any]] = Field(default_factory=list)
+        status: WorkflowStatus = WorkflowStatus.DRAFT
+        metadata: Dict[str, Any] = Field(default_factory=dict)
+        correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = Field(default_factory=now)
+        updated_at: datetime = Field(default_factory=now)
+        
+        def add_step(self, step: dict):
+            """Add a step to the workflow."""
+            self.steps.append(step)
+            self.updated_at = now()
+        
+        class Config:
+            use_enum_values = True
+    
+    
+    class WorkflowExecution(BaseModel):
+        """Runtime execution of a workflow for a specific customer."""
+        id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        workflow_id: str
+        customer_id: str
+        status: WorkflowStatus = WorkflowStatus.ACTIVE
+        current_step: int = 0
+        metadata: Dict[str, Any] = Field(default_factory=dict)
+        correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        started_at: datetime = Field(default_factory=now)
+        completed_at: Optional[datetime] = None
+        
+        def complete(self):
+            """Mark execution as completed."""
+            self.status = WorkflowStatus.COMPLETED
+            self.completed_at = now()
+        
+        def fail(self, reason: str):
+            """Mark execution as failed."""
+            self.status = WorkflowStatus.FAILED
+            self.metadata["failure_reason"] = reason
+            self.completed_at = now()
+        
+        class Config:
+            use_enum_values = True
+    
+    
+    class Event(BaseModel):
+        """Single event in a workflow execution (e.g., message sent)."""
+        id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        execution_id: str
+        step_index: int
+        channel: ChannelType
+        status: EventStatus = EventStatus.PENDING
+        content: Dict[str, Any] = Field(default_factory=dict)
+        metadata: Dict[str, Any] = Field(default_factory=dict)
+        correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = Field(default_factory=now)
+        updated_at: datetime = Field(default_factory=now)
+        
+        def mark_sent(self):
+            """Mark event as sent."""
+            self.status = EventStatus.SENT
+            self.updated_at = now()
+        
+        def mark_delivered(self):
+            """Mark event as delivered."""
+            self.status = EventStatus.DELIVERED
+            self.updated_at = now()
+        
+        def mark_failed(self, reason: str):
+            """Mark event as failed."""
+            self.status = EventStatus.FAILED
+            self.metadata["failure_reason"] = reason
+            self.updated_at = now()
+        
+        class Config:
+            use_enum_values = True
+    
+    
+    class Engagement(BaseModel):
+        """Customer engagement record for qualification and tracking."""
+        id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        customer_name: str
+        company: str
+        use_case: str
+        priority: str = "medium"
+        status: str = "qualified"
+        notes: str = ""
+        channels: List[str] = Field(default_factory=list)
+        expected_volume: int = 0
+        timeline_days: int = 30
+        correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = Field(default_factory=now)
+        updated_at: datetime = Field(default_factory=now)
+        
+        class Config:
+            use_enum_values = True
+    
+    
+    class AuditRecord(BaseModel):
+        """Audit trail record for tracking state changes."""
+        id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        entity_type: str
+        entity_id: str
+        action: str
+        old_state: Optional[Dict[str, Any]] = None
+        new_state: Optional[Dict[str, Any]] = None
+        actor: str = "system"
+        correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+        timestamp: datetime = Field(default_factory=now)
+        
+        class Config:
+            use_enum_values = True
 
-
-@dataclass
-class WorkflowExecution:
-    """Runtime execution of a workflow for a specific customer."""
-    workflow_id: str
-    customer_id: str
-    status: WorkflowStatus = WorkflowStatus.ACTIVE
-    current_step: int = 0
-    metadata: dict = field(default_factory=dict)
+else:
+    # Fallback to dataclasses
+    from dataclasses import dataclass, field
     
-    def __post_init__(self):
-        self.id = str(uuid.uuid4())
-        self.started_at = datetime.utcnow()
-        self.completed_at: Optional[datetime] = None
+    @dataclass
+    class Customer:
+        id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        phone_number: str = ""
+        email: Optional[str] = None
+        external_id: Optional[str] = None
+        metadata: Dict[str, Any] = field(default_factory=dict)
+        correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = field(default_factory=now)
+        updated_at: datetime = field(default_factory=now)
     
-    def complete(self):
-        """Mark execution as completed."""
-        self.status = WorkflowStatus.COMPLETED
-        self.completed_at = datetime.utcnow()
+    @dataclass
+    class Workflow:
+        id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        name: str = ""
+        description: str = ""
+        steps: List[Dict[str, Any]] = field(default_factory=list)
+        status: WorkflowStatus = WorkflowStatus.DRAFT
+        metadata: Dict[str, Any] = field(default_factory=dict)
+        correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = field(default_factory=now)
+        updated_at: datetime = field(default_factory=now)
+        
+        def add_step(self, step: dict):
+            self.steps.append(step)
+            self.updated_at = now()
     
-    def fail(self, reason: str):
-        """Mark execution as failed."""
-        self.status = WorkflowStatus.FAILED
-        self.metadata["failure_reason"] = reason
-        self.completed_at = datetime.utcnow()
-
-
-@dataclass
-class Event:
-    """Single event in a workflow execution (e.g., message sent)."""
-    execution_id: str
-    step_index: int
-    channel: ChannelType
-    status: EventStatus = EventStatus.PENDING
-    content: dict = field(default_factory=dict)
-    metadata: dict = field(default_factory=dict)
+    @dataclass
+    class WorkflowExecution:
+        id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        workflow_id: str = ""
+        customer_id: str = ""
+        status: WorkflowStatus = WorkflowStatus.ACTIVE
+        current_step: int = 0
+        metadata: Dict[str, Any] = field(default_factory=dict)
+        correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        started_at: datetime = field(default_factory=now)
+        completed_at: Optional[datetime] = None
+        
+        def complete(self):
+            self.status = WorkflowStatus.COMPLETED
+            self.completed_at = now()
+        
+        def fail(self, reason: str):
+            self.status = WorkflowStatus.FAILED
+            self.metadata["failure_reason"] = reason
+            self.completed_at = now()
     
-    def __post_init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
+    @dataclass
+    class Event:
+        id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        execution_id: str = ""
+        step_index: int = 0
+        channel: ChannelType = ChannelType.SMS
+        status: EventStatus = EventStatus.PENDING
+        content: Dict[str, Any] = field(default_factory=dict)
+        metadata: Dict[str, Any] = field(default_factory=dict)
+        correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = field(default_factory=now)
+        updated_at: datetime = field(default_factory=now)
+        
+        def mark_sent(self):
+            self.status = EventStatus.SENT
+            self.updated_at = now()
+        
+        def mark_delivered(self):
+            self.status = EventStatus.DELIVERED
+            self.updated_at = now()
+        
+        def mark_failed(self, reason: str):
+            self.status = EventStatus.FAILED
+            self.metadata["failure_reason"] = reason
+            self.updated_at = now()
     
-    def mark_sent(self):
-        """Mark event as sent."""
-        self.status = EventStatus.SENT
-        self.updated_at = datetime.utcnow()
+    @dataclass
+    class Engagement:
+        id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        customer_name: str = ""
+        company: str = ""
+        use_case: str = ""
+        priority: str = "medium"
+        status: str = "qualified"
+        notes: str = ""
+        channels: List[str] = field(default_factory=list)
+        expected_volume: int = 0
+        timeline_days: int = 30
+        correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        created_at: datetime = field(default_factory=now)
+        updated_at: datetime = field(default_factory=now)
     
-    def mark_delivered(self):
-        """Mark event as delivered."""
-        self.status = EventStatus.DELIVERED
-        self.updated_at = datetime.utcnow()
-    
-    def mark_failed(self, reason: str):
-        """Mark event as failed."""
-        self.status = EventStatus.FAILED
-        self.metadata["failure_reason"] = reason
-        self.updated_at = datetime.utcnow()
-
-
-@dataclass
-class Engagement:
-    """Customer engagement record for qualification and tracking."""
-    customer_name: str
-    company: str
-    use_case: str
-    priority: str = "medium"  # low, medium, high, critical
-    status: str = "qualified"  # new, qualified, active, completed, archived
-    notes: str = ""
-    
-    def __post_init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
+    @dataclass
+    class AuditRecord:
+        id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        entity_type: str = ""
+        entity_id: str = ""
+        action: str = ""
+        old_state: Optional[Dict[str, Any]] = None
+        new_state: Optional[Dict[str, Any]] = None
+        actor: str = "system"
+        correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+        timestamp: datetime = field(default_factory=now)
