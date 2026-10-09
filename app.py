@@ -5,6 +5,7 @@ from datetime import datetime
 
 import streamlit as st
 
+from src.ai_review.engine import run_ai_review
 from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline
 from src.observability.engine import ObservabilityEngine
 from src.persistence.seed_data import load_seed_data
@@ -59,13 +60,14 @@ page = st.sidebar.radio(
         "Scorecard",
         "Observability",
         "Security Review",
+        "AI Review",
     ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.14.0")
-st.sidebar.markdown("**Phase:** 14 - Security & Compliance Review")
+st.sidebar.markdown("**Version:** v0.15.0")
+st.sidebar.markdown("**Phase:** 15 - AI Engineering Review")
 
 # Main content
 if page == "Home":
@@ -1269,6 +1271,96 @@ elif page == "Security Review":
         st.caption(
             "This review is a starting point. In production, integrate with your "
             "secret manager, DLP, and compliance tooling."
+        )
+
+elif page == "AI Review":
+    st.title("🤖 AI Engineering Review")
+    st.markdown(
+        "Responsible AI-assisted development: deterministic checks are authoritative, "
+        "AI output is advisory, and no secrets/PII are exposed to models."
+    )
+
+    st.markdown("### Scope")
+    st.info(
+        "This demo scans a few sample snippets. In production, integrate with your "
+        "code review pipeline and secret scanner."
+    )
+
+    enable_ai = st.checkbox(
+        "Enable optional AI-assisted explanations (advisory only)",
+        value=False,
+    )
+
+    if st.button("Run AI review", type="primary"):
+        # Demo files: replace with real repo scan in production.
+        files = [
+            (
+                "demo_secret.py",
+                "api_key = \"sk_live_1234567890abcdef\"",
+            ),
+            (
+                "demo_imports.py",
+                "import pickle\n\ndef load(data):\n    return pickle.loads(data)",
+            ),
+            (
+                "demo_long.py",
+                "def long():\n" + "    pass\n" * 50,
+            ),
+        ]
+        result = run_ai_review(files, enable_ai_explanations=enable_ai, model_hint="demo-model")
+        st.session_state["last_ai_review"] = result.to_dict()
+        st.session_state["last_ai_review_md"] = result.to_markdown()
+
+    review_data = st.session_state.get("last_ai_review")
+    if not review_data:
+        st.info("Click Run AI review to generate findings.")
+    else:
+        st.caption(f"Files scanned: {review_data['metadata'].get('files_scanned', 'N/A')}")
+
+        st.markdown("### Findings")
+        if not review_data["findings"]:
+            st.success("No findings detected in the demo scope.")
+        else:
+            for f in review_data["findings"]:
+                icon = {
+                    "info": "ℹ️",
+                    "low": "🟢",
+                    "medium": "🟠",
+                    "high": "🔴",
+                    "critical": "🚫",
+                }.get(f["severity"], "❓")
+                loc = f" (line {f['line']})" if f["line"] else ""
+                st.markdown(
+                    f"{icon} **{f['title']}** `{f['id']}`{loc}: {f['description']} "
+                    f"(source: {f['source']}, severity: {f['severity']})"
+                )
+                if f["evidence"]:
+                    st.caption(f"Evidence: `{f['evidence']}`")
+                if f["remediation"]:
+                    st.caption(f"Remediation: {f['remediation']}")
+
+        if review_data["ai_log"]:
+            st.markdown("### AI use log")
+            for e in review_data["ai_log"]:
+                st.markdown(
+                    f"- {e['timestamp']} — {e['purpose']} "
+                    f"(model: {e['model_hint'] or 'N/A'}, sanitized: {e['sanitized']})"
+                )
+                if e["prompt_snippet"]:
+                    st.caption(f"Prompt snippet: `{e['prompt_snippet'][:200]}...`")
+
+        if st.button("Download Markdown report"):
+            md = st.session_state.get("last_ai_review_md", "")
+            st.download_button(
+                label="Download report",
+                data=md.encode(),
+                file_name=f"ai_review_{review_data['run_id']}.md",
+                mime="text/markdown",
+            )
+
+        st.caption(
+            "AI explanations are advisory. Deterministic checks remain authoritative. "
+            "Code is never auto-approved based on AI output."
         )
 
 # Footer
