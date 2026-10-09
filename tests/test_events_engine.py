@@ -6,6 +6,7 @@ import json
 
 import pytest
 
+from src.events import engine
 from src.events.engine import (
     DeadLetterEntry,
     check_idempotency,
@@ -25,6 +26,15 @@ from src.events.errors import (
     OutOfOrderEventError,
     SignatureValidationError,
 )
+
+
+@pytest.fixture(autouse=True)
+def reset_stores():
+    """Reset in-memory stores before each test for isolation."""
+    engine._idempotency_store.clear()
+    engine._dead_letter_store.clear()
+    engine._event_sequence.clear()
+    yield
 
 
 class TestValidateWebhookPayload:
