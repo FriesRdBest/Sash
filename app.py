@@ -7,6 +7,7 @@ import streamlit as st
 
 from src.ai_review.engine import run_ai_review
 from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline
+from src.handoff.generator import generate_handoff_package
 from src.observability.engine import ObservabilityEngine
 from src.persistence.seed_data import load_seed_data
 from src.persistence.sqlite_repo import engagement_repo
@@ -61,13 +62,14 @@ page = st.sidebar.radio(
         "Observability",
         "Security Review",
         "AI Review",
+        "Handoff Package",
     ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.15.0")
-st.sidebar.markdown("**Phase:** 15 - AI Engineering Review")
+st.sidebar.markdown("**Version:** v0.16.0")
+st.sidebar.markdown("**Phase:** 16 - Handoff Package Generator")
 
 # Main content
 if page == "Home":
@@ -1361,6 +1363,99 @@ elif page == "AI Review":
         st.caption(
             "AI explanations are advisory. Deterministic checks remain authoritative. "
             "Code is never auto-approved based on AI output."
+        )
+
+elif page == "Handoff Package":
+    st.title("📦 Handoff Package Generator")
+    st.markdown(
+        "Prove the customer can operate and extend the solution independently. "
+        "All documents reflect current project state; ownership and rollback are explicit."
+    )
+
+    if st.button("Generate handoff package", type="primary"):
+        pkg = generate_handoff_package()
+        st.session_state["last_handoff"] = pkg.to_dict()
+
+    pkg_data = st.session_state.get("last_handoff")
+    if not pkg_data:
+        st.info("Click Generate handoff package to assemble documents.")
+    else:
+        st.caption(f"Generated at: {pkg_data['generated_at']}")
+
+        st.markdown("### Documents")
+        doc_tabs = st.tabs([
+            "Architecture",
+            "Workflow",
+            "Configuration",
+            "Deployment",
+            "Runbook",
+            "Test Evidence",
+            "Alerts",
+            "Ownership",
+            "Rollback",
+            "Training",
+            "Risks",
+        ])
+
+        with doc_tabs[0]:
+            st.markdown(pkg_data["architecture_md"])
+        with doc_tabs[1]:
+            st.json(pkg_data["workflow_definition"])
+        with doc_tabs[2]:
+            st.markdown(pkg_data["configuration_guide_md"])
+        with doc_tabs[3]:
+            st.markdown(pkg_data["deployment_instructions_md"])
+        with doc_tabs[4]:
+            st.markdown(pkg_data["runbook_md"])
+        with doc_tabs[5]:
+            st.markdown(pkg_data["test_evidence_md"])
+        with doc_tabs[6]:
+            st.markdown(pkg_data["alert_guide_md"])
+        with doc_tabs[7]:
+            st.markdown(pkg_data["ownership_matrix_md"])
+        with doc_tabs[8]:
+            st.markdown(pkg_data["rollback_plan_md"])
+        with doc_tabs[9]:
+            st.markdown(pkg_data["training_checklist_md"])
+        with doc_tabs[10]:
+            st.markdown(pkg_data["open_risk_register_md"])
+
+        st.markdown("### Export")
+        st.caption(
+            "In production, bundle these into a ZIP with versioned filenames. "
+            "Here you can copy individual sections or download a combined Markdown."
+        )
+        combined = (
+            "# Sash Handoff Package\n\n"
+            f"Generated: {pkg_data['generated_at']}\n\n"
+            "## Architecture\n\n"
+            f"{pkg_data['architecture_md']}\n\n"
+            "## Workflow Definition\n\n"
+            f"```json\n{pkg_data['workflow_definition']}\n```\n\n"
+            "## Configuration Guide\n\n"
+            f"{pkg_data['configuration_guide_md']}\n\n"
+            "## Deployment Instructions\n\n"
+            f"{pkg_data['deployment_instructions_md']}\n\n"
+            "## Runbook\n\n"
+            f"{pkg_data['runbook_md']}\n\n"
+            "## Test Evidence\n\n"
+            f"{pkg_data['test_evidence_md']}\n\n"
+            "## Alert Guide\n\n"
+            f"{pkg_data['alert_guide_md']}\n\n"
+            "## Ownership Matrix\n\n"
+            f"{pkg_data['ownership_matrix_md']}\n\n"
+            "## Rollback Plan\n\n"
+            f"{pkg_data['rollback_plan_md']}\n\n"
+            "## Training Checklist\n\n"
+            f"{pkg_data['training_checklist_md']}\n\n"
+            "## Open Risk Register\n\n"
+            f"{pkg_data['open_risk_register_md']}\n"
+        )
+        st.download_button(
+            label="Download combined Markdown",
+            data=combined.encode(),
+            file_name=f"sash_handoff_{pkg_data['run_id']}.md",
+            mime="text/markdown",
         )
 
 # Footer
