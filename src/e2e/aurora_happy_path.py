@@ -7,7 +7,12 @@ from typing import Any
 
 from src.domain.models import AuditRecord, Customer, WorkflowExecution
 from src.integration.lab import ExecutionResult, IntegrationLab
-from src.persistence.sqlite_repo import audit_repo, customer_repo, event_repo, execution_repo
+from src.persistence.sqlite_repo import (
+    audit_repo,
+    customer_repo,
+    event_repo,
+    execution_repo,
+)
 from src.workflow.designer import WorkflowConfig
 
 logger = logging.getLogger(__name__)
