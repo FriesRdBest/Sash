@@ -1,180 +1,184 @@
-"""Sash design system: colors, typography, and shared styles."""
-
-# Color palette
-COLOR_PRIMARY = "#4F46E5"  # Indigo 600
-COLOR_PRIMARY_LIGHT = "#818CF8"  # Indigo 400
-COLOR_PRIMARY_DARK = "#3730A3"  # Indigo 800
-
-COLOR_SECONDARY = "#0EA5E9"  # Sky 500
-COLOR_SECONDARY_LIGHT = "#38BDF8"  # Sky 400
-
-COLOR_SUCCESS = "#10B981"  # Emerald 500
-COLOR_WARNING = "#F59E0B"  # Amber 500
-COLOR_ERROR = "#EF4444"  # Red 500
-COLOR_INFO = "#3B82F6"  # Blue 500
-
-COLOR_BACKGROUND = "#F9FAFB"  # Gray 50
-COLOR_SURFACE = "#FFFFFF"  # White
-COLOR_BORDER = "#E5E7EB"  # Gray 200
-COLOR_TEXT = "#1F2937"  # Gray 800
-COLOR_TEXT_MUTED = "#6B7280"  # Gray 500
-
-# Typography
-FONT_FAMILY = (
-    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-)
-FONT_MONO = "'JetBrains Mono', 'Fira Code', monospace"
-
-# Spacing
+# Palette: periwinkle, indigo, blue, plum, black, and white.
+COLOR_PRIMARY = "#3A6FF3"
+COLOR_PRIMARY_LIGHT = "#CED5E8"
+COLOR_PRIMARY_DARK = "#1D2240"
+COLOR_SECONDARY = "#564957"
+COLOR_SECONDARY_LIGHT = "#CED5E8"
+COLOR_SUCCESS = "#26734D"
+COLOR_WARNING = "#805600"
+COLOR_ERROR = "#B42318"
+COLOR_INFO = "#1D2240"
+COLOR_BACKGROUND = "#F6F7FB"
+COLOR_SURFACE = "#FFFFFF"
+COLOR_BORDER = "#CED5E8"
+COLOR_TEXT = "#1D2240"
+COLOR_TEXT_MUTED = "#564957"
+FONT_FAMILY = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif"
+FONT_MONO = "'SFMono-Regular', Consolas, monospace"
 SPACING_XS = "0.25rem"
 SPACING_SM = "0.5rem"
 SPACING_MD = "1rem"
 SPACING_LG = "1.5rem"
 SPACING_XL = "2rem"
-
-# Border radius
 RADIUS_SM = "0.25rem"
 RADIUS_MD = "0.5rem"
 RADIUS_LG = "0.75rem"
 RADIUS_FULL = "9999px"
-
-# Shadows
-SHADOW_SM = "0 1px 2px 0 rgb(0 0 0 / 0.05)"
-SHADOW_MD = "0 4px 6px -1px rgb(0 0 0 / 0.1)"
-SHADOW_LG = "0 10px 15px -3px rgb(0 0 0 / 0.1)"
+SHADOW_SM = "0 2px 8px rgba(29, 34, 64, 0.06)"
+SHADOW_MD = "0 6px 18px rgba(29, 34, 64, 0.09)"
+SHADOW_LG = "0 12px 30px rgba(29, 34, 64, 0.12)"
 
 
 def get_custom_css() -> str:
-    """Return custom CSS for Sash design system."""
+    """Return Sash's readable, responsive theme with subtle glass cards."""
     return f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap');
-    
-    /* Global styles */
-    .stApp {{
-        background-color: {COLOR_BACKGROUND};
-        font-family: {FONT_FAMILY};
+    :root {{
+      --sash-blue: {COLOR_PRIMARY};
+      --sash-periwinkle: {COLOR_PRIMARY_LIGHT};
+      --sash-indigo: {COLOR_PRIMARY_DARK};
+      --sash-plum: {COLOR_SECONDARY};
+      --sash-text: {COLOR_TEXT};
+      --sash-muted: {COLOR_TEXT_MUTED};
+      --sash-page: {COLOR_BACKGROUND};
+      --sash-surface: {COLOR_SURFACE};
+      --sash-border: {COLOR_BORDER};
     }}
-    
-    /* Headers */
+
+    .stApp, [data-testid="stAppViewContainer"] {{
+      background: var(--sash-page);
+      color: var(--sash-text);
+      font-family: {FONT_FAMILY};
+    }}
+
+    [data-testid="stMainBlockContainer"] {{
+      width: 100%;
+      max-width: 1440px;
+      padding: clamp(1rem, 3vw, 2.5rem);
+    }}
+
     h1, h2, h3, h4, h5, h6 {{
-        font-family: {FONT_FAMILY};
-        color: {COLOR_TEXT};
-        font-weight: 600;
+      color: var(--sash-indigo);
+      font-family: {FONT_FAMILY};
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
     }}
-    
-    /* Cards and surfaces */
+
+    p, li, label {{ color: var(--sash-text); line-height: 1.6; }}
+    [data-testid="stCaptionContainer"] {{ color: var(--sash-muted); }}
+
+    [data-testid="stSidebar"] {{
+      background: var(--sash-surface);
+      border-right: 1px solid var(--sash-border);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label {{
+      min-height: 2.75rem;
+      border-radius: 0.6rem;
+      padding: 0.35rem 0.55rem;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:hover {{
+      background: #EEF1F8;
+    }}
+
+    .sash-card, .metric-card, [data-testid="stVerticalBlockBorderWrapper"] {{
+      background: rgba(255, 255, 255, 0.90);
+      border: 1px solid rgba(206, 213, 232, 0.95);
+      border-radius: 0.85rem;
+      box-shadow: 0 2px 10px rgba(29, 34, 64, 0.055);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }}
+
     .sash-card {{
-        background-color: {COLOR_SURFACE};
-        border: 1px solid {COLOR_BORDER};
-        border-radius: {RADIUS_LG};
-        padding: {SPACING_LG};
-        box-shadow: {SHADOW_SM};
-        margin-bottom: {SPACING_MD};
+      padding: clamp(1rem, 2vw, 1.5rem);
+      margin: 0.5rem 0 1rem;
+      overflow-wrap: anywhere;
     }}
-    
-    /* Status badges */
+
+    .metric-card {{ padding: 1.25rem; color: var(--sash-indigo); }}
+    .metric-value {{ color: var(--sash-indigo); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; }}
+    .metric-label {{ color: var(--sash-muted); font-size: 0.9rem; }}
+
     .status-badge {{
-        display: inline-block;
-        padding: {SPACING_XS} {SPACING_SM};
-        border-radius: {RADIUS_FULL};
-        font-size: 0.75rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.025em;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 600;
     }}
-    
-    .status-success {{
-        background-color: #D1FAE5;
-        color: {COLOR_SUCCESS};
-    }}
-    
-    .status-warning {{
-        background-color: #FEF3C7;
-        color: {COLOR_WARNING};
-    }}
-    
-    .status-error {{
-        background-color: #FEE2E2;
-        color: {COLOR_ERROR};
-    }}
-    
-    .status-info {{
-        background-color: #DBEAFE;
-        color: {COLOR_INFO};
-    }}
-    
-    /* Buttons */
-    .stButton > button {{
-        border-radius: {RADIUS_MD};
-        font-weight: 500;
-        transition: all 0.2s ease;
-    }}
-    
-    /* Metric cards */
-    .metric-card {{
-        background: linear-gradient(135deg, {COLOR_PRIMARY} 0%, {COLOR_PRIMARY_DARK} 100%);
-        color: white;
-        padding: {SPACING_LG};
-        border-radius: {RADIUS_LG};
-        box-shadow: {SHADOW_MD};
-    }}
-    
-    .metric-value {{
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1;
-    }}
-    
-    .metric-label {{
-        font-size: 0.875rem;
-        opacity: 0.9;
-        margin-top: {SPACING_SM};
-    }}
-    
-    /* Code blocks */
-    .stCode {{
-        border-radius: {RADIUS_MD};
-        font-family: {FONT_MONO};
-    }}
-    
-    /* Sidebar */
-    .css-1d391kg {{
-        background-color: {COLOR_SURFACE};
-        border-right: 1px solid {COLOR_BORDER};
-    }}
-    
-    /* Loading state */
-    .loading-placeholder {{
-        background: linear-gradient(90deg, {COLOR_BORDER} 25%, {COLOR_BACKGROUND} 50%, {COLOR_BORDER} 75%);
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
-        border-radius: {RADIUS_MD};
-        height: 100px;
-    }}
-    
-    @keyframes loading {{
-        0% {{ background-position: 200% 0; }}
-        100% {{ background-position: -200% 0; }}
-    }}
-    
-    /* Empty state */
+    .status-info {{ background: #E9EDFA; color: var(--sash-indigo); }}
+
     .empty-state {{
-        text-align: center;
-        padding: {SPACING_XL};
-        color: {COLOR_TEXT_MUTED};
+      border: 1px dashed var(--sash-border);
+      border-radius: 0.85rem;
+      padding: 2rem 1rem;
+      text-align: center;
+      background: var(--sash-surface);
     }}
-    
-    .empty-state-icon {{
-        font-size: 3rem;
-        margin-bottom: {SPACING_MD};
+
+    a {{ color: var(--sash-indigo); text-underline-offset: 0.16em; }}
+    a:hover {{ color: var(--sash-blue); }}
+
+    [data-testid="stButton"] button,
+    [data-testid="stDownloadButton"] button {{
+      min-height: 2.75rem;
+      border-radius: 0.6rem;
+      font-weight: 600;
     }}
-    
-    /* Responsive grid */
-    .responsive-grid {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: {SPACING_LG};
+
+    [data-testid="stButton"] button[kind="primary"],
+    [data-testid="stFormSubmitButton"] button[kind="primary"] {{
+      background: var(--sash-indigo);
+      color: #FFFFFF;
+      border: 1px solid var(--sash-indigo);
+    }}
+
+    [data-testid="stButton"] button[kind="primary"]:hover,
+    [data-testid="stFormSubmitButton"] button[kind="primary"]:hover {{
+      background: var(--sash-blue);
+      color: #FFFFFF;
+      border-color: var(--sash-blue);
+    }}
+
+    [data-testid="stDataFrame"], [data-testid="stTable"] {{
+      max-width: 100%;
+      overflow-x: auto;
+    }}
+
+    @media (max-width: 900px) {{
+      [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
+    }}
+
+    @media (max-width: 640px) {{
+      [data-testid="stMainBlockContainer"] {{ padding: 1rem 0.9rem 1.5rem; }}
+      [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; gap: 0.75rem; }}
+      [data-testid="stHorizontalBlock"] > [data-testid="column"] {{
+        min-width: min(100%, 18rem);
+        flex: 1 1 100%;
+      }}
+      [data-testid="stMetric"] {{ min-width: 0; overflow-wrap: anywhere; }}
+      .sash-card {{ padding: 1rem; }}
+    }}
+
+    @media (prefers-reduced-motion: reduce) {{
+      *, *::before, *::after {{
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+      }}
     }}
     </style>
     """
+
+
+def page_config(title: str = "Sash", layout: str = "wide") -> None:
+    import streamlit as st
+    st.set_page_config(page_title=title, page_icon="", layout=layout)
+
+
+def local_css() -> None:
+    import streamlit as st
+    st.markdown(get_custom_css(), unsafe_allow_html=True)
