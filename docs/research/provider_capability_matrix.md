@@ -1,7 +1,13 @@
-# Provider capability matrix
+## Provider capability matrix
 
-This note records the external references used when comparing provider capabilities.
+| Capability | Sinch | Twilio | WhatsApp | Notes |
+| --- | --- | --- | --- | --- |
+| SMS | ✅ | ✅ | ❌ |  |
+| Voice | ✅ | ✅ | ❌ |  |
+| WhatsApp | ❌ | ❌ | ✅ | Via Meta |
+| Email | ❌ | ✅ | ❌ |  |
 
-- Sinch developers portal (Messaging APIs): https://developers.sinch.com
-- WhatsApp Business Platform: https://developers.facebook.com/docs/whatsapp
-- Sinch messaging overview: https://sinch.com/messaging
+**References**
+- [Sinch Developers](https://developers.sinch.com/)
+- [Twilio Docs](https://www.twilio.com/docs)
+- [WhatsApp Business Platform](https://developers.facebook.com/docs/whatsapp)

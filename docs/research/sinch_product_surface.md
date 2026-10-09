@@ -1,8 +1,7 @@
-# Sinch product surface
+## Sinch product surface
 
-This note records the external references used when mapping Sinch’s product surface.
+- **Verification API** — OTP via SMS/voice. [Docs](https://developers.sinch.com/docs/verification)
+- **Messaging API** — SMS, MMS, RCS. [Docs](https://developers.sinch.com/docs/messaging)
+- **Voice API** — inbound/outbound calls, IVR. [Docs](https://developers.sinch.com/docs/voice)
 
-- Verification APIs: https://developers.sinch.com/docs/verification
-- Voice APIs: https://developers.sinch.com/docs/voice
-- Sinch developers portal: https://developers.sinch.com
-- Sinch messaging overview: https://sinch.com/messaging
+**Reference**: [Sinch Developers](https://developers.sinch.com/)
