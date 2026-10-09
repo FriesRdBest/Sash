@@ -2,21 +2,18 @@
 
 ## Reporting a vulnerability
 
-If you discover a security vulnerability in Sash, please open an issue using the security template or contact the maintainer directly.
+We appreciate responsible disclosure. If you discover a security issue, please report it privately via GitHub’s “Report a vulnerability” feature on the Security tab.
 
-## Security expectations
+## What to include
 
-- Do not commit secrets, credentials, or API keys to the repository
-- Use environment variables for sensitive configuration
-- Redact sensitive data from logs
-- Validate all inputs from external sources
-- Follow the principle of least privilege in all integrations
-- Document security assumptions and limitations
+- A short description of the issue.
+- Steps to reproduce (with minimal, safe examples).
+- Potential impact and any known mitigations.
+
+## Response timeline
+
+We aim to acknowledge reports within 7 days and provide an update within 14 days. Please refrain from public disclosure until we have coordinated a fix and guidance.
 
 ## Scope
 
-This policy applies to all code, documentation, and configuration in the Sash repository.
-
-## Response
-
-Security issues will be addressed with high priority. The maintainer will acknowledge reports within a reasonable timeframe and work on a fix as soon as possible.
+This policy covers the Sash codebase, Docker configuration, and documentation in this repository. Third-party components (e.g., Streamlit, FastAPI, Sinch SDKs) are subject to their own policies; we will coordinate upstream where appropriate.
