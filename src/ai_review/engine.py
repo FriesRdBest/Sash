@@ -147,11 +147,20 @@ def run_deterministic_checks(file_path: str, source: str) -> list[Finding]:
     """Run deterministic static checks on Python source."""
     findings: list[Finding] = []
 
-    # 1. Secret patterns
+    # 1. Secret patterns (allow letters, digits, underscores, hyphens, dots)
     secret_patterns = [
-        (r"(?i)(api_key|apikey)\s*=\s*[\'\"]?[A-Za-z0-9]{16,}", "Hard-coded API key"),
-        (r"(?i)(secret|password|passwd)\s*=\s*[\'\"]?[A-Za-z0-9]{8,}", "Hard-coded secret/password"),
-        (r"(?i)(token|auth_token)\s*=\s*[\'\"]?[A-Za-z0-9._-]{20,}", "Hard-coded token"),
+        (
+            r"(?i)(api_key|apikey)\s*=\s*[\'\"]?[A-Za-z0-9_.\-]{16,}",
+            "Hard-coded API key",
+        ),
+        (
+            r"(?i)(secret|password|passwd)\s*=\s*[\'\"]?[A-Za-z0-9_.\-]{8,}",
+            "Hard-coded secret/password",
+        ),
+        (
+            r"(?i)(token|auth_token)\s*=\s*[\'\"]?[A-Za-z0-9_.\-]{20,}",
+            "Hard-coded token",
+        ),
     ]
     for pattern, title in secret_patterns:
         for i, line in enumerate(source.splitlines(), start=1):
