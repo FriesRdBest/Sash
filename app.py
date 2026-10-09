@@ -68,8 +68,8 @@ page = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.17.0")
-st.sidebar.markdown("**Phase:** 17 - Deployment & Operational Packaging")
+st.sidebar.markdown("**Version:** v0.18.0")
+st.sidebar.markdown("**Phase:** 18 - Quality, Accessibility & Polish")
 
 # Main content
 if page == "Home":
