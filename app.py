@@ -6,6 +6,14 @@ from src.styles import page_config, local_css
 page_config(title="Sash", layout="wide")
 local_css()
 
+# Ensure sidebar is visible
+st.sidebar.title("Navigation")
+st.sidebar.page_link("app.py", label="Home")
+st.sidebar.page_link("pages/01_Run_Workflow.py", label="Run Workflow")
+st.sidebar.page_link("pages/02_Timeline.py", label="Timeline")
+st.sidebar.page_link("pages/03_Scorecard.py", label="Scorecard")
+st.sidebar.page_link("pages/04_Admin.py", label="Admin")
+
 st.markdown('<h1>Sash — Event-driven Messaging Workflow Engine</h1>', unsafe_allow_html=True)
 st.markdown(
     """<p style="font-size:1.1rem; color:#555; margin-bottom:1.5rem;">
@@ -32,7 +40,7 @@ st.markdown(
     <div class="card">
     <h3>How to use it</h3>
     <ol>
-    <li><b>Seed data</b> — Load reproducible demo customers, workflows, and engagements.</li>
+    <li><b>Seed data</b> — Load reproducible demo customers, workflows, and engagements (Admin page).</li>
     <li><b>Run a workflow</b> — Execute a sample workflow for a phone number and correlation ID.</li>
     <li><b>Inspect timeline</b> — View normalized events, statuses, and sequencing for that correlation ID.</li>
     <li><b>Review scorecard</b> — See qualification outcomes, risk flags, and observability summaries.</li>
@@ -61,8 +69,6 @@ st.markdown(
     <div class="card">
     <h3>Links</h3>
     <p>
-    <a href="/Run_Workflow" style="background:#0b57d0;color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;display:inline-block;">Run sample workflow</a>
-    &nbsp;
     <a href="https://FriesRdBest.github.io/Sash/" target="_blank">Documentation site</a>
     &nbsp;
     <a href="https://github.com/FriesRdBest/Sash" target="_blank">GitHub repository</a>
