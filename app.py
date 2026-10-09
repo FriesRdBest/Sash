@@ -1,14 +1,13 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Sash",
-    page_icon="🔗",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="Sash", page_icon="🔗", layout="wide", initial_sidebar_state="expanded"
 )
 
 st.title("Sash")
-st.subheader("Production readiness and deployment accelerator for programmable customer communications")
+st.subheader(
+    "Production readiness and deployment accelerator for programmable customer communications"
+)
 
 st.markdown("""
 This application demonstrates how an engineer can qualify an engagement, design an API driven architecture, build resilient communication workflows, test failure modes, instrument operations, and produce a customer handoff package.
