@@ -31,6 +31,10 @@
 | Black | `#000000` | Strong neutral/brand anchor when appropriate |
 | Page neutral | `#F6F7FB` | Light page canvas used by current implementation |
 
+## Sinch system reference
+
+Public Nectary Docs tokens at the Base Light theme document a separate semantic system: `neutral-900` default text, `neutral-700` caption text, `neutral-100` canvas, white primary surface, `tropical-700` primary controls, `ocean-400` focus, ocean info feedback, and distinct success/warning/danger feedback tokens. The public token reference lists DM Sans as the main typeface and DM Mono for code, with 16px/24px body text, 14px/22px small body, and 12px/20px extra-small body; documented shape sizes are 6px/10px/14px and elevation uses restrained shadows. These are reference findings only. They do not override the user-approved Sash palette. Current private Brandfolder logo assets and usage rules could not be inspected.
+
 ## Visual behavior
 
 - Keep the overall interface light, professional, modern, and legible.
@@ -40,16 +44,26 @@
 - Preserve responsive spacing and avoid horizontal clipping at narrow widths.
 - Do not add decorative UI, new features, or altered copy as part of this refresh.
 
-## Contrast acceptance criteria
+## Contrast findings
 
-- Use at least 4.5:1 contrast for normal text; 3:1 for large text and meaningful non-text controls, following WCAG 2.2 AA minimums.
-- Check actual rendered foreground/background combinations, including muted text, selected/hover navigation, buttons, links, status indicators, focus rings, borders, and charts.
-- Do not assume a palette swatch is accessible simply because it is approved; pairings must be evaluated.
+Calculated using WCAG relative-luminance contrast:
+
+| Foreground on background | Ratio | Finding |
+|---|---:|---|
+| Indigo `#1D2240` on white `#FFFFFF` | 15.50:1 | Passes normal text |
+| Plum `#564957` on white `#FFFFFF` | 8.45:1 | Passes normal text |
+| Blue `#3A6FF3` on white `#FFFFFF` | 4.42:1 | Below 4.5:1 normal-text criterion; use as non-text accent or pair with approved dark text only after verifying that pairing |
+| Blue `#3A6FF3` on page `#F6F7FB` | 4.13:1 | Below 4.5:1 normal-text criterion |
+| Indigo `#1D2240` on blue `#3A6FF3` | 3.50:1 | Not suitable for normal-size text |
+| Indigo `#1D2240` on periwinkle `#CED5E8` | 10.56:1 | Passes normal text |
+| Plum `#564957` on page `#F6F7FB` | 7.89:1 | Passes normal text |
+
+Use at least 4.5:1 for normal text and 3:1 for large text and meaningful non-text controls, following WCAG 2.2 AA. Focus indication should be visible and maintain the applicable focus contrast. Check actual rendered combinations including muted text, selected/hover navigation, buttons, links, statuses, focus rings, borders, and charts. Approved individual colors do not automatically make every pairing accessible.
 
 ## Phase tracking
 
 - Phase 0: production baseline coordinates and commit recorded; screenshot and complete interaction inventory pending.
-- Phase 1: palette approved; official current Sinch brand assets, typography, and exact usage rules still require authoritative review.
+- Phase 1: palette approved; public Nectary system tokens reviewed as reference; private Brandfolder assets/usage remain unavailable.
 - Phase 2: palette and initial styling specified here; full rendered token/component audit remains.
 - Phases 3-5: review and style the live pages without changing navigation, copy, or behavior.
 - Phase 6: screenshot, keyboard, contrast, zoom, and responsive verification pending.
