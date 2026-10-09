@@ -15,6 +15,7 @@ from src.events.engine import (
     move_to_dead_letter,
     normalize_event,
     process_webhook,
+    record_idempotency,
     replay_dead_letter,
     simulate_failed_event,
     validate_webhook_payload,
@@ -104,7 +105,6 @@ class TestNormalizeEvent:
 
 class TestIdempotency:
     def test_duplicate_event_rejected(self):
-        # Ensure clean store for this test
         engine._idempotency_store.clear()
 
         payload = {
@@ -114,9 +114,14 @@ class TestIdempotency:
             "timestamp": "2026-10-09T03:00:00Z",
         }
         event = normalize_event(payload)
-        check_idempotency(event.id)  # first time OK
+
+        # First check passes (not yet recorded)
+        check_idempotency(event.id)
+        # Record the event
+        record_idempotency(event, status="processed")
+        # Second check should raise
         with pytest.raises(DuplicateEventError):
-            check_idempotency(event.id)  # second time raises
+            check_idempotency(event.id)
 
 
 class TestOrdering:
