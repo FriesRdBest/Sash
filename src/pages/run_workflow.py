@@ -2,7 +2,11 @@
 
 import streamlit as st
 
-from src.e2e.aurora_happy_path import create_aurora_session, get_audit_timeline, get_session_details
+from src.e2e.aurora_happy_path import (
+    create_aurora_session,
+    get_audit_timeline,
+    get_session_details,
+)
 from src.styles import COLOR_BORDER, COLOR_PRIMARY, COLOR_WARNING, get_custom_css
 from src.workflow.designer import create_sample_workflow
 
