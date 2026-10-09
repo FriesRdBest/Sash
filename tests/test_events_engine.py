@@ -1,15 +1,13 @@
 """Unit tests for event and webhook engine."""
 
-import hmac
 import hashlib
+import hmac
 import json
-from datetime import datetime, timezone
 
 import pytest
 
 from src.events.engine import (
     DeadLetterEntry,
-    NormalizedEvent,
     check_idempotency,
     check_ordering,
     get_dead_letters,
@@ -105,10 +103,11 @@ class TestNormalizeEvent:
 
 class TestIdempotency:
     def test_duplicate_event_rejected(self):
+        # Use a unique event ID for this test
         payload = {
-            "event_id": "evt-dup",
+            "event_id": "evt-idempotency-test",
             "event_type": "message.sent",
-            "correlation_id": "corr-dup",
+            "correlation_id": "corr-idempotency-test",
             "timestamp": "2026-10-09T03:00:00Z",
         }
         event = normalize_event(payload)

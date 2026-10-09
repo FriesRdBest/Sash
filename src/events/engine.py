@@ -4,16 +4,13 @@ import hashlib
 import hmac
 import json
 import logging
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Literal
 
 from src.domain.models import AuditRecord, EventStatus
 from src.events.errors import (
-    DeadLetterEventError,
     DuplicateEventError,
-    EventProcessingError,
     InvalidPayloadError,
     OutOfOrderEventError,
     SignatureValidationError,
