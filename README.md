@@ -4,6 +4,12 @@
 
 It demonstrates how an engineer can qualify an engagement, design an API-driven architecture, build resilient communication workflows, test failure modes, instrument operations, and produce a customer handoff package. Built for the Senior Forward Deployed Engineer role at Sinch.
 
+## For reviewers (start here)
+
+- **Evidence index:** [`docs/EVIDENCE_INDEX.md`](docs/EVIDENCE_INDEX.md) — tests, ADRs, release notes, known limitations, case study, interview pack.
+- **Demo in 5 minutes:** see section below.
+- **Interview walkthrough:** [`docs/interview_readiness.md`](docs/interview_readiness.md).
+
 ## Demo in 5 minutes
 
 ```bash
@@ -21,7 +27,7 @@ See `docs/interview_readiness.md` for a scripted 5‑minute walkthrough.
 
 - **Real:** Domain models, workflow engine, event normalization, idempotency/ordering, dead-letter handling, resilience scenarios, scorecard logic, security/AI checks, handoff generator, deployment packaging.
 - **Simulated (demo mode):** Provider responses, latency/retry/fallback metrics, some security controls (e.g., retention automation), external monitoring/tracing.
-See `docs/known_limitations.md` for details and migration paths to production.
+See `docs/known_limitations.md` for details and migration paths.
 
 ## Problem
 
