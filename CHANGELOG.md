@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Architecture and decision records
 - Design system and application shell
 - Domain and persistence core
 - Engagement qualification module
@@ -26,6 +25,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quality, accessibility, and polish pass
 - Evidence and release package
 - Interview readiness materials
+
+## [0.3.0] - 2026-10-09
+
+### Added
+- Phase 3 architecture and decision records completed
+- docs/architecture/README.md — Architecture directory overview
+- docs/architecture/context.md — System context diagram showing Aurora Marketplace, Sash, Sinch, and end users with trust boundaries
+- docs/architecture/container.md — Container diagram showing Streamlit UI, domain core, provider adapter, persistence layer, and observability
+- docs/architecture/component.md — Component diagram showing workflow engine, event processor, retry manager, idempotency manager, provider adapter, persistence, and observability
+- docs/architecture/dataflow.md — Data flow diagram for verification workflow with Level 0 context flow and Level 1 internal flow
+- docs/architecture/deployment.md — Deployment diagram for development, Streamlit Community Cloud, and future Kubernetes production deployment
+- docs/architecture/threat_model.md — STRIDE threat model with 12 threats, security requirements, and trust boundaries
+- docs/architecture/production_limitations.md — Explicit documentation of demo limitations vs. production requirements
+- docs/architecture/adr-001-streamlit-for-ui.md — ADR for using Streamlit for demonstration UI
+- docs/architecture/adr-002-fastapi-boundary.md — ADR for keeping FastAPI as optional future boundary
+- docs/architecture/adr-003-sqlite-for-demo.md — ADR for SQLite with PostgreSQL-ready repository interfaces
+- docs/architecture/adr-004-mock-mode-default.md — ADR for mock provider mode by default with optional Sinch integration
+- docs/architecture/adr-005-event-processing.md — ADR for event normalization and idempotency strategy
+- docs/architecture/adr-006-observability.md — ADR for structured logging and in-memory metrics
+- docs/architecture/adr-007-provider-adapter.md — ADR for provider adapter pattern with mock and Sinch implementations
+
+### Changed
+- Updated changelog to reflect Phase 3 completion
 
 ## [0.2.0] - 2026-10-09
 
