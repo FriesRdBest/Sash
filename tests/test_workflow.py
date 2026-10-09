@@ -8,7 +8,6 @@ from src.workflow.designer import (
     WorkflowStep,
     create_sample_workflow,
     validate_workflow,
-    WorkflowValidationError,
 )
 
 

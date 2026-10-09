@@ -7,7 +7,7 @@ import re
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Protocol
+from typing import Any, Protocol
 
 from src.domain.models import EventStatus
 from src.integration.errors import (
