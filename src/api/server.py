@@ -1,17 +1,17 @@
 """FastAPI server for Sash API."""
 
 from fastapi import FastAPI
-from src.persistence.seed_data import load_seed_data
+from src.persistence.seed_data import seed_mock_data
 
-app = FastAPI(title="Sash API", version="0.17.0")
+app = FastAPI(title="Sash API")
 
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "version": "0.17.0"}
+    return {"status": "ok"}
 
 
 @app.post("/seed")
 async def seed():
-    result = load_seed_data()
-    return {"seeded": True, "details": result}
+    seed_mock_data()
+    return {"seeded": True}
