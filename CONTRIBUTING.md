@@ -1,38 +1,44 @@
 # Contributing to Sash
 
-Thank you for contributing to Sash. This document explains how to contribute effectively.
+Thanks for contributing! This document outlines how to run, test, and submit changes.
 
-## How to contribute
+## Quick start
 
-1. Open an issue to discuss the change you wish to make
-2. Create a branch for your work
-3. Make your changes following the repository principles in README.md
-4. Add or update tests as needed
-5. Ensure all CI checks pass
-6. Submit a pull request with the required template fields completed
+```bash
+# Clone and enter the repo
+git clone https://github.com/FriesRdBest/Sash.git && cd Sash
 
-## Pull request requirements
+# Create a virtual environment
+python -m venv .venv && source .venv/bin/activate
 
-Every pull request must include:
+# Install dependencies
+pip install -r requirements.txt
 
-- Purpose: what problem this solves
-- Scope: what is included and excluded
-- Design: what changed in architecture or workflow
-- Evidence: tests, screenshots, logs, or simulations
-- Failure behavior: what happens when this fails
-- Security and privacy: impact on secrets, PII, authentication, consent, or logging
-- Documentation: which README, ADR, runbook, or changelog entries changed
-- Known limitations: what remains incomplete or simulated
+# Run the UI (demo mode)
+streamlit run app.py
+
+# Run tests
+python -m pytest tests/ -q
+
+# Lint
+ruff check .
+```
+
+## Pull requests
+
+Open a PR against `main`. In your PR description, include:
+- Purpose and scope.
+- Design changes (if any).
+- Evidence (tests, logs, screenshots).
+- Failure behavior and security/privacy considerations.
+- Documentation updates (README, docs/).
 
 ## Coding standards
 
-- Follow PEP 8 style for Python code
-- Use type hints where practical
-- Write tests for new functionality
-- Keep functions and modules focused
-- Avoid committing secrets or credentials
-- Use meaningful commit messages
+- Format with `ruff` (imports) and keep code simple.
+- Add tests for new logic, especially reliability and security paths.
+- Do not commit secrets; use environment variables and `.env.example`.
 
-## Questions
+## Questions?
 
-Open an issue for any questions or clarifications.
+Open an issue or discuss in the PR. We prefer small, iterative changes with clear evidence.

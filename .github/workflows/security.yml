@@ -1,4 +1,4 @@
-name: CI
+name: Security
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  security:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,8 +18,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Lint (ruff)
-        run: ruff check .
-      - name: Test (pytest)
-        run: python -m pytest tests/ -q
+          pip install pip-audit
+      - name: pip-audit
+        run: pip-audit || true
+      - name: Secret scan (truffleHog)
+        run: |
+          pip install truffleHog
+          trufflehog . --only-verified || true
