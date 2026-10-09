@@ -207,21 +207,20 @@ def run_deterministic_checks(file_path: str, source: str) -> list[Finding]:
                             remediation="Ensure strict input validation and least privilege.",
                         )
                     )
-        elif isinstance(node, ast.ImportFrom):
-            if node.module and node.module.split(".")[0] in unsafe_imports:
-                findings.append(
-                    Finding(
-                        id=f"IMP_{len(findings)+1:03d}",
-                        title=f"Potentially unsafe import: from {node.module}",
-                        description="This module can be dangerous if used with untrusted data.",
-                        severity=Severity.MEDIUM,
-                        source=FindingSource.DETERMINISTIC,
-                        file_path=file_path,
-                        line=node.lineno,
-                        evidence=f"from {node.module} import ...",
-                        remediation="Ensure strict input validation and least privilege.",
-                    )
+        elif isinstance(node, ast.ImportFrom) and node.module and node.module.split(".")[0] in unsafe_imports:
+            findings.append(
+                Finding(
+                    id=f"IMP_{len(findings)+1:03d}",
+                    title=f"Potentially unsafe import: from {node.module}",
+                    description="This module can be dangerous if used with untrusted data.",
+                    severity=Severity.MEDIUM,
+                    source=FindingSource.DETERMINISTIC,
+                    file_path=file_path,
+                    line=node.lineno,
+                    evidence=f"from {node.module} import ...",
+                    remediation="Ensure strict input validation and least privilege.",
                 )
+            )
 
     # 3. Long functions (demo threshold)
     for node in ast.walk(tree):
@@ -284,7 +283,7 @@ def run_ai_review(
             for f in findings:
                 sanitized_snippet = sanitize_code_snippet(source)
                 prompt_snippet = f"Explain this finding: {f.title}\nFile: {file_path}\nCode snippet:\n{sanitized_snippet[:300]}"
-                explanation = ai_explain_finding(f, model_hint=model_hint)
+                _ = ai_explain_finding(f, model_hint=model_hint)
                 ai_log.append(
                     AIUseLogEntry(
                         purpose=f"Explain finding {f.id}",

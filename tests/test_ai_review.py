@@ -1,7 +1,5 @@
 """Unit tests for the AI engineering review module."""
 
-import pytest
-
 from src.ai_review.engine import (
     FindingSource,
     Severity,
@@ -13,7 +11,7 @@ from src.ai_review.engine import (
 
 def test_secret_detection():
     source = """
-API_KEY = "sk_live_1234567890abcdef"
+api_key = "sk_live_1234567890abcdef"
 def foo():
     pass
 """
