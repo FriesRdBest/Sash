@@ -6,14 +6,6 @@ from src.styles import page_config, local_css
 page_config(title="Sash", layout="wide")
 local_css()
 
-# Ensure sidebar is visible
-st.sidebar.title("Navigation")
-st.sidebar.page_link("app.py", label="Home")
-st.sidebar.page_link("pages/01_Run_Workflow.py", label="Run Workflow")
-st.sidebar.page_link("pages/02_Timeline.py", label="Timeline")
-st.sidebar.page_link("pages/03_Scorecard.py", label="Scorecard")
-st.sidebar.page_link("pages/04_Admin.py", label="Admin")
-
 st.markdown('<h1>Sash — Event-driven Messaging Workflow Engine</h1>', unsafe_allow_html=True)
 st.markdown(
     """<p style="font-size:1.1rem; color:#555; margin-bottom:1.5rem;">
