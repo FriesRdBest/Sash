@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.observability.engine import ObservabilityEngine, KPI, Alert, Recommendation
+from src.observability.engine import ObservabilityEngine
 
 
 @pytest.fixture

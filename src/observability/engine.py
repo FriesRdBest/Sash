@@ -4,8 +4,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from src.events.store import get_events_by_correlation, search_events
-from src.timeline.queries import compute_metrics
+from src.timeline.queries import search_events
 
 
 @dataclass
@@ -64,10 +63,11 @@ class ObservabilityEngine:
 
         # Gather events
         if self.correlation_id:
-            events = get_events_by_correlation(self.correlation_id)
+            # For a single journey, use search with the correlation ID as query.
+            events = search_events(query=self.correlation_id, status=None)
             label_prefix = f"correlation={self.correlation_id}"
         else:
-            # System-wide: use search with no query and recent window (demo: ignore time filter).
+            # System-wide: use search with no query and no status filter.
             events = search_events(query=None, status=None)
             label_prefix = "system-wide"
 
