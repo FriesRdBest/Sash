@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Repository foundation and project board setup
 - Research and domain model documentation
 - Architecture and decision records
 - Design system and application shell
@@ -28,6 +27,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quality, accessibility, and polish pass
 - Evidence and release package
 - Interview readiness materials
+
+## [0.1.0] - 2026-10-09
+
+### Added
+- Phase 1 repository foundation completed
+- CONTRIBUTING.md with contribution guidelines and pull request requirements
+- SECURITY.md with vulnerability reporting and security expectations
+- CODE_OF_CONDUCT.md adapted from Contributor Covenant
+- .github/pull_request_template.md with required fields for purpose, scope, design, evidence, failure behavior, security, documentation, and known limitations
+- .github/ISSUE_TEMPLATE/feature_request.md for new feature proposals
+- .github/ISSUE_TEMPLATE/bug_report.md for defect tracking
+- .github/ISSUE_TEMPLATE/research_task.md for investigation work
+- .github/ISSUE_TEMPLATE/risk_or_decision.md for architectural decisions and risk assessment
+- .github/workflows/ci.yml with linting, formatting, testing, and application startup checks
+- Initial project board structure defined in README.md
+
+### Changed
+- Updated changelog to reflect Phase 1 completion
 
 ## [0.0.1] - 2026-10-09
 
