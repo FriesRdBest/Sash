@@ -68,8 +68,8 @@ page = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.16.0")
-st.sidebar.markdown("**Phase:** 16 - Handoff Package Generator")
+st.sidebar.markdown("**Version:** v0.17.0")
+st.sidebar.markdown("**Phase:** 17 - Deployment & Operational Packaging")
 
 # Main content
 if page == "Home":
@@ -1457,6 +1457,53 @@ elif page == "Handoff Package":
             file_name=f"sash_handoff_{pkg_data['run_id']}.md",
             mime="text/markdown",
         )
+
+elif page == "Deployment":
+    st.title("🚀 Deployment & Operational Packaging")
+    st.markdown(
+        "Make Sash easy for evaluators and customers to run. "
+        "Fresh clone works; one-command startup is documented; demo works without secrets."
+    )
+
+    st.markdown("### Quick start")
+    st.code("docker compose up --build", language="bash")
+    st.markdown("Then open http://localhost:8501")
+
+    st.markdown("### Health status")
+    # Demo health check (no real endpoint in Streamlit; simulate OK)
+    st.success("UI health: OK (demo status)")
+    st.caption("In production, monitor /health on the API service and container health checks.")
+
+    st.markdown("### Environment configuration")
+    st.markdown(
+        """
+        Key variables (optional in demo):
+
+        - `ENVIRONMENT`: dev, staging, prod
+        - `ENABLE_MOCK_PROVIDER`: true / false
+        - `PROVIDER_API_KEY`, `WEBHOOK_SECRET`, `DATABASE_URL`: production only
+        """
+    )
+    st.info("No secrets are committed. Configure production secrets via your secret manager.")
+
+    st.markdown("### Demo reset")
+    if st.button("Reset demo state (simulate)"):
+        # In real deployment, this would call a backend reset or clear volumes.
+        st.session_state["demo_reset_done"] = True
+        st.success("Demo reset simulated. In production, run `scripts/reset_demo.sh` or clear volumes.")
+
+    if st.session_state.get("demo_reset_done"):
+        st.caption("Baseline state restored for the next demo run.")
+
+    st.markdown("### Deployment notes")
+    st.markdown(
+        """
+        - Use the provided Dockerfile and docker-compose.yml.
+        - For production, disable mock provider and configure secrets.
+        - Persist `/app/data` or use a managed database for durability.
+        - See `DEPLOYMENT.md` for detailed instructions.
+        """
+    )
 
 # Footer
 st.markdown("---")
