@@ -1,7 +1,5 @@
 """Unit tests for Aurora happy path end-to-end."""
 
-import pytest
-
 from src.e2e.aurora_happy_path import (
     AuroraSession,
     create_aurora_session,
