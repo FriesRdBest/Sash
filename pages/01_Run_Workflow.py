@@ -1,24 +1,13 @@
 """Run Workflow page — premium, no emojis."""
 
 import streamlit as st
+from src.styles import page_config, local_css
 from src.workflow.designer import create_sample_workflow
 
-st.set_page_config(page_title="Run Workflow", layout="wide")
+page_config(title="Run Workflow", layout="wide")
+local_css()
 
-st.markdown(
-    """
-    <style>
-    .page-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; background: #fafafa; }
-    .status-ok { color: #1e7e34; font-weight: 600; }
-    .status-warn { color: #b45f06; font-weight: 600; }
-    .status-error { color: #c62828; font-weight: 600; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown('<p class="page-title">Run Workflow</p>', unsafe_allow_html=True)
+st.markdown("<h1>Run Workflow</h1>", unsafe_allow_html=True)
 
 with st.form("run_workflow_form", clear_on_submit=False):
     to_number = st.text_input("Phone number", value="+12065550123")

@@ -1,22 +1,12 @@
 """Scorecard page — premium, no emojis."""
 
 import streamlit as st
+from src.styles import page_config, local_css
 
-st.set_page_config(page_title="Scorecard", layout="wide")
+page_config(title="Scorecard", layout="wide")
+local_css()
 
-st.markdown(
-    """
-    <style>
-    .page-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .metric-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin: 0.5rem 0; background: #fafafa; }
-    .metric-label { font-size: 0.85rem; color: #555; }
-    .metric-value { font-size: 1.4rem; font-weight: 700; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown('<p class="page-title">Scorecard</p>', unsafe_allow_html=True)
+st.markdown("<h1>Scorecard</h1>", unsafe_allow_html=True)
 
 st.markdown(
     """

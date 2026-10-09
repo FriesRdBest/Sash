@@ -1,27 +1,17 @@
 """Sash — premium home page (no emojis)."""
 
 import streamlit as st
+from src.styles import page_config, local_css
 
-st.set_page_config(page_title="Sash", page_icon="🔷", layout="wide")
+page_config(title="Sash", layout="wide")
+local_css()
 
-# Minimal custom CSS for premium look
+st.markdown('<h1>Sash — Event-driven Messaging Workflow Engine</h1>', unsafe_allow_html=True)
 st.markdown(
-    """
-    <style>
-    .main-header { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .sub-header { font-size: 1.1rem; color: #555; margin-bottom: 1.5rem; }
-    .card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; background: #fafafa; }
-    .card h3 { margin-top: 0; font-size: 1.05rem; }
-    .btn-primary { background: #0b57d0; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; display: inline-block; }
-    code { background: #f5f5f5; padding: 0.1rem 0.3rem; border-radius: 4px; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown('<p class="main-header">Sash — Event-driven Messaging Workflow Engine</p>', unsafe_allow_html=True)
-st.markdown(
-    '<p class="sub-header">A polished demo of reliable, observable messaging workflows (Sinch/Twilio-style) with idempotency, dead-lettering, scorecards, and resilience testing.</p>',
+    """<p style="font-size:1.1rem; color:#555; margin-bottom:1.5rem;">
+    A polished demo of reliable, observable messaging workflows (Sinch/Twilio-style)
+    with idempotency, dead-lettering, scorecards, and resilience testing.
+    </p>""",
     unsafe_allow_html=True,
 )
 
@@ -71,7 +61,7 @@ st.markdown(
     <div class="card">
     <h3>Links</h3>
     <p>
-    <a class="btn-primary" href="/Run_Workflow">Run sample workflow</a>
+    <a href="/Run_Workflow" style="background:#0b57d0;color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;display:inline-block;">Run sample workflow</a>
     &nbsp;
     <a href="https://FriesRdBest.github.io/Sash/" target="_blank">Documentation site</a>
     &nbsp;

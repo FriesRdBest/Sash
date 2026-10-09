@@ -1,20 +1,12 @@
 """Timeline page — premium, no emojis."""
 
 import streamlit as st
+from src.styles import page_config, local_css
 
-st.set_page_config(page_title="Timeline", layout="wide")
+page_config(title="Timeline", layout="wide")
+local_css()
 
-st.markdown(
-    """
-    <style>
-    .page-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; background: #fafafa; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown('<p class="page-title">Timeline</p>', unsafe_allow_html=True)
+st.markdown("<h1>Timeline</h1>", unsafe_allow_html=True)
 
 st.markdown(
     """
