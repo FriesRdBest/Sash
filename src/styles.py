@@ -1,106 +1,180 @@
-"""Global design tokens and Streamlit styling helpers."""
+"""Sash design system: colors, typography, and shared styles."""
 
-import streamlit as st
+# Color palette
+COLOR_PRIMARY = "#4F46E5"  # Indigo 600
+COLOR_PRIMARY_LIGHT = "#818CF8"  # Indigo 400
+COLOR_PRIMARY_DARK = "#3730A3"  # Indigo 800
 
-# Design tokens (used in CSS and UI)
-COLOR_PRIMARY = "#0b57d0"
-COLOR_SUCCESS = "#1e7e34"
-COLOR_WARNING = "#b45f06"
-COLOR_ERROR = "#c62828"
-COLOR_BG_CARD = "#fafafa"
-COLOR_BORDER = "#e0e0e0"
-COLOR_TEXT_MUTED = "#555555"
+COLOR_SECONDARY = "#0EA5E9"  # Sky 500
+COLOR_SECONDARY_LIGHT = "#38BDF8"  # Sky 400
 
-FONT_STACK = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+COLOR_SUCCESS = "#10B981"  # Emerald 500
+COLOR_WARNING = "#F59E0B"  # Amber 500
+COLOR_ERROR = "#EF4444"  # Red 500
+COLOR_INFO = "#3B82F6"  # Blue 500
+
+COLOR_BACKGROUND = "#F9FAFB"  # Gray 50
+COLOR_SURFACE = "#FFFFFF"  # White
+COLOR_BORDER = "#E5E7EB"  # Gray 200
+COLOR_TEXT = "#1F2937"  # Gray 800
+COLOR_TEXT_MUTED = "#6B7280"  # Gray 500
+
+# Typography
+FONT_FAMILY = (
+    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+)
+FONT_MONO = "'JetBrains Mono', 'Fira Code', monospace"
+
+# Spacing
+SPACING_XS = "0.25rem"
+SPACING_SM = "0.5rem"
+SPACING_MD = "1rem"
+SPACING_LG = "1.5rem"
+SPACING_XL = "2rem"
+
+# Border radius
+RADIUS_SM = "0.25rem"
+RADIUS_MD = "0.5rem"
+RADIUS_LG = "0.75rem"
+RADIUS_FULL = "9999px"
+
+# Shadows
+SHADOW_SM = "0 1px 2px 0 rgb(0 0 0 / 0.05)"
+SHADOW_MD = "0 4px 6px -1px rgb(0 0 0 / 0.1)"
+SHADOW_LG = "0 10px 15px -3px rgb(0 0 0 / 0.1)"
 
 
-def page_config(title: str = "Sash", layout: str = "wide"):
-    """Configure Streamlit page with premium defaults."""
-    st.set_page_config(page_title=title, page_icon="🔷", layout=layout)
-
-
-def local_css():
-    """Inject premium CSS for consistent styling across the app."""
-    st.markdown(
-        f"""
-        <style>
-        /* Base */
-        html, body, [class*="css"] {{
-            font-family: {FONT_STACK};
-            color: #222;
-        }}
-        h1, h2, h3, h4, h5, h6 {{
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }}
-        h1 {{ font-size: 2rem; }}
-        h2 {{ font-size: 1.6rem; }}
-        h3 {{ font-size: 1.2rem; }}
-        p {{ line-height: 1.6; }}
-
-        /* Cards */
-        .card {{
-            border: 1px solid {COLOR_BORDER};
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 0.75rem 0;
-            background: {COLOR_BG_CARD};
-        }}
-        .card h3 {{ margin-top: 0; font-size: 1.05rem; }}
-
-        /* Buttons */
-        .stButton > button {{
-            background: {COLOR_PRIMARY};
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-        }}
-        .stButton > button:hover {{
-            opacity: 0.92;
-        }}
-
-        /* Status text helpers */
-        .status-ok {{ color: {COLOR_SUCCESS}; font-weight: 600; }}
-        .status-warn {{ color: {COLOR_WARNING}; font-weight: 600; }}
-        .status-error {{ color: {COLOR_ERROR}; font-weight: 600; }}
-
-        /* Tables */
-        .dataframe {{
-            font-size: 0.9rem;
-            border-collapse: collapse;
-        }}
-        .dataframe th {{
-            background: #f3f3f3;
-            font-weight: 600;
-            text-align: left;
-            padding: 0.4rem 0.6rem;
-        }}
-        .dataframe td {{
-            padding: 0.35rem 0.6rem;
-            border-top: 1px solid #eee;
-        }}
-
-        /* Metrics */
-        .metric-card {{
-            border: 1px solid {COLOR_BORDER};
-            border-radius: 8px;
-            padding: 0.75rem;
-            background: #fff;
-        }}
-        .metric-label {{ font-size: 0.8rem; color: {COLOR_TEXT_MUTED}; }}
-        .metric-value {{ font-size: 1.4rem; font-weight: 700; color: #111; }}
-
-        /* Links */
-        a {{ color: {COLOR_PRIMARY}; text-decoration: none; }}
-        a:hover {{ text-decoration: underline; }}
-
-        /* Reduce top margin on first element in main */
-        .main > div:first-child {{
-            margin-top: 0.5rem;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+def get_custom_css() -> str:
+    """Return custom CSS for Sash design system."""
+    return f"""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap');
+    
+    /* Global styles */
+    .stApp {{
+        background-color: {COLOR_BACKGROUND};
+        font-family: {FONT_FAMILY};
+    }}
+    
+    /* Headers */
+    h1, h2, h3, h4, h5, h6 {{
+        font-family: {FONT_FAMILY};
+        color: {COLOR_TEXT};
+        font-weight: 600;
+    }}
+    
+    /* Cards and surfaces */
+    .sash-card {{
+        background-color: {COLOR_SURFACE};
+        border: 1px solid {COLOR_BORDER};
+        border-radius: {RADIUS_LG};
+        padding: {SPACING_LG};
+        box-shadow: {SHADOW_SM};
+        margin-bottom: {SPACING_MD};
+    }}
+    
+    /* Status badges */
+    .status-badge {{
+        display: inline-block;
+        padding: {SPACING_XS} {SPACING_SM};
+        border-radius: {RADIUS_FULL};
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }}
+    
+    .status-success {{
+        background-color: #D1FAE5;
+        color: {COLOR_SUCCESS};
+    }}
+    
+    .status-warning {{
+        background-color: #FEF3C7;
+        color: {COLOR_WARNING};
+    }}
+    
+    .status-error {{
+        background-color: #FEE2E2;
+        color: {COLOR_ERROR};
+    }}
+    
+    .status-info {{
+        background-color: #DBEAFE;
+        color: {COLOR_INFO};
+    }}
+    
+    /* Buttons */
+    .stButton > button {{
+        border-radius: {RADIUS_MD};
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }}
+    
+    /* Metric cards */
+    .metric-card {{
+        background: linear-gradient(135deg, {COLOR_PRIMARY} 0%, {COLOR_PRIMARY_DARK} 100%);
+        color: white;
+        padding: {SPACING_LG};
+        border-radius: {RADIUS_LG};
+        box-shadow: {SHADOW_MD};
+    }}
+    
+    .metric-value {{
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1;
+    }}
+    
+    .metric-label {{
+        font-size: 0.875rem;
+        opacity: 0.9;
+        margin-top: {SPACING_SM};
+    }}
+    
+    /* Code blocks */
+    .stCode {{
+        border-radius: {RADIUS_MD};
+        font-family: {FONT_MONO};
+    }}
+    
+    /* Sidebar */
+    .css-1d391kg {{
+        background-color: {COLOR_SURFACE};
+        border-right: 1px solid {COLOR_BORDER};
+    }}
+    
+    /* Loading state */
+    .loading-placeholder {{
+        background: linear-gradient(90deg, {COLOR_BORDER} 25%, {COLOR_BACKGROUND} 50%, {COLOR_BORDER} 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: {RADIUS_MD};
+        height: 100px;
+    }}
+    
+    @keyframes loading {{
+        0% {{ background-position: 200% 0; }}
+        100% {{ background-position: -200% 0; }}
+    }}
+    
+    /* Empty state */
+    .empty-state {{
+        text-align: center;
+        padding: {SPACING_XL};
+        color: {COLOR_TEXT_MUTED};
+    }}
+    
+    .empty-state-icon {{
+        font-size: 3rem;
+        margin-bottom: {SPACING_MD};
+    }}
+    
+    /* Responsive grid */
+    .responsive-grid {{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: {SPACING_LG};
+    }}
+    </style>
+    """
