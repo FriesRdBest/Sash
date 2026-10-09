@@ -1,8 +1,8 @@
 """Feasibility rules and readiness scoring for engagement qualification."""
 
 from dataclasses import dataclass
-from typing import List, Dict, Any, Tuple
 from enum import Enum
+from typing import Any
 
 
 class RiskLevel(str, Enum):
@@ -15,6 +15,7 @@ class RiskLevel(str, Enum):
 @dataclass
 class RuleResult:
     """Result of a single feasibility rule check."""
+
     rule_name: str
     passed: bool
     score_impact: int
@@ -29,10 +30,10 @@ MIN_TIMELINE_DAYS = 7
 SHORT_TIMELINE_DAYS = 14
 
 
-def check_channel_support(channels: List[str]) -> RuleResult:
+def check_channel_support(channels: list[str]) -> RuleResult:
     """Check if all requested channels are supported."""
     unsupported = set(channels) - SUPPORTED_CHANNELS
-    
+
     if unsupported:
         return RuleResult(
             rule_name="Channel Support",
@@ -41,7 +42,7 @@ def check_channel_support(channels: List[str]) -> RuleResult:
             message=f"Unsupported channels: {', '.join(unsupported)}",
             risk_level=RiskLevel.CRITICAL,
         )
-    
+
     return RuleResult(
         rule_name="Channel Support",
         passed=True,
@@ -61,7 +62,7 @@ def check_volume_feasibility(expected_volume: int) -> RuleResult:
             message=f"Volume {expected_volume:,} exceeds critical threshold ({CRITICAL_VOLUME_THRESHOLD:,})",
             risk_level=RiskLevel.CRITICAL,
         )
-    
+
     if expected_volume >= HIGH_VOLUME_THRESHOLD:
         return RuleResult(
             rule_name="Volume Feasibility",
@@ -70,7 +71,7 @@ def check_volume_feasibility(expected_volume: int) -> RuleResult:
             message=f"High volume ({expected_volume:,}) - requires capacity planning",
             risk_level=RiskLevel.HIGH,
         )
-    
+
     return RuleResult(
         rule_name="Volume Feasibility",
         passed=True,
@@ -90,7 +91,7 @@ def check_timeline_feasibility(timeline_days: int) -> RuleResult:
             message=f"Timeline {timeline_days} days is below minimum ({MIN_TIMELINE_DAYS} days)",
             risk_level=RiskLevel.CRITICAL,
         )
-    
+
     if timeline_days <= SHORT_TIMELINE_DAYS:
         return RuleResult(
             rule_name="Timeline Feasibility",
@@ -99,7 +100,7 @@ def check_timeline_feasibility(timeline_days: int) -> RuleResult:
             message=f"Short timeline ({timeline_days} days) - accelerated delivery required",
             risk_level=RiskLevel.HIGH,
         )
-    
+
     return RuleResult(
         rule_name="Timeline Feasibility",
         passed=True,
@@ -119,7 +120,7 @@ def check_priority_alignment(priority: str) -> RuleResult:
             message="Critical priority - dedicated resources required",
             risk_level=RiskLevel.MEDIUM,
         )
-    
+
     return RuleResult(
         rule_name="Priority Alignment",
         passed=True,
@@ -139,7 +140,7 @@ def check_use_case_clarity(use_case: str) -> RuleResult:
             message="Use case is not clearly defined",
             risk_level=RiskLevel.HIGH,
         )
-    
+
     return RuleResult(
         rule_name="Use Case Clarity",
         passed=True,
@@ -149,7 +150,7 @@ def check_use_case_clarity(use_case: str) -> RuleResult:
     )
 
 
-def run_all_checks(engagement_data: Dict[str, Any]) -> List[RuleResult]:
+def run_all_checks(engagement_data: dict[str, Any]) -> list[RuleResult]:
     """Run all feasibility checks on an engagement."""
     checks = [
         check_channel_support(engagement_data.get("channels", [])),
@@ -161,26 +162,28 @@ def run_all_checks(engagement_data: Dict[str, Any]) -> List[RuleResult]:
     return checks
 
 
-def calculate_readiness_score(rule_results: List[RuleResult]) -> int:
+def calculate_readiness_score(rule_results: list[RuleResult]) -> int:
     """Calculate overall readiness score (0-100)."""
     base_score = 100
-    
+
     for result in rule_results:
         base_score += result.score_impact
-    
+
     return max(0, min(100, base_score))
 
 
-def get_risk_flags(rule_results: List[RuleResult]) -> List[Dict[str, Any]]:
+def get_risk_flags(rule_results: list[RuleResult]) -> list[dict[str, Any]]:
     """Extract risk flags from rule results."""
     flags = []
-    
+
     for result in rule_results:
         if result.risk_level in (RiskLevel.HIGH, RiskLevel.CRITICAL):
-            flags.append({
-                "rule": result.rule_name,
-                "level": result.risk_level.value,
-                "message": result.message,
-            })
-    
+            flags.append(
+                {
+                    "rule": result.rule_name,
+                    "level": result.risk_level.value,
+                    "message": result.message,
+                }
+            )
+
     return flags

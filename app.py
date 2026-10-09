@@ -1,17 +1,24 @@
 """Sash: Production readiness and deployment accelerator for programmable customer communications."""
 
 import streamlit as st
-from src.styles import get_custom_css, COLOR_PRIMARY, COLOR_SUCCESS, COLOR_WARNING, COLOR_ERROR, COLOR_TEXT_MUTED, COLOR_SURFACE, COLOR_BORDER
-from src.qualification.assess import assess_engagement
+
 from src.persistence.seed_data import load_seed_data
 from src.persistence.sqlite_repo import engagement_repo
+from src.qualification.assess import assess_engagement
+from src.styles import (
+    COLOR_BORDER,
+    COLOR_ERROR,
+    COLOR_PRIMARY,
+    COLOR_SUCCESS,
+    COLOR_SURFACE,
+    COLOR_TEXT_MUTED,
+    COLOR_WARNING,
+    get_custom_css,
+)
 
 # Page configuration
 st.set_page_config(
-    page_title="Sash",
-    page_icon="🔗",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="Sash", page_icon="🔗", layout="wide", initial_sidebar_state="expanded"
 )
 
 # Apply custom CSS
@@ -25,7 +32,7 @@ st.sidebar.markdown("---")
 page = st.sidebar.radio(
     "Navigation",
     ["Home", "Domain Models", "Qualification", "Engagements", "Workflows"],
-    index=0
+    index=0,
 )
 
 st.sidebar.markdown("---")
@@ -35,8 +42,10 @@ st.sidebar.markdown("**Phase:** 5 - Domain Core + Qualification")
 # Main content
 if page == "Home":
     st.title("Sash")
-    st.subheader("Production readiness and deployment accelerator for programmable customer communications")
-    
+    st.subheader(
+        "Production readiness and deployment accelerator for programmable customer communications"
+    )
+
     # Status banner
     status_col1, status_col2 = st.columns([3, 1])
     with status_col1:
@@ -47,26 +56,26 @@ if page == "Home":
                 Phase 5: Domain/persistence core + Engagement qualification now available.
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with status_col2:
         st.markdown(
-            f"""
+            """
             <div style="text-align: right;">
                 <span class="status-badge status-info">v0.5.0</span>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     st.markdown("---")
-    
+
     # Main content sections
     st.markdown("## 🎯 Purpose")
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown(
             """
@@ -82,7 +91,7 @@ if page == "Home":
             Built for the **Senior Forward Deployed Engineer** role at Sinch.
             """
         )
-    
+
     with col2:
         st.markdown(
             """
@@ -99,14 +108,14 @@ if page == "Home":
             7. Supportable production deployment
             """
         )
-    
+
     st.markdown("---")
-    
+
     # Feature roadmap
     st.markdown("## 📋 Feature Roadmap")
-    
+
     roadmap_col1, roadmap_col2, roadmap_col3 = st.columns(3)
-    
+
     with roadmap_col1:
         st.markdown(
             f"""
@@ -123,9 +132,9 @@ if page == "Home":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with roadmap_col2:
         st.markdown(
             f"""
@@ -138,9 +147,9 @@ if page == "Home":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with roadmap_col3:
         st.markdown(
             f"""
@@ -155,16 +164,16 @@ if page == "Home":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     st.markdown("---")
-    
+
     # Quick links
     st.markdown("## 🔗 Quick Links")
-    
+
     link_col1, link_col2, link_col3, link_col4 = st.columns(4)
-    
+
     with link_col1:
         st.markdown(
             f"""
@@ -174,9 +183,9 @@ if page == "Home":
                 <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with link_col2:
         st.markdown(
             f"""
@@ -186,9 +195,9 @@ if page == "Home":
                 <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with link_col3:
         st.markdown(
             f"""
@@ -198,9 +207,9 @@ if page == "Home":
                 <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with link_col4:
         st.markdown(
             f"""
@@ -210,14 +219,14 @@ if page == "Home":
                 <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     st.markdown("---")
-    
+
     # Next steps
     st.markdown("## ▶️ Next Steps")
-    
+
     st.markdown(
         f"""
         <div class="sash-card">
@@ -232,17 +241,17 @@ if page == "Home":
             </p>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
 elif page == "Domain Models":
     st.title("Domain Models")
     st.markdown("Core entities and value objects in the Sash domain.")
-    
+
     st.markdown("---")
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown(
             f"""
@@ -258,9 +267,9 @@ elif page == "Domain Models":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with col2:
         st.markdown(
             f"""
@@ -275,11 +284,11 @@ elif page == "Domain Models":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     col3, col4 = st.columns(2)
-    
+
     with col3:
         st.markdown(
             f"""
@@ -294,9 +303,9 @@ elif page == "Domain Models":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     with col4:
         st.markdown(
             f"""
@@ -311,11 +320,11 @@ elif page == "Domain Models":
                 </ul>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    
+
     st.markdown("---")
-    
+
     st.markdown(
         """
         ### Persistence
@@ -328,27 +337,35 @@ elif page == "Domain Models":
 elif page == "Qualification":
     st.title("Engagement Qualification")
     st.markdown("Assess customer engagements for technical and operational viability.")
-    
+
     st.markdown("---")
-    
+
     # Intake form
     st.markdown("### 📝 Intake Form")
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         customer_name = st.text_input("Customer Name", "Acme Corp")
         company = st.text_input("Company", "Acme Corporation")
-        use_case = st.text_area("Use Case", "User verification for marketplace platform", height=100)
-    
+        use_case = st.text_area(
+            "Use Case", "User verification for marketplace platform", height=100
+        )
+
     with col2:
         priority = st.selectbox("Priority", ["low", "medium", "high", "critical"])
-        channels = st.multiselect("Channels", ["sms", "whatsapp", "email", "voice"], default=["sms"])
-        expected_volume = st.number_input("Expected Monthly Volume", min_value=0, value=5000, step=1000)
-        timeline_days = st.number_input("Timeline (days)", min_value=1, value=30, step=7)
-    
+        channels = st.multiselect(
+            "Channels", ["sms", "whatsapp", "email", "voice"], default=["sms"]
+        )
+        expected_volume = st.number_input(
+            "Expected Monthly Volume", min_value=0, value=5000, step=1000
+        )
+        timeline_days = st.number_input(
+            "Timeline (days)", min_value=1, value=30, step=7
+        )
+
     notes = st.text_area("Additional Notes", "")
-    
+
     if st.button("Assess Engagement", type="primary"):
         engagement_data = {
             "customer_name": customer_name,
@@ -360,16 +377,20 @@ elif page == "Qualification":
             "timeline_days": timeline_days,
             "notes": notes,
         }
-        
+
         assessment = assess_engagement(engagement_data)
-        
+
         st.markdown("---")
-        
+
         # Score display
         score_col1, score_col2, score_col3 = st.columns(3)
-        
+
         with score_col1:
-            score_color = COLOR_SUCCESS if assessment.score >= 80 else (COLOR_WARNING if assessment.score >= 60 else COLOR_ERROR)
+            score_color = (
+                COLOR_SUCCESS
+                if assessment.score >= 80
+                else (COLOR_WARNING if assessment.score >= 60 else COLOR_ERROR)
+            )
             st.markdown(
                 f"""
                 <div class="metric-card" style="background: linear-gradient(135deg, {score_color} 0%, #000 100%);">
@@ -377,24 +398,32 @@ elif page == "Qualification":
                     <div class="metric-label">Readiness Score</div>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
-        
+
         with score_col2:
-            decision_emoji = "✅" if assessment.decision == "proceed" else ("⚠️" if assessment.decision == "proceed_with_conditions" else "❌")
+            decision_emoji = (
+                "✅"
+                if assessment.decision == "proceed"
+                else ("⚠️" if assessment.decision == "proceed_with_conditions" else "❌")
+            )
             st.markdown(
                 f"""
                 <div class="sash-card" style="text-align: center;">
                     <div style="font-size: 2rem;">{decision_emoji}</div>
-                    <strong>{assessment.decision.replace('_', ' ').title()}</strong>
+                    <strong>{assessment.decision.replace("_", " ").title()}</strong>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
-        
+
         with score_col3:
             risk_count = len(assessment.risk_flags)
-            risk_color = COLOR_ERROR if risk_count > 2 else (COLOR_WARNING if risk_count > 0 else COLOR_SUCCESS)
+            risk_color = (
+                COLOR_ERROR
+                if risk_count > 2
+                else (COLOR_WARNING if risk_count > 0 else COLOR_SUCCESS)
+            )
             st.markdown(
                 f"""
                 <div class="sash-card" style="text-align: center; border-left: 4px solid {risk_color};">
@@ -402,27 +431,27 @@ elif page == "Qualification":
                     <strong>Risk Flags</strong>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
-        
+
         st.markdown("---")
-        
+
         # Recommendation
         st.markdown("### 📊 Assessment Details")
         st.info(assessment.get_recommendation())
-        
+
         # Conditions
         if assessment.conditions:
             st.markdown("**Conditions:**")
             for condition in assessment.conditions:
                 st.markdown(f"- {condition}")
-        
+
         # Rule results
         st.markdown("**Rule Results:**")
         for result in assessment.rule_results:
             icon = "✅" if result.passed else "❌"
             st.markdown(f"{icon} **{result.rule_name}**: {result.message}")
-        
+
         # Export
         st.markdown("---")
         st.download_button(
@@ -435,44 +464,49 @@ elif page == "Qualification":
 elif page == "Engagements":
     st.title("Engagements")
     st.markdown("Customer engagement tracking and qualification.")
-    
+
     st.markdown("---")
-    
+
     # Load seed data button
     if st.button("🔄 Load Seed Data"):
         result = load_seed_data()
-        st.success(f"Loaded {result['engagements']} engagements, {result['customers']} customers, {result['workflows']} workflows")
-    
+        st.success(
+            f"Loaded {result['engagements']} engagements, {result['customers']} customers, {result['workflows']} workflows"
+        )
+
     st.markdown("---")
-    
+
     # List engagements
     st.markdown("### 📋 Existing Engagements")
-    
+
     engagements = engagement_repo.get_all()
-    
+
     if not engagements:
-        st.markdown("<div class='empty-state'><div class='empty-state-icon'>📭</div><p>No engagements yet. Load seed data or create a new assessment.</p></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='empty-state'><div class='empty-state-icon'>📭</div><p>No engagements yet. Load seed data or create a new assessment.</p></div>",
+            unsafe_allow_html=True,
+        )
     else:
         for eng in engagements:
             st.markdown(
                 f"""
                 <div class="sash-card">
-                    <h4 style="margin-top: 0;">{eng.get('customer_name', 'Unknown')} @ {eng.get('company', 'Unknown')}</h4>
-                    <p><strong>Use Case:</strong> {eng.get('use_case', 'N/A')}</p>
-                    <p><strong>Priority:</strong> {eng.get('priority', 'medium')} | <strong>Volume:</strong> {eng.get('expected_volume', 0):,}/mo | <strong>Timeline:</strong> {eng.get('timeline_days', 30)} days</p>
-                    <p><strong>Channels:</strong> {', '.join(eng.get('channels', []))}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-info">{eng.get('status', 'new')}</span></p>
+                    <h4 style="margin-top: 0;">{eng.get("customer_name", "Unknown")} @ {eng.get("company", "Unknown")}</h4>
+                    <p><strong>Use Case:</strong> {eng.get("use_case", "N/A")}</p>
+                    <p><strong>Priority:</strong> {eng.get("priority", "medium")} | <strong>Volume:</strong> {eng.get("expected_volume", 0):,}/mo | <strong>Timeline:</strong> {eng.get("timeline_days", 30)} days</p>
+                    <p><strong>Channels:</strong> {", ".join(eng.get("channels", []))}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-info">{eng.get("status", "new")}</span></p>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
 elif page == "Workflows":
     st.title("Workflows")
     st.markdown("Design and execute communication workflows.")
-    
+
     st.markdown("---")
-    
+
     st.markdown(
         f"""
         <div class="sash-card">
@@ -486,9 +520,9 @@ elif page == "Workflows":
             </ul>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
-    
+
     st.info("💡 Workflow designer UI coming in Phase 6.")
 
 # Footer
@@ -501,5 +535,5 @@ st.markdown(
         <a href="https://github.com/FriesRdBest/Sash" style="color: {COLOR_PRIMARY};">View source on GitHub</a>
     </div>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )

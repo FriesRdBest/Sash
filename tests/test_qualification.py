@@ -1,24 +1,25 @@
 """Unit tests for engagement qualification."""
 
-import pytest
-
+from src.qualification.assess import assess_engagement
 from src.qualification.rules import (
-    check_channel_support, check_volume_feasibility, 
-    check_timeline_feasibility, check_priority_alignment,
-    check_use_case_clarity, run_all_checks, calculate_readiness_score,
-    RiskLevel
+    RiskLevel,
+    calculate_readiness_score,
+    check_channel_support,
+    check_priority_alignment,
+    check_timeline_feasibility,
+    check_use_case_clarity,
+    check_volume_feasibility,
 )
-from src.qualification.assess import QualificationAssessment, assess_engagement
 
 
 class TestChannelSupport:
     """Tests for channel support checks."""
-    
+
     def test_supported_channels(self):
         result = check_channel_support(["sms", "email"])
         assert result.passed is True
         assert result.score_impact == 0
-    
+
     def test_unsupported_channel(self):
         result = check_channel_support(["sms", "telegram"])
         assert result.passed is False
@@ -27,17 +28,17 @@ class TestChannelSupport:
 
 class TestVolumeFeasibility:
     """Tests for volume feasibility checks."""
-    
+
     def test_normal_volume(self):
         result = check_volume_feasibility(1000)
         assert result.passed is True
         assert result.score_impact == 0
-    
+
     def test_high_volume(self):
         result = check_volume_feasibility(60000)
         assert result.passed is True
         assert result.risk_level == RiskLevel.HIGH
-    
+
     def test_critical_volume(self):
         result = check_volume_feasibility(150000)
         assert result.passed is False
@@ -46,17 +47,17 @@ class TestVolumeFeasibility:
 
 class TestTimelineFeasibility:
     """Tests for timeline feasibility checks."""
-    
+
     def test_normal_timeline(self):
         result = check_timeline_feasibility(30)
         assert result.passed is True
         assert result.score_impact == 0
-    
+
     def test_short_timeline(self):
         result = check_timeline_feasibility(10)
         assert result.passed is True
         assert result.risk_level == RiskLevel.HIGH
-    
+
     def test_impossible_timeline(self):
         result = check_timeline_feasibility(3)
         assert result.passed is False
@@ -65,7 +66,7 @@ class TestTimelineFeasibility:
 
 class TestReadinessScore:
     """Tests for readiness score calculation."""
-    
+
     def test_perfect_score(self):
         results = [
             check_channel_support(["sms"]),
@@ -74,23 +75,23 @@ class TestReadinessScore:
             check_priority_alignment("medium"),
             check_use_case_clarity("User verification"),
         ]
-        
+
         score = calculate_readiness_score(results)
         assert score == 100
-    
+
     def test_reduced_score(self):
         results = [
             check_volume_feasibility(60000),  # -10
             check_timeline_feasibility(10),  # -15
         ]
-        
+
         score = calculate_readiness_score(results)
         assert score == 75
 
 
 class TestQualificationAssessment:
     """Tests for complete qualification assessment."""
-    
+
     def test_proceed_decision(self):
         engagement = {
             "customer_name": "Alice",
@@ -101,12 +102,12 @@ class TestQualificationAssessment:
             "timeline_days": 30,
             "priority": "medium",
         }
-        
+
         assessment = assess_engagement(engagement)
-        
+
         assert assessment.decision == "proceed"
         assert assessment.score >= 80
-    
+
     def test_decline_decision(self):
         engagement = {
             "customer_name": "Bob",
@@ -117,11 +118,11 @@ class TestQualificationAssessment:
             "timeline_days": 2,
             "priority": "low",
         }
-        
+
         assessment = assess_engagement(engagement)
-        
+
         assert assessment.decision == "decline"
-    
+
     def test_conditions_generated(self):
         engagement = {
             "customer_name": "Carol",
@@ -132,12 +133,12 @@ class TestQualificationAssessment:
             "timeline_days": 10,
             "priority": "critical",
         }
-        
+
         assessment = assess_engagement(engagement)
-        
+
         assert len(assessment.conditions) > 0
         assert "Capacity planning review required" in assessment.conditions
-    
+
     def test_export_json(self):
         engagement = {
             "customer_name": "Test",
@@ -148,10 +149,10 @@ class TestQualificationAssessment:
             "timeline_days": 30,
             "priority": "medium",
         }
-        
+
         assessment = assess_engagement(engagement)
         json_output = assessment.to_json()
-        
+
         assert "score" in json_output
         assert "decision" in json_output
         assert "engagement" in json_output
@@ -159,7 +160,7 @@ class TestQualificationAssessment:
 
 class TestRiskFlags:
     """Tests for risk flag extraction."""
-    
+
     def test_high_risk_flagged(self):
         engagement = {
             "customer_name": "Risk",
@@ -170,8 +171,8 @@ class TestRiskFlags:
             "timeline_days": 30,
             "priority": "medium",
         }
-        
+
         assessment = assess_engagement(engagement)
-        
+
         assert len(assessment.risk_flags) > 0
         assert any(f["level"] == "critical" for f in assessment.risk_flags)

@@ -1,17 +1,18 @@
 """Seed data loader for reproducible demo data."""
 
-from src.persistence.sqlite_repo import (
-    customer_repo, workflow_repo, execution_repo, 
-    event_repo, engagement_repo, reset_database
-)
-from src.domain.models import ChannelType, WorkflowStatus, EventStatus
 from src.domain.clock import now
+from src.persistence.sqlite_repo import (
+    customer_repo,
+    engagement_repo,
+    reset_database,
+    workflow_repo,
+)
 
 
 def load_seed_data():
     """Load reproducible seed data into the database."""
     reset_database()
-    
+
     # Seed customers
     customers = [
         {
@@ -35,10 +36,10 @@ def load_seed_data():
             "updated_at": now().isoformat(),
         },
     ]
-    
+
     for cust in customers:
         customer_repo.save(cust["id"], cust)
-    
+
     # Seed workflows
     workflows = [
         {
@@ -47,7 +48,11 @@ def load_seed_data():
             "description": "SMS verification with email fallback",
             "steps": [
                 {"type": "sms", "template": "Your code is {{code}}"},
-                {"type": "email", "template": "Verify: {{code}}", "condition": "sms_failed"},
+                {
+                    "type": "email",
+                    "template": "Verify: {{code}}",
+                    "condition": "sms_failed",
+                },
             ],
             "status": "active",
             "metadata": {"version": "1.0"},
@@ -56,10 +61,10 @@ def load_seed_data():
             "updated_at": now().isoformat(),
         },
     ]
-    
+
     for wf in workflows:
         workflow_repo.save(wf["id"], wf)
-    
+
     # Seed engagements
     engagements = [
         {
@@ -93,10 +98,10 @@ def load_seed_data():
             "updated_at": now().isoformat(),
         },
     ]
-    
+
     for eng in engagements:
         engagement_repo.save(eng["id"], eng)
-    
+
     return {
         "customers": len(customers),
         "workflows": len(workflows),

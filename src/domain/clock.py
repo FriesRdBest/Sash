@@ -1,12 +1,11 @@
 """Deterministic clock for testable time-dependent logic."""
 
-from datetime import datetime
-from typing import Optional
+from datetime import datetime, timezone
 
 
 class Clock:
     """Abstract clock interface for time operations."""
-    
+
     def now(self) -> datetime:
         """Return current datetime."""
         raise NotImplementedError
@@ -14,23 +13,24 @@ class Clock:
 
 class SystemClock(Clock):
     """Real system clock."""
-    
+
     def now(self) -> datetime:
-        return datetime.utcnow()
+        return datetime.now(timezone.utc)
 
 
 class DeterministicClock(Clock):
     """Fixed-time clock for deterministic tests."""
-    
-    def __init__(self, fixed_time: Optional[datetime] = None):
-        self._fixed_time = fixed_time or datetime.utcnow()
-    
+
+    def __init__(self, fixed_time: datetime | None = None):
+        self._fixed_time = fixed_time or datetime.now(timezone.utc)
+
     def now(self) -> datetime:
         return self._fixed_time
-    
+
     def advance(self, seconds: int):
         """Advance the clock by specified seconds."""
         from datetime import timedelta
+
         self._fixed_time += timedelta(seconds=seconds)
 
 
