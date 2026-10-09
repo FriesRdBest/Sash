@@ -54,8 +54,12 @@ class WorkflowConfig(BaseModel):
     owner: str = ""
     consent_required: bool = True
     steps: list[WorkflowStep] = Field(default_factory=list)
-    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    created_at: str = Field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
+    updated_at: str = Field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
 
     @field_validator("steps")
     @classmethod
@@ -65,7 +69,9 @@ class WorkflowConfig(BaseModel):
         step_ids = {step.id for step in v}
         for step in v:
             if step.fallback_to and step.fallback_to not in step_ids:
-                raise ValueError(f"Fallback target {step.fallback_to} not found in steps")
+                raise ValueError(
+                    f"Fallback target {step.fallback_to} not found in steps"
+                )
         return v
 
     def bump_version(self):

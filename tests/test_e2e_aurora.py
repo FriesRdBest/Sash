@@ -13,7 +13,9 @@ from src.workflow.designer import WorkflowConfig, WorkflowStep, create_sample_wo
 
 class TestRegisterCustomer:
     def test_register_customer_persists(self):
-        customer = register_customer(phone_number="+1234567890", email="test@example.com")
+        customer = register_customer(
+            phone_number="+1234567890", email="test@example.com"
+        )
         assert customer.phone_number == "+1234567890"
         assert customer.email == "test@example.com"
         assert customer.id is not None
@@ -54,7 +56,9 @@ class TestCreateAuroraSession:
 
     def test_session_has_correlation_id(self):
         workflow = create_sample_workflow()
-        session = create_aurora_session(phone_number="+1234567890", workflow=workflow, mode="mock")
+        session = create_aurora_session(
+            phone_number="+1234567890", workflow=workflow, mode="mock"
+        )
         assert session.correlation_id is not None
         assert len(session.correlation_id) > 10
 
@@ -62,7 +66,9 @@ class TestCreateAuroraSession:
 class TestAuditTimeline:
     def test_timeline_contains_entries(self):
         workflow = create_sample_workflow()
-        session = create_aurora_session(phone_number="+1234567890", workflow=workflow, mode="mock")
+        session = create_aurora_session(
+            phone_number="+1234567890", workflow=workflow, mode="mock"
+        )
         timeline = get_audit_timeline(session.correlation_id)
         assert len(timeline) >= 1
         actions = {e["action"] for e in timeline}

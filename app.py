@@ -1,6 +1,5 @@
 """Sash: Production readiness and deployment accelerator for programmable customer communications."""
 
-
 from datetime import datetime
 
 import streamlit as st
@@ -587,7 +586,9 @@ elif page == "Workflows":
 
 elif page == "Run Workflow":
     st.title("▶️ Run Workflow")
-    st.markdown("Run the Aurora Marketplace verification journey in deterministic mock mode.")
+    st.markdown(
+        "Run the Aurora Marketplace verification journey in deterministic mock mode."
+    )
 
     with st.form("run_workflow_form"):
         phone = st.text_input("Customer phone number", value="+12065550123")
@@ -621,13 +622,9 @@ elif page == "Run Workflow":
                     "Step": index + 1,
                     "Channel": event.channel,
                     "Status": event.status.value,
-                    "Latency (ms)": round(
-                        event.metadata.get("latency_ms", 0.0), 2
-                    ),
+                    "Latency (ms)": round(event.metadata.get("latency_ms", 0.0), 2),
                     "Message ID": event.metadata.get("message_id", "—"),
-                    "Failure reason": event.metadata.get(
-                        "failure_reason", "—"
-                    ),
+                    "Failure reason": event.metadata.get("failure_reason", "—"),
                 }
                 for index, event in enumerate(session.execution_result.events)
             ]
@@ -701,7 +698,7 @@ elif page == "Event Timeline":
                     unsafe_allow_html=True,
                 )
 
-                with st.expander(f'Details: {entry["summary"]}'):
+                with st.expander(f"Details: {entry['summary']}"):
                     st.json(entry["details"])
         else:
             st.warning(
@@ -843,7 +840,7 @@ elif page == "Failure Lab":
 
         for result in results:
             icon = "✅" if result["passed"] else "❌"
-            with st.expander(f'{icon} {result["scenario"]}'):
+            with st.expander(f"{icon} {result['scenario']}"):
                 st.markdown(f"**Correlation ID:** `{result['correlation_id']}`")
                 st.markdown(f"**Behavior:** {result['behavior']}")
 
@@ -856,12 +853,8 @@ elif page == "Failure Lab":
 
                 with details_right:
                     st.markdown(f"**Recovery:** {result['recovery']}")
-                    st.markdown(
-                        f"**Residual risk:** {result['residual_risk']}"
-                    )
-                    st.markdown(
-                        f"**State corrupted:** `{result['state_corrupted']}`"
-                    )
+                    st.markdown(f"**Residual risk:** {result['residual_risk']}")
+                    st.markdown(f"**State corrupted:** `{result['state_corrupted']}`")
 
                 st.markdown("**Evidence**")
                 st.json(result["evidence"])
@@ -891,7 +884,9 @@ elif page == "Scorecard":
     col_run, col_export = st.columns([1, 1])
 
     with col_run:
-        run_checks = st.button("Run scorecard", type="primary", use_container_width=True)
+        run_checks = st.button(
+            "Run scorecard", type="primary", use_container_width=True
+        )
 
     with col_export:
         export_format = st.selectbox("Export format", ["json", "markdown"])
@@ -1126,9 +1121,9 @@ elif page == "Observability":
                     f"""
                     <div style="background-color: {color}10; padding: 0.75rem;
                     border-radius: 0.5rem; border-left: 3px solid {color};">
-                        <strong>{k['name']}</strong><br>
-                        <span style="font-size: 1.25rem;">{k['value']}</span>
-                        {f'<br><small>{k["delta"]}</small>' if k['delta'] else ''}
+                        <strong>{k["name"]}</strong><br>
+                        <span style="font-size: 1.25rem;">{k["value"]}</span>
+                        {f"<br><small>{k["delta"]}</small>" if k["delta"] else ""}
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -1147,9 +1142,9 @@ elif page == "Observability":
                     <div style="background-color: {color}10; padding: 0.75rem;
                     border-radius: 0.5rem; border-left: 3px solid {color};
                     margin-bottom: 0.5rem;">
-                        <strong>{a['title']}</strong>: {a['message']}
-                        {f'<br><small>Correlation: `{a["correlation_id"]}`</small>' if a['correlation_id'] else ''}
-                        <br><small>Next action: {a['suggested_action']}</small>
+                        <strong>{a["title"]}</strong>: {a["message"]}
+                        {f"<br><small>Correlation: `{a["correlation_id"]}`</small>" if a["correlation_id"] else ""}
+                        <br><small>Next action: {a["suggested_action"]}</small>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -1158,10 +1153,11 @@ elif page == "Observability":
         if snap_data["recommendations"]:
             st.markdown("### Recommendations")
             for r in snap_data["recommendations"]:
-                icon = {"low": "🟢", "medium": "🟠", "high": "🔴"}.get(r["priority"], "⚪")
+                icon = {"low": "🟢", "medium": "🟠", "high": "🔴"}.get(
+                    r["priority"], "⚪"
+                )
                 st.markdown(
-                    f"{icon} **{r['title']}** — {r['reason']} "
-                    f"(action: {r['action']})"
+                    f"{icon} **{r['title']}** — {r['reason']} (action: {r['action']})"
                 )
 
         st.markdown("### Channel breakdown")
@@ -1254,12 +1250,16 @@ elif page == "Security Review":
         if review_data["findings"]:
             st.markdown("### Findings")
             for f in review_data["findings"]:
-                st.markdown(f"- **{f['title']}**: {f['description']} (risk: {f['risk']})")
+                st.markdown(
+                    f"- **{f['title']}**: {f['description']} (risk: {f['risk']})"
+                )
 
         if review_data["recommendations"]:
             st.markdown("### Recommendations")
             for r in review_data["recommendations"]:
-                st.markdown(f"- **{r['title']}**: {r['action']} (priority: {r['priority']})")
+                st.markdown(
+                    f"- **{r['title']}**: {r['action']} (priority: {r['priority']})"
+                )
 
         if st.button("Download Markdown report"):
             md = st.session_state.get("last_security_review_md", "")
@@ -1298,7 +1298,7 @@ elif page == "AI Review":
         files = [
             (
                 "demo_secret.py",
-                "api_key = \"sk_live_1234567890abcdef\"",
+                'api_key = "sk_live_1234567890abcdef"',
             ),
             (
                 "demo_imports.py",
@@ -1309,7 +1309,9 @@ elif page == "AI Review":
                 "def long():\n" + "    pass\n" * 50,
             ),
         ]
-        result = run_ai_review(files, enable_ai_explanations=enable_ai, model_hint="demo-model")
+        result = run_ai_review(
+            files, enable_ai_explanations=enable_ai, model_hint="demo-model"
+        )
         st.session_state["last_ai_review"] = result.to_dict()
         st.session_state["last_ai_review_md"] = result.to_markdown()
 
@@ -1317,7 +1319,9 @@ elif page == "AI Review":
     if not review_data:
         st.info("Click Run AI review to generate findings.")
     else:
-        st.caption(f"Files scanned: {review_data['metadata'].get('files_scanned', 'N/A')}")
+        st.caption(
+            f"Files scanned: {review_data['metadata'].get('files_scanned', 'N/A')}"
+        )
 
         st.markdown("### Findings")
         if not review_data["findings"]:
@@ -1383,19 +1387,21 @@ elif page == "Handoff Package":
         st.caption(f"Generated at: {pkg_data['generated_at']}")
 
         st.markdown("### Documents")
-        doc_tabs = st.tabs([
-            "Architecture",
-            "Workflow",
-            "Configuration",
-            "Deployment",
-            "Runbook",
-            "Test Evidence",
-            "Alerts",
-            "Ownership",
-            "Rollback",
-            "Training",
-            "Risks",
-        ])
+        doc_tabs = st.tabs(
+            [
+                "Architecture",
+                "Workflow",
+                "Configuration",
+                "Deployment",
+                "Runbook",
+                "Test Evidence",
+                "Alerts",
+                "Ownership",
+                "Rollback",
+                "Training",
+                "Risks",
+            ]
+        )
 
         with doc_tabs[0]:
             st.markdown(pkg_data["architecture_md"])
@@ -1472,7 +1478,9 @@ elif page == "Deployment":
     st.markdown("### Health status")
     # Demo health check (no real endpoint in Streamlit; simulate OK)
     st.success("UI health: OK (demo status)")
-    st.caption("In production, monitor /health on the API service and container health checks.")
+    st.caption(
+        "In production, monitor /health on the API service and container health checks."
+    )
 
     st.markdown("### Environment configuration")
     st.markdown(
@@ -1484,13 +1492,17 @@ elif page == "Deployment":
         - `PROVIDER_API_KEY`, `WEBHOOK_SECRET`, `DATABASE_URL`: production only
         """
     )
-    st.info("No secrets are committed. Configure production secrets via your secret manager.")
+    st.info(
+        "No secrets are committed. Configure production secrets via your secret manager."
+    )
 
     st.markdown("### Demo reset")
     if st.button("Reset demo state (simulate)"):
         # In real deployment, this would call a backend reset or clear volumes.
         st.session_state["demo_reset_done"] = True
-        st.success("Demo reset simulated. In production, run `scripts/reset_demo.sh` or clear volumes.")
+        st.success(
+            "Demo reset simulated. In production, run `scripts/reset_demo.sh` or clear volumes."
+        )
 
     if st.session_state.get("demo_reset_done"):
         st.caption("Baseline state restored for the next demo run.")
