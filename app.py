@@ -3,7 +3,6 @@
 import streamlit as st
 from src.styles import page_config, local_css
 from src.persistence.seed_data import load_seed_data
-from src.persistence.sqlite_repo import reset_database
 from src.workflow.designer import create_sample_workflow
 
 page_config(title="Sash", layout="wide")
@@ -19,8 +18,8 @@ st.markdown(
 )
 
 # Top navigation tabs
-home_tab, run_tab, timeline_tab, scorecard_tab, admin_tab = st.tabs(
-    ["Home", "Run Workflow", "Timeline", "Scorecard", "Admin"]
+home_tab, workflows_tab, events_tab, insights_tab, settings_tab = st.tabs(
+    ["Home", "Workflows", "Events", "Insights", "Settings"]
 )
 
 with home_tab:
@@ -41,10 +40,10 @@ with home_tab:
         <div class="card">
         <h3>How to use it</h3>
         <ol>
-        <li><b>Seed data</b> — Load reproducible demo customers, workflows, and engagements (Admin tab).</li>
+        <li><b>Load demo data</b> — Initialize the app with sample customers, workflows, and engagements (Settings tab).</li>
         <li><b>Run a workflow</b> — Execute a sample workflow for a phone number and correlation ID.</li>
-        <li><b>Inspect timeline</b> — View normalized events, statuses, and sequencing for that correlation ID.</li>
-        <li><b>Review scorecard</b> — See qualification outcomes, risk flags, and observability summaries.</li>
+        <li><b>Inspect events</b> — View normalized events, statuses, and sequencing for that correlation ID.</li>
+        <li><b>Review insights</b> — See qualification outcomes, risk flags, and observability summaries.</li>
         </ol>
         </div>
         """,
@@ -79,8 +78,8 @@ with home_tab:
         unsafe_allow_html=True,
     )
 
-with run_tab:
-    st.markdown("<h2>Run Workflow</h2>", unsafe_allow_html=True)
+with workflows_tab:
+    st.markdown("<h2>Workflows</h2>", unsafe_allow_html=True)
 
     with st.form("run_workflow_form", clear_on_submit=False):
         to_number = st.text_input("Phone number", value="+12065550123")
@@ -107,8 +106,8 @@ with run_tab:
             unsafe_allow_html=True,
         )
 
-with timeline_tab:
-    st.markdown("<h2>Timeline</h2>", unsafe_allow_html=True)
+with events_tab:
+    st.markdown("<h2>Events</h2>", unsafe_allow_html=True)
 
     st.markdown(
         """
@@ -135,8 +134,8 @@ with timeline_tab:
         use_container_width=True,
     )
 
-with scorecard_tab:
-    st.markdown("<h2>Scorecard</h2>", unsafe_allow_html=True)
+with insights_tab:
+    st.markdown("<h2>Insights</h2>", unsafe_allow_html=True)
 
     st.markdown(
         """
@@ -179,43 +178,19 @@ with scorecard_tab:
             unsafe_allow_html=True,
         )
 
-with admin_tab:
-    st.markdown("<h2>Admin</h2>", unsafe_allow_html=True)
+with settings_tab:
+    st.markdown("<h2>Settings</h2>", unsafe_allow_html=True)
 
     st.markdown(
         """
         <div class="card">
-        <p>System controls and data management. Use caution with destructive actions.</p>
+        <p>Initialize the app with demo data. This resets existing data.</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.markdown("<h3>Seed data</h3>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div class="card">
-        <p>Load reproducible demo data into the database. This resets existing data.</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if st.button("Load seed data"):
+    if st.button("Load demo data"):
         result = load_seed_data()
-        st.success("Seed data loaded")
+        st.success("Demo data loaded")
         st.json(result)
-
-    st.markdown("<h3>Danger zone</h3>", unsafe_allow_html=True)
-    st.markdown(
-        """
-        <div class="card" style="border-color:#c62828;">
-        <p><b>Reset database</b> — Clears all tables and reinitializes schema. This action is irreversible.</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if st.button("Reset database", type="primary"):
-        reset_database()
-        st.success("Database reset complete")
