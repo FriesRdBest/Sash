@@ -1383,42 +1383,41 @@ elif page == "Handoff Package":
         st.caption(f"Generated at: {pkg_data['generated_at']}")
 
         st.markdown("### Documents")
-        doc_tabs = st.tabs([
-            "Architecture",
-            "Workflow",
-            "Configuration",
-            "Deployment",
-            "Runbook",
-            "Test Evidence",
-            "Alerts",
-            "Ownership",
-            "Rollback",
-            "Training",
-            "Risks",
-        ])
 
-        with doc_tabs[0]:
-            st.markdown(pkg_data["architecture_md"])
-        with doc_tabs[1]:
-            st.json(pkg_data["workflow_definition"])
-        with doc_tabs[2]:
-            st.markdown(pkg_data["configuration_guide_md"])
-        with doc_tabs[3]:
-            st.markdown(pkg_data["deployment_instructions_md"])
-        with doc_tabs[4]:
-            st.markdown(pkg_data["runbook_md"])
-        with doc_tabs[5]:
-            st.markdown(pkg_data["test_evidence_md"])
-        with doc_tabs[6]:
-            st.markdown(pkg_data["alert_guide_md"])
-        with doc_tabs[7]:
-            st.markdown(pkg_data["ownership_matrix_md"])
-        with doc_tabs[8]:
-            st.markdown(pkg_data["rollback_plan_md"])
-        with doc_tabs[9]:
-            st.markdown(pkg_data["training_checklist_md"])
-        with doc_tabs[10]:
-            st.markdown(pkg_data["open_risk_register_md"])
+        # Present every handoff section in one vertical page.
+        # Navigation remains exclusively in the application sidebar.
+        st.markdown("#### Architecture")
+        st.markdown(pkg_data["architecture_md"])
+
+        st.markdown("#### Workflow")
+        st.json(pkg_data["workflow_definition"])
+
+        st.markdown("#### Configuration")
+        st.markdown(pkg_data["configuration_guide_md"])
+
+        st.markdown("#### Deployment")
+        st.markdown(pkg_data["deployment_instructions_md"])
+
+        st.markdown("#### Runbook")
+        st.markdown(pkg_data["runbook_md"])
+
+        st.markdown("#### Test Evidence")
+        st.markdown(pkg_data["test_evidence_md"])
+
+        st.markdown("#### Alerts")
+        st.markdown(pkg_data["alert_guide_md"])
+
+        st.markdown("#### Ownership")
+        st.markdown(pkg_data["ownership_matrix_md"])
+
+        st.markdown("#### Rollback")
+        st.markdown(pkg_data["rollback_plan_md"])
+
+        st.markdown("#### Training")
+        st.markdown(pkg_data["training_checklist_md"])
+
+        st.markdown("#### Risks")
+        st.markdown(pkg_data["open_risk_register_md"])
 
         st.markdown("### Export")
         st.caption(
