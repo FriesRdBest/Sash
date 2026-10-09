@@ -12,6 +12,7 @@ from src.timeline.queries import (
     get_state_transitions,
     search_events,
 )
+from src.scorecard.engine import ScorecardEngine
 from src.resilience.scenarios import FailureScenario, get_scenario_definition
 from src.resilience.simulator import FailureSimulator
 from src.qualification.assess import assess_engagement
@@ -50,13 +51,14 @@ page = st.sidebar.radio(
         "Run Workflow",
         "Event Timeline",
         "Failure Lab",
+        "Scorecard",
     ],
     index=0,
 )
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Version:** v0.11.0")
-st.sidebar.markdown("**Phase:** 11 - Failure & Resilience Lab")
+st.sidebar.markdown("**Version:** v0.12.0")
+st.sidebar.markdown("**Phase:** 12 - Production Readiness Scorecard")
 
 # Main content
 if page == "Home":
@@ -857,6 +859,183 @@ elif page == "Failure Lab":
             "All scenarios use deterministic mock fault injection. "
             "No real provider, CRM, or queue operations occur."
         )
+
+elif page == "Scorecard":
+    st.title("📊 Production Readiness Scorecard")
+    st.markdown(
+        "Convert engineering quality into an evidence-backed delivery decision. "
+        "API, webhook, reliability, security, scalability, observability, testing, "
+        "operations, and customer-readiness checks are combined into a weighted score "
+        "with blocking-risk logic and an exportable report."
+    )
+
+    engine = ScorecardEngine()
+
+    st.markdown("### Run checks")
+    st.caption(
+        "This demo uses default pass/fail states. In a real deployment, "
+        "these would be driven by CI results, config scans, and test reports."
+    )
+
+    col_run, col_export = st.columns([1, 1])
+
+    with col_run:
+        run_checks = st.button("Run scorecard", type="primary", use_container_width=True)
+
+    with col_export:
+        export_format = st.selectbox("Export format", ["json", "markdown"])
+        export_report = st.button("Export report", use_container_width=True)
+
+    if run_checks:
+        # Demo: simulate one blocking failure to illustrate behavior.
+        test_results = {
+            "api_contract_tests": False,
+        }
+        config_checks = {}
+        result = engine.run(
+            test_results=test_results,
+            config_checks=config_checks,
+            metadata={"environment": "demo"},
+        )
+        st.session_state["last_scorecard"] = result.to_dict()
+        st.session_state["last_scorecard_md"] = result.to_markdown()
+
+    last_result_data = st.session_state.get("last_scorecard")
+    if not last_result_data:
+        st.info("Run the scorecard to see results.")
+    else:
+        from src.scorecard.engine import (
+            ScorecardResult,
+            DimensionScore,
+            CheckResult,
+            CheckDefinition,
+            Dimension,
+            CheckStatus,
+        )
+
+        # Reconstruct result object for display.
+        result = ScorecardResult(
+            run_id=last_result_data["run_id"],
+            overall_score=last_result_data["overall_score"],
+            dimensions=[],
+            blocking_items=[],
+            started_at=datetime.fromisoformat(last_result_data["started_at"]),
+            completed_at=datetime.fromisoformat(last_result_data["completed_at"]),
+            metadata=last_result_data.get("metadata", {}),
+        )
+
+        for dim_data in last_result_data["dimensions"]:
+            dim = Dimension(dim_data["dimension"])
+            checks = []
+            for c_data in dim_data["checks"]:
+                definition = CheckDefinition(
+                    id=c_data["id"],
+                    dimension=Dimension(c_data["dimension"]),
+                    name=c_data["name"],
+                    description=c_data["description"],
+                    weight=c_data["weight"],
+                    blocking=c_data["blocking"],
+                    evidence_path=c_data.get("evidence_url", ""),
+                    config_path=c_data.get("config_path", ""),
+                )
+                checks.append(
+                    CheckResult(
+                        definition=definition,
+                        status=CheckStatus(c_data["status"]),
+                        message=c_data["message"],
+                        evidence_url=c_data.get("evidence_url", ""),
+                        started_at=datetime.fromisoformat(c_data["started_at"]),
+                        completed_at=(
+                            datetime.fromisoformat(c_data["completed_at"])
+                            if c_data["completed_at"]
+                            else None
+                        ),
+                    )
+                )
+            result.dimensions.append(
+                DimensionScore(
+                    dimension=dim,
+                    score=dim_data["score"],
+                    checks=checks,
+                    blocking_count=dim_data["blocking_count"],
+                )
+            )
+
+        for b_data in last_result_data["blocking_items"]:
+            definition = CheckDefinition(
+                id=b_data["id"],
+                dimension=Dimension(b_data["dimension"]),
+                name=b_data["name"],
+                description=b_data["description"],
+                weight=b_data["weight"],
+                blocking=b_data["blocking"],
+                evidence_path=b_data.get("evidence_url", ""),
+                config_path=b_data.get("config_path", ""),
+            )
+            result.blocking_items.append(
+                CheckResult(
+                    definition=definition,
+                    status=CheckStatus(b_data["status"]),
+                    message=b_data["message"],
+                    evidence_url=b_data.get("evidence_url", ""),
+                    started_at=datetime.fromisoformat(b_data["started_at"]),
+                    completed_at=(
+                        datetime.fromisoformat(b_data["completed_at"])
+                        if b_data["completed_at"]
+                        else None
+                    ),
+                )
+            )
+
+        st.metric("Overall score", f"{result.overall_score:.1f}/100")
+
+        if result.blocking_items:
+            st.error(
+                f"{len(result.blocking_items)} blocking item(s) must be resolved before release."
+            )
+            for item in result.blocking_items:
+                st.markdown(
+                    f"- **{item.definition.name}** ({item.definition.dimension.value}): {item.message}"
+                )
+
+        st.markdown("### Dimension scores")
+        dim_cols = st.columns(len(result.dimensions))
+        for i, dim in enumerate(result.dimensions):
+            with dim_cols[i]:
+                st.metric(
+                    dim.dimension.value.replace("_", " ").title(),
+                    f"{dim.score:.1f}",
+                )
+
+        st.markdown("### Details")
+        for dim in result.dimensions:
+            with st.expander(
+                f"{dim.dimension.value.replace('_', ' ').title()} ({dim.score:.1f})"
+            ):
+                for check in dim.checks:
+                    icon = {
+                        "pass": "✅",
+                        "fail": "❌",
+                        "blocking": "🚫",
+                        "skip": "⏭️",
+                    }.get(check.status.value, "❓")
+                    st.markdown(
+                        f"{icon} **{check.definition.name}** (weight={check.definition.weight:.2f}): "
+                        f"{check.message}"
+                    )
+                    if check.evidence_url or check.definition.evidence_path:
+                        st.caption(
+                            f"Evidence: `{check.evidence_url or check.definition.evidence_path}`"
+                        )
+
+        if export_report and "last_scorecard_md" in st.session_state:
+            md = st.session_state["last_scorecard_md"]
+            st.download_button(
+                label="Download Markdown report",
+                data=md.encode(),
+                file_name=f"scorecard_{last_result_data['run_id']}.md",
+                mime="text/markdown",
+            )
 
 # Footer
 st.markdown("---")

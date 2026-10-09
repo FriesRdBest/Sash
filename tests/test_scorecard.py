@@ -88,4 +88,4 @@ def test_markdown_report_contains_key_sections(engine):
     assert "# Production Readiness Scorecard" in md
     assert "## Blocking items" in md
     assert "## Dimension scores" in md
-    assert "api_contract_tests" in md
+    assert "API contract tests" in md
