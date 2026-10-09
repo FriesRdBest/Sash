@@ -1,0 +1,17 @@
+%% Sash reference architecture — verify this diagram against the current code before release.
+%% Mock/demo boundaries are intentional; this does not assert a live Sinch integration.
+flowchart LR
+    User[Customer or evaluator] --> UI[Streamlit app: app.py]
+    UI --> Qual[Qualification rules]
+    UI --> Workflow[Workflow designer and mock execution]
+    Workflow --> Adapter[Provider abstraction / mock Sinch provider]
+    Adapter --> Events[Normalized event and webhook processing]
+    Events --> Idempotency[Idempotency and ordering logic]
+    Events --> Persistence[(SQLite repositories)]
+    Persistence --> Timeline[Timeline and audit queries]
+    Timeline --> Observe[Observability and scorecard views]
+    UI --> Resilience[Deterministic failure simulator]
+    UI --> Security[Security review]
+    UI --> Handoff[Handoff generator]
+    API[Optional FastAPI service] --> Workflow
+    Secrets[Environment/config boundary] -. optional configuration .-> Adapter
