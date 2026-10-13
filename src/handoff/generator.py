@@ -1,7 +1,7 @@
 """Handoff package generator: operator-ready documentation and artifacts."""
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
@@ -9,7 +9,7 @@ from uuid import uuid4
 @dataclass
 class HandoffPackage:
     run_id: str
-    generated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    generated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     architecture_md: str = ""
     workflow_definition: dict[str, Any] = field(default_factory=dict)
     configuration_guide_md: str = ""

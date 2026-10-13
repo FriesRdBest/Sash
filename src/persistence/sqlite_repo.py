@@ -4,7 +4,7 @@ import json
 import os
 import sqlite3
 import tempfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Generic, TypeVar
 
 T = TypeVar("T")
@@ -49,7 +49,7 @@ class SQLiteRepository(Generic[T]):
         conn = self._get_connection()
         cursor = conn.cursor()
 
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         cursor.execute(
             f"""
             INSERT OR REPLACE INTO {self.table_name} (id, data, created_at, updated_at)
@@ -188,7 +188,7 @@ class AuditRepository:
                 ),
                 audit_data.get("actor", "system"),
                 audit_data.get("correlation_id"),
-                audit_data.get("timestamp", datetime.now(timezone.utc).isoformat()),
+                audit_data.get("timestamp", datetime.now(UTC).isoformat()),
             ),
         )
 

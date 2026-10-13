@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 PHONE_PATTERN = re.compile(r'"phone_number"\s*:\s*"[^"]+"')
 EMAIL_PATTERN = re.compile(r'"email"\s*:\s*"[^"]+"')
 API_KEY_PATTERN = re.compile(r'"api_key"\s*:\s*"[^"]+"')
-AUTH_HEADER_PATTERN = re.compile(r'(Authorization|api-key)\s*:\s*[^\n]+', re.IGNORECASE)
+AUTH_HEADER_PATTERN = re.compile(r"(Authorization|api-key)\s*:\s*[^\n]+", re.IGNORECASE)
 
 
 @dataclass
@@ -56,7 +56,7 @@ def redact_sensitive_data(text: str) -> str:
     text = PHONE_PATTERN.sub('"phone_number": "[REDACTED]"', text)
     text = EMAIL_PATTERN.sub('"email": "[REDACTED]"', text)
     text = API_KEY_PATTERN.sub('"api_key": "[REDACTED]"', text)
-    text = AUTH_HEADER_PATTERN.sub(r'\1: [REDACTED]', text)
+    text = AUTH_HEADER_PATTERN.sub(r"\1: [REDACTED]", text)
     return text
 
 
@@ -102,9 +102,19 @@ class MockSinchProvider:
         latency_ms = (time.perf_counter() - start) * 1000
 
         # Log request/response with redaction
-        req_log = redact_sensitive_data(json.dumps({"channel": request.channel, "to": request.to, "content": request.content}))
+        req_log = redact_sensitive_data(
+            json.dumps(
+                {
+                    "channel": request.channel,
+                    "to": request.to,
+                    "content": request.content,
+                }
+            )
+        )
         resp_log = redact_sensitive_data(
-            json.dumps({"message_id": message_id, "status": "sent", "latency_ms": latency_ms})
+            json.dumps(
+                {"message_id": message_id, "status": "sent", "latency_ms": latency_ms}
+            )
         )
         logger.info(f"[MOCK_SINCH] Request: {req_log}")
         logger.info(f"[MOCK_SINCH] Response: {resp_log}")
@@ -125,7 +135,9 @@ class RealSinchProvider:
         self._api_key = os.getenv("SINCH_API_KEY")
         self._api_secret = os.getenv("SINCH_API_SECRET")
         if not self._api_key or not self._api_secret:
-            raise ProviderConfigurationError("SINCH_API_KEY and SINCH_API_SECRET required")
+            raise ProviderConfigurationError(
+                "SINCH_API_KEY and SINCH_API_SECRET required"
+            )
 
     def send(self, request: ProviderRequest) -> ProviderResponse:
         # Placeholder: real HTTP integration would go here

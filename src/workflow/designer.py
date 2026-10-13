@@ -2,7 +2,7 @@
 
 import json
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -54,8 +54,8 @@ class WorkflowConfig(BaseModel):
     owner: str = ""
     consent_required: bool = True
     steps: list[WorkflowStep] = Field(default_factory=list)
-    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    created_at: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
+    updated_at: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     @field_validator("steps")
     @classmethod
@@ -65,13 +65,15 @@ class WorkflowConfig(BaseModel):
         step_ids = {step.id for step in v}
         for step in v:
             if step.fallback_to and step.fallback_to not in step_ids:
-                raise ValueError(f"Fallback target {step.fallback_to} not found in steps")
+                raise ValueError(
+                    f"Fallback target {step.fallback_to} not found in steps"
+                )
         return v
 
     def bump_version(self):
         """Increment version and update timestamp."""
         self.version += 1
-        self.updated_at = datetime.now(timezone.utc).isoformat()
+        self.updated_at = datetime.now(UTC).isoformat()
 
     def to_json(self, indent: int = 2) -> str:
         """Export workflow as JSON."""
