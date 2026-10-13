@@ -51,6 +51,7 @@ def get_custom_css() -> str:
       --sash-radius-sm: {RADIUS_SM};
       --sash-radius: {RADIUS_MD};
       --sash-radius-lg: {RADIUS_LG};
+      --sash-radius-full: {RADIUS_FULL};
       --sash-shadow-sm: {SHADOW_SM};
       --sash-shadow: {SHADOW_MD};
       --sash-shadow-lg: {SHADOW_LG};
