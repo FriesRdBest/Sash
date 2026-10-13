@@ -20,7 +20,6 @@ from src.styles import (
     COLOR_ERROR,
     COLOR_PRIMARY,
     COLOR_SUCCESS,
-    COLOR_SURFACE,
     COLOR_TEXT_MUTED,
     COLOR_WARNING,
     get_custom_css,
@@ -68,7 +67,6 @@ page = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Version:** v0.18.0")
-st.sidebar.markdown("**Phase:** 18 - Quality, Accessibility & Polish")
 
 # Main content
 if page == "Home":
@@ -77,199 +75,77 @@ if page == "Home":
         "Production readiness and deployment accelerator for programmable customer communications"
     )
 
-    # Status banner
-    status_col1, status_col2 = st.columns([3, 1])
-    with status_col1:
-        st.markdown(
-            f"""
-            <div style="background-color: {COLOR_PRIMARY}10; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid {COLOR_PRIMARY};">
-                <strong>Under Active Development</strong><br>
-                Phase 10: workflow design, mock execution, webhooks, and event/audit timelines available.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with status_col2:
-        st.markdown(
-            """
-            <div style="text-align: right;">
-                <span class="status-badge status-info">v0.10.0</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("---")
-
     # Main content sections
-    st.markdown("## Purpose")
+    purpose_col, scenario_col = st.columns(2, gap="large")
 
-    col1, col2 = st.columns(2)
-
-    with col1:
+    with purpose_col:
         st.markdown(
             """
-            Sash demonstrates how an engineer can:
-            
-            - **Qualify** customer engagements
-            - **Design** API-driven architectures
-            - **Build** resilient communication workflows
-            - **Test** failure modes
-            - **Instrument** operations
-            - **Produce** customer handoff packages
-            
-            Built for the **Senior Forward Deployed Engineer** role at Sinch.
-            """
-        )
-
-    with col2:
-        st.markdown(
-            """
-            ### Flagship Scenario
-            
-            **Aurora Marketplace** user verification:
-            
-            1. SMS primary channel
-            2. WhatsApp or email fallback
-            3. Delivery-status webhooks
-            4. Internal customer database
-            5. Operations dashboard
-            6. Fraud and abuse controls
-            7. Supportable production deployment
-            """
-        )
-
-    st.markdown("---")
-
-    # Feature roadmap
-    st.markdown("## Feature Roadmap")
-
-    roadmap_col1, roadmap_col2, roadmap_col3 = st.columns(3)
-
-    with roadmap_col1:
-        st.markdown(
-            f"""
-            <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">Phase 0-10 Complete</h4>
-                <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Operating charter</li>
-                    <li>Repository foundation</li>
-                    <li>Research and domain model</li>
-                    <li>Architecture and ADRs</li>
-                    <li>Design system</li>
-                    <li><strong>Domain & persistence core</strong></li>
-                    <li><strong>Engagement qualification</strong></li>
-                    <li><strong>Workflow designer</strong></li>
-                    <li><strong>Mock provider integration</strong></li>
-                    <li><strong>Aurora end-to-end happy path</strong></li>
-                    <li><strong>Webhook event engine</strong></li>
-                    <li><strong>Event timeline & audit view</strong></li>
+            <section class="sash-card sash-home-card">
+                <div class="sash-eyebrow">WHAT SASH DOES</div>
+                <h2>Purpose</h2>
+                <p>Sash demonstrates how an engineer can:</p>
+                <ul>
+                    <li><strong>Qualify</strong> customer engagements</li>
+                    <li><strong>Design</strong> API-driven architectures</li>
+                    <li><strong>Build</strong> resilient communication workflows</li>
+                    <li><strong>Test</strong> failure modes</li>
+                    <li><strong>Instrument</strong> operations</li>
+                    <li><strong>Produce</strong> customer handoff packages</li>
                 </ul>
-            </div>
+                <p class="sash-card-footer">Built for the
+                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.</p>
+            </section>
             """,
             unsafe_allow_html=True,
         )
 
-    with roadmap_col2:
+    with scenario_col:
         st.markdown(
-            f"""
-            <div class="sash-card">
-                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">Current Capabilities</h4>
-                <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Retry and fallback policies</li>
-                    <li>Duplicate webhook detection</li>
-                    <li>Dead-letter inspection and replay primitives</li>
-                </ul>
-            </div>
+            """
+            <section class="sash-card sash-home-card">
+                <div class="sash-eyebrow">REFERENCE JOURNEY</div>
+                <h2>Flagship Scenario</h2>
+                <p><strong>Aurora Marketplace</strong> user verification:</p>
+                <ol>
+                    <li>SMS primary channel</li>
+                    <li>WhatsApp or email fallback</li>
+                    <li>Delivery-status webhooks</li>
+                    <li>Internal customer database</li>
+                    <li>Operations dashboard</li>
+                    <li>Fraud and abuse controls</li>
+                    <li>Supportable production deployment</li>
+                </ol>
+            </section>
             """,
             unsafe_allow_html=True,
         )
-
-    with roadmap_col3:
-        st.markdown(
-            f"""
-            <div class="sash-card">
-                <h4 style="color: {COLOR_TEXT_MUTED}; margin-top: 0;">Planned</h4>
-                <ul style="margin-bottom: 0; padding-left: 1.25rem;">
-                    <li>Failure and resilience lab</li>
-                    <li>Production-readiness scorecard</li>
-                    <li>Observability console</li>
-                    <li>Handoff package generator</li>
-                </ul>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("---")
 
     # Quick links
     st.markdown("## Quick Links")
-
-    link_col1, link_col2, link_col3, link_col4 = st.columns(4)
-
-    with link_col1:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>README</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col2:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>Changelog</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col3:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>Architecture</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col4:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>Research</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("---")
-
-    # Next steps
-    st.markdown("## Next Steps")
-
     st.markdown(
-        f"""
-        <div class="sash-card">
-            <p><strong>Available now:</strong></p>
-            <ol>
-                <li>Workflow designer with JSON export</li>
-                <li>Mock Sinch provider execution</li>
-                <li>Event timeline and correlation audit view</li>
-            </ol>
-            <p style="margin-top: 1rem; color: {COLOR_TEXT_MUTED};">
-                This application will grow rapidly. Check back frequently to see new features being added.
-            </p>
+        """
+        <div class="sash-quick-links">
+            <div class="sash-card sash-link-card">
+                <strong>README</strong>
+                <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md"
+                   target="_blank" rel="noopener noreferrer">View on GitHub</a>
+            </div>
+            <div class="sash-card sash-link-card">
+                <strong>Changelog</strong>
+                <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md"
+                   target="_blank" rel="noopener noreferrer">View on GitHub</a>
+            </div>
+            <div class="sash-card sash-link-card">
+                <strong>Architecture</strong>
+                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture"
+                   target="_blank" rel="noopener noreferrer">View docs</a>
+            </div>
+            <div class="sash-card sash-link-card">
+                <strong>Research</strong>
+                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research"
+                   target="_blank" rel="noopener noreferrer">View docs</a>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1515,7 +1391,7 @@ st.markdown(
     f"""
     <div style="text-align: center; color: {COLOR_TEXT_MUTED}; font-size: 0.875rem; padding: 1rem;">
         <strong>Sash</strong> — Production readiness and deployment accelerator<br>
-        Built for the Senior Forward Deployed Engineer role at Sinch<br>
+        Built for the Senior Forward Deployed Engineer role at Sinch by Robin Sylvester.<br>
         <a href="https://github.com/FriesRdBest/Sash" style="color: {COLOR_PRIMARY};">View source on GitHub</a>
     </div>
     """,
