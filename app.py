@@ -630,12 +630,12 @@ elif page == "Run Workflow":
             ]
 
             st.markdown("### Events and latency")
-            st.dataframe(event_rows, use_container_width=True)
+            st.dataframe(event_rows, width="stretch")
 
             st.markdown("### Audit trail")
             st.dataframe(
                 get_audit_timeline(session.correlation_id),
-                use_container_width=True,
+                width="stretch",
             )
 
             st.info(
@@ -709,7 +709,7 @@ elif page == "Event Timeline":
         st.markdown("### State-transition history")
         transitions = get_state_transitions(correlation_id)
         if transitions:
-            st.dataframe(transitions, use_container_width=True)
+            st.dataframe(transitions, width="stretch")
         else:
             st.info("No state transitions were found.")
 
@@ -729,7 +729,7 @@ elif page == "Event Timeline":
             status=None if status == "all" else status,
         )
         st.write(f"Found {len(results)} event(s).")
-        st.dataframe(results, use_container_width=True)
+        st.dataframe(results, width="stretch")
 
 elif page == "Failure Lab":
     st.title("🧪 Failure & Resilience Laboratory")
@@ -799,13 +799,13 @@ elif page == "Failure Lab":
         run_scenario = st.button(
             "Run selected simulation",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         )
 
     with controls_right:
         run_all = st.button(
             "Run all scenarios",
-            use_container_width=True,
+            width="stretch",
         )
 
     simulator = FailureSimulator(queue_threshold=3)
@@ -836,7 +836,7 @@ elif page == "Failure Lab":
             }
             for result in results
         ]
-        st.dataframe(result_rows, use_container_width=True)
+        st.dataframe(result_rows, width="stretch")
 
         for result in results:
             icon = "✅" if result["passed"] else "❌"
@@ -884,13 +884,11 @@ elif page == "Scorecard":
     col_run, col_export = st.columns([1, 1])
 
     with col_run:
-        run_checks = st.button(
-            "Run scorecard", type="primary", use_container_width=True
-        )
+        run_checks = st.button("Run scorecard", type="primary", width="stretch")
 
     with col_export:
         export_format = st.selectbox("Export format", ["json", "markdown"])
-        export_report = st.button("Export report", use_container_width=True)
+        export_report = st.button("Export report", width="stretch")
 
     if run_checks:
         # Demo: simulate one blocking failure to illustrate behavior.
@@ -1188,7 +1186,7 @@ elif page == "Observability":
 
         st.markdown("### Recent events")
         if snap_data["recent_events"]:
-            st.dataframe(snap_data["recent_events"], use_container_width=True)
+            st.dataframe(snap_data["recent_events"], width="stretch")
         else:
             st.info("No recent events in this window.")
 
