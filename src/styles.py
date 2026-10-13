@@ -463,6 +463,34 @@ def get_custom_css() -> str:
         margin-bottom: 0.75rem;
     }}
 
+    /* Phase 5: Security Review refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
