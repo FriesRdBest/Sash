@@ -38,7 +38,10 @@ def test_ownership_matrix_has_table(handoff):
 
 
 def test_rollback_plan_has_steps(handoff):
-    assert "Steps" in handoff.rollback_plan_md or "step" in handoff.rollback_plan_md.lower()
+    assert (
+        "Steps" in handoff.rollback_plan_md
+        or "step" in handoff.rollback_plan_md.lower()
+    )
 
 
 def test_metadata_is_present(handoff):

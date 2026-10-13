@@ -1,7 +1,7 @@
 """Observability console: operator-facing health and next actions."""
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from src.timeline.queries import search_events
@@ -34,7 +34,7 @@ class Recommendation:
 
 @dataclass
 class ObservabilitySnapshot:
-    generated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    generated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     kpis: list[KPI] = field(default_factory=list)
     alerts: list[Alert] = field(default_factory=list)
     recommendations: list[Recommendation] = field(default_factory=list)
@@ -59,7 +59,7 @@ class ObservabilityEngine:
 
         If correlation_id is set, focus on that journey; otherwise, show system-wide health.
         """
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         # Gather events
         if self.correlation_id:

@@ -176,9 +176,11 @@ def get_custom_css() -> str:
 
 def page_config(title: str = "Sash", layout: str = "wide") -> None:
     import streamlit as st
+
     st.set_page_config(page_title=title, page_icon="", layout=layout)
 
 
 def local_css() -> None:
     import streamlit as st
+
     st.markdown(get_custom_css(), unsafe_allow_html=True)

@@ -1,6 +1,6 @@
 """Unit tests for domain models and transitions."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from src.domain.clock import DeterministicClock
 from src.domain.models import (
@@ -131,13 +131,13 @@ class TestDeterministicClock:
     """Tests for deterministic clock."""
 
     def test_fixed_time(self):
-        fixed_time = datetime(2024, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+        fixed_time = datetime(2024, 1, 1, 12, 0, 0, tzinfo=UTC)
         clock = DeterministicClock(fixed_time)
 
         assert clock.now() == fixed_time
 
     def test_advance_time(self):
-        clock = DeterministicClock(datetime(2024, 1, 1, 12, 0, 0, tzinfo=timezone.utc))
+        clock = DeterministicClock(datetime(2024, 1, 1, 12, 0, 0, tzinfo=UTC))
         clock.advance(3600)  # 1 hour
 
-        assert clock.now() == datetime(2024, 1, 1, 13, 0, 0, tzinfo=timezone.utc)
+        assert clock.now() == datetime(2024, 1, 1, 13, 0, 0, tzinfo=UTC)

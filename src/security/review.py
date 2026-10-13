@@ -1,7 +1,7 @@
 """Security and compliance review: trust boundaries, privacy, secrets, and controls."""
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 from uuid import uuid4
@@ -52,7 +52,7 @@ class PIIClass:
 @dataclass
 class SecurityReviewResult:
     run_id: str
-    generated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    generated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     threats: list[Threat] = field(default_factory=list)
     controls: list[Control] = field(default_factory=list)
     pii_classes: list[PIIClass] = field(default_factory=list)

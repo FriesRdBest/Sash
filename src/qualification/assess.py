@@ -1,7 +1,7 @@
 """Product-fit assessment and decision engine for engagement qualification."""
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from src.qualification.rules import (
@@ -78,7 +78,7 @@ class QualificationAssessment:
                 }
                 for r in self.rule_results
             ],
-            "assessed_at": datetime.now(timezone.utc).isoformat(),
+            "assessed_at": datetime.now(UTC).isoformat(),
         }
 
     def to_json(self, indent: int = 2) -> str:

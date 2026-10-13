@@ -5,7 +5,7 @@ import hmac
 import json
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 
 from src.domain.models import AuditRecord, EventStatus
@@ -56,7 +56,7 @@ class DeadLetterEntry:
     reason: str
     attempts: int
     raw_payload: dict[str, Any]
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
 
 # In-memory stores for demo (could be SQLite-backed)
@@ -75,7 +75,9 @@ def validate_webhook_payload(payload: dict[str, Any]) -> None:
         raise InvalidPayloadError("Timestamp must be ISO string", field="timestamp")
 
 
-def verify_signature(payload_bytes: bytes, signature: str | None, secret: str = "mock-secret") -> bool:
+def verify_signature(
+    payload_bytes: bytes, signature: str | None, secret: str = "mock-secret"
+) -> bool:
     """Verify webhook signature (HMAC-SHA256). Mockable for tests."""
     if not signature:
         raise SignatureValidationError("Missing signature header")
@@ -91,7 +93,7 @@ def normalize_event(payload: dict[str, Any]) -> NormalizedEvent:
 
     # Parse timestamp
     try:
-        ts = datetime.fromisoformat(payload["timestamp"].replace("Z", "+00:00"))
+        ts = datetime.fromisoformat(payload["timestamp"])
     except ValueError:
         raise InvalidPayloadError("Invalid timestamp format", field="timestamp")
 
@@ -124,26 +126,32 @@ def check_idempotency(event_id: str) -> None:
         raise DuplicateEventError(event_id)
 
 
-def record_idempotency(event: NormalizedEvent, status: str, error: str | None = None) -> None:
+def record_idempotency(
+    event: NormalizedEvent, status: str, error: str | None = None
+) -> None:
     """Record event as processed in idempotency store."""
     _idempotency_store[event.id] = IdempotencyRecord(
         event_id=event.id,
         correlation_id=event.correlation_id,
-        processed_at=datetime.now(timezone.utc),
+        processed_at=datetime.now(UTC),
         status=status,
         attempts=1,
         last_error=error,
     )
 
 
-def check_ordering(event: NormalizedEvent, policy: Literal["strict", "relaxed"] = "relaxed") -> None:
+def check_ordering(
+    event: NormalizedEvent, policy: Literal["strict", "relaxed"] = "relaxed"
+) -> None:
     """Check event ordering; raise OutOfOrderEventError if violated (strict mode)."""
     last_seq = _event_sequence.get(event.correlation_id, 0)
     if event.sequence <= last_seq:
         if policy == "strict":
             raise OutOfOrderEventError(event.id, last_seq + 1, event.sequence)
         else:
-            logger.warning(f"[WEBHOOK] Out-of-order event {event.id} (seq {event.sequence} <= {last_seq}), accepting in relaxed mode")
+            logger.warning(
+                f"[WEBHOOK] Out-of-order event {event.id} (seq {event.sequence} <= {last_seq}), accepting in relaxed mode"
+            )
     _event_sequence[event.correlation_id] = max(last_seq, event.sequence)
 
 
@@ -217,7 +225,9 @@ def process_webhook(
     # Mark as processed
     record_idempotency(event, status="processed")
 
-    logger.info(f"[WEBHOOK] Processed event {event.id} type={event.event_type} status={event.status.value}")
+    logger.info(
+        f"[WEBHOOK] Processed event {event.id} type={event.event_type} status={event.status.value}"
+    )
     return event
 
 
@@ -233,7 +243,7 @@ def simulate_failed_event(
         "event_id": str(uuid4()),
         "event_type": event_type,
         "correlation_id": correlation_id,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "provider": "mock",
         "status": "failed",
         "sequence": _event_sequence.get(correlation_id, 0) + 1,

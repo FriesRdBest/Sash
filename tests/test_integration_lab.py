@@ -39,7 +39,9 @@ class TestRedactSensitiveData:
 class TestMockSinchProvider:
     def test_successful_send(self):
         provider = MockSinchProvider(mode="mock")
-        request = ProviderRequest(channel="sms", to="+1234567890", content={"body": "Hello"})
+        request = ProviderRequest(
+            channel="sms", to="+1234567890", content={"body": "Hello"}
+        )
         response = provider.send(request)
         assert response.success is True
         assert response.message_id is not None
@@ -47,7 +49,9 @@ class TestMockSinchProvider:
 
     def test_timeout_error(self):
         provider = MockSinchProvider(mode="mock")
-        request = ProviderRequest(channel="sms", to="+1234567890", content={}, timeout_seconds=0)
+        request = ProviderRequest(
+            channel="sms", to="+1234567890", content={}, timeout_seconds=0
+        )
         with pytest.raises(ProviderTimeoutError):
             provider.send(request)
 

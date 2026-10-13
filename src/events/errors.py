@@ -11,7 +11,9 @@ class InvalidPayloadError(EventProcessingError):
     def __init__(self, message: str, field: str | None = None):
         self.message = message
         self.field = field
-        super().__init__(f"Invalid payload: {message}" + (f" (field: {field})" if field else ""))
+        super().__init__(
+            f"Invalid payload: {message}" + (f" (field: {field})" if field else "")
+        )
 
 
 class SignatureValidationError(EventProcessingError):
@@ -37,7 +39,9 @@ class OutOfOrderEventError(EventProcessingError):
         self.event_id = event_id
         self.expected_sequence = expected_sequence
         self.actual_sequence = actual_sequence
-        super().__init__(f"Out-of-order event {event_id}: expected seq {expected_sequence}, got {actual_sequence}")
+        super().__init__(
+            f"Out-of-order event {event_id}: expected seq {expected_sequence}, got {actual_sequence}"
+        )
 
 
 class DeadLetterEventError(EventProcessingError):
@@ -47,4 +51,6 @@ class DeadLetterEventError(EventProcessingError):
         self.event_id = event_id
         self.reason = reason
         self.attempts = attempts
-        super().__init__(f"Event {event_id} dead-lettered after {attempts} attempts: {reason}")
+        super().__init__(
+            f"Event {event_id} dead-lettered after {attempts} attempts: {reason}"
+        )
