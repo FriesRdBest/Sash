@@ -69,6 +69,22 @@ page = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Version:** v0.18.0")
 
+# Application footer
+st.markdown(
+    """
+    <footer class="sash-app-footer">
+        <span class="sash-footer-product">Sash</span>
+        <span class="sash-footer-separator">—</span>
+        <span>Production readiness and deployment accelerator</span>
+        <span class="sash-footer-separator">·</span>
+        <span>Built for the Senior Forward Deployed Engineer role at Sinch</span>
+        <span class="sash-footer-separator">·</span>
+        <span class="sash-footer-byline">by Robin Sylvester</span>
+    </footer>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Main content
 if page == "Home":
     st.title("Sash")
@@ -95,8 +111,7 @@ if page == "Home":
                     <li><strong>Produce</strong> customer handoff packages</li>
                 </ul>
                 <p class="sash-card-footer">Built for the
-                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.
-                <span class="sash-byline">by Robin Sylvester</span></p>
+                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.</p>
             </section>
             """,
             unsafe_allow_html=True,

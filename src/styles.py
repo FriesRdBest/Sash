@@ -693,14 +693,50 @@ def get_custom_css() -> str:
     }}
 
 
-    .sash-byline {{
-      color: var(--sash-muted);
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      margin-top: 0.42rem;
-      text-transform: uppercase;
+
+
+    .sash-app-footer {{
+      align-items: center;
+      background: rgba(0,0,0,0.94);
+      border: 1px solid rgba(254,189,60,0.42);
+      border-radius: 1rem;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+      color: rgba(255,255,255,0.92);
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      font-weight: 560;
+      gap: 0.45rem;
+      justify-content: center;
+      letter-spacing: 0.005em;
+      line-height: 1.55;
+      margin: 2rem 0 1.25rem;
+      padding: 0.95rem 1.2rem;
+      text-align: center;
+    }}
+
+    .sash-footer-product,
+    .sash-footer-byline {{
+      color: #FEBD3C;
+      font-weight: 760;
+    }}
+
+    .sash-footer-separator {{
+      color: rgba(254,189,60,0.70);
+    }}
+
+    @media (max-width: 640px) {{
+      .sash-app-footer {{
+        align-items: center;
+        flex-direction: column;
+        gap: 0.18rem;
+        margin: 1.5rem 0 .75rem;
+        padding: 1rem;
+      }}
+
+      .sash-footer-separator {{
+        display: none;
+      }}
     }}
 
     </style>
