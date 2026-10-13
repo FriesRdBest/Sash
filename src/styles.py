@@ -149,6 +149,404 @@ def get_custom_css() -> str:
       overflow-x: auto;
     }}
 
+    /* Phase 3: application shell and navigation refinement */
+    [data-testid="stSidebar"] [role="radiogroup"] label {{
+      transition: background-color 120ms ease, color 120ms ease;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {{
+      background: var(--sash-periwinkle);
+      color: var(--sash-indigo);
+      box-shadow: inset 0 0 0 1px rgba(29, 34, 64, 0.18);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {{
+      color: var(--sash-indigo);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:focus-within {{
+      outline: 2px solid var(--sash-blue);
+      outline-offset: 2px;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:hover {{
+      background: #EEF1F8;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked):hover {{
+      background: var(--sash-periwinkle);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label p {{
+      font-weight: 500;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {{
+      font-weight: 650;
+    }}
+
+    [data-testid="stAppViewContainer"] :focus-visible,
+    [data-testid="stSidebar"] :focus-visible {{
+      outline: 2px solid var(--sash-blue);
+      outline-offset: 2px;
+    }}
+
+    /* Phase 4: shared visual component refinement */
+    .stAlert {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.6rem;
+      box-shadow: 0 2px 8px rgba(29, 34, 64, 0.05);
+    }}
+
+    [data-testid="stExpander"] {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.6rem;
+      background: var(--sash-surface);
+      box-shadow: 0 2px 8px rgba(29, 34, 64, 0.04);
+    }}
+
+    [data-testid="stExpander"] summary {{
+      border-radius: 0.6rem;
+    }}
+
+    [data-testid="stExpander"] summary:hover {{
+      background: #EEF1F8;
+    }}
+
+    [data-testid="stDataFrame"],
+    [data-testid="stTable"] {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.6rem;
+      overflow: hidden;
+    }}
+
+    [data-testid="stForm"] {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.85rem;
+      background: var(--sash-surface);
+      padding: 1rem;
+    }}
+
+    [data-testid="stForm"] label,
+    [data-testid="stTextInput"] label,
+    [data-testid="stTextArea"] label,
+    [data-testid="stSelectbox"] label,
+    [data-testid="stMultiselect"] label,
+    [data-testid="stNumberInput"] label {{
+      color: var(--sash-text);
+      font-weight: 550;
+    }}
+
+    [data-testid="stTextInput"] input,
+    [data-testid="stTextArea"] textarea,
+    [data-testid="stNumberInput"] input,
+    [data-testid="stSelectbox"] div[data-baseweb="select"],
+    [data-testid="stMultiselect"] div[data-baseweb="select"] {{
+      border-radius: 0.5rem;
+    }}
+
+    [data-testid="stTextInput"] input:focus-visible,
+    [data-testid="stTextArea"] textarea:focus-visible,
+    [data-testid="stNumberInput"] input:focus-visible {{
+      outline: 2px solid var(--sash-blue);
+      outline-offset: 2px;
+    }}
+
+    [data-testid="stButton"] button[kind="secondary"],
+    [data-testid="stDownloadButton"] button {{
+      background: var(--sash-surface);
+      color: var(--sash-indigo);
+      border: 1px solid var(--sash-border);
+    }}
+
+    [data-testid="stButton"] button[kind="secondary"]:hover,
+    [data-testid="stDownloadButton"] button:hover {{
+      background: #EEF1F8;
+      border-color: var(--sash-periwinkle);
+    }}
+
+    .empty-state {{
+      box-shadow: 0 2px 8px rgba(29, 34, 64, 0.04);
+    }}
+
+    .empty-state-icon {{
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }}
+
+    /* Phase 5: Home and Domain Models page refinement */
+    [data-testid="stMainBlockContainer"] > div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlock"] {{
+      gap: 0.75rem;
+    }}
+
+    .sash-card h4 {{
+      margin-bottom: 0.65rem;
+    }}
+
+    .sash-card ul,
+    .sash-card ol {{
+      margin-top: 0.35rem;
+      margin-bottom: 0;
+      padding-left: 1.25rem;
+    }}
+
+    .sash-card li {{
+      margin-bottom: 0.3rem;
+    }}
+
+    [data-testid="stMarkdown"] hr {{
+      border-color: var(--sash-border);
+      margin: 1.25rem 0;
+    }}
+
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] > div[data-testid="stVerticalBlock"] > div[data-testid="stMarkdown"] > div[data-testid="stMarkdownContainer"] > div.sash-card {{
+      height: 100%;
+    }}
+
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] > div[data-testid="stVerticalBlock"] > div[data-testid="stMarkdown"] > div[data-testid="stMarkdownContainer"] > div[style*="text-align: center"] {{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }}
+
+    /* Phase 5: Qualification and Engagements page refinement */
+    [data-testid="stForm"] {{
+      margin-bottom: 1.25rem;
+    }}
+
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] {{
+      gap: 1rem;
+    }}
+
+    .metric-card {{
+      border: 1px solid rgba(29, 34, 64, 0.12);
+      border-radius: 0.85rem;
+      box-shadow: 0 6px 18px rgba(29, 34, 64, 0.09);
+    }}
+
+    .metric-card .metric-value,
+    .metric-card .metric-label {{
+      color: #FFFFFF;
+    }}
+
+    .metric-card .metric-label {{
+      opacity: 0.92;
+    }}
+
+    .sash-card h4 {{
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }}
+
+    .sash-card p {{
+      margin-top: 0.35rem;
+      margin-bottom: 0.35rem;
+    }}
+
+    .sash-card .status-badge {{
+      margin-top: 0.35rem;
+    }}
+
+    .empty-state {{
+      margin: 0.5rem 0 1rem;
+    }}
+
+    /* Phase 5: Workflows and Run Workflow page refinement */
+    [data-testid="stMarkdownContainer"] div.sash-card + div.sash-card {{
+      margin-top: 0.75rem;
+    }}
+
+    [data-testid="stForm"] {{
+      margin-bottom: 1.5rem;
+    }}
+
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] {{
+      gap: 1rem;
+    }}
+
+    [data-testid="stMarkdownContainer"] h3 {{
+      margin-top: 1.5rem;
+      margin-bottom: 0.65rem;
+    }}
+
+    [data-testid="stDataFrame"] {{
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }}
+
+    [data-testid="stInfo"] {{
+      margin-top: 1rem;
+    }}
+
+    /* Phase 5: Event Timeline and Failure Lab refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
+    /* Phase 5: Scorecard refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
+    /* Phase 5: Observability refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
+    /* Phase 5: Security Review refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
+    /* Phase 5: AI Review refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
+    /* Phase 5: Handoff Package refinement */
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] h2 {{
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {{
+        gap: 0.75rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stMetric"] {{
+        padding: 0.75rem 0.875rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stDataFrame"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stButton"] {{
+        margin-top: 0.25rem;
+    }}
+
+    section[data-testid="stSidebar"] + div [data-testid="stVerticalBlock"] [data-testid="stAlert"] {{
+        margin-top: 0.5rem;
+        margin-bottom: 0.75rem;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
