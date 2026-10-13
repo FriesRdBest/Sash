@@ -692,6 +692,17 @@ def get_custom_css() -> str:
       .sash-card {{ background: #FFF7E5; }}
     }}
 
+
+    .sash-byline {{
+      color: var(--sash-muted);
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-top: 0.42rem;
+      text-transform: uppercase;
+    }}
+
     </style>
     """
 

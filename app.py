@@ -95,7 +95,8 @@ if page == "Home":
                     <li><strong>Produce</strong> customer handoff packages</li>
                 </ul>
                 <p class="sash-card-footer">Built for the
-                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.</p>
+                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.
+                <span class="sash-byline">by Robin Sylvester</span></p>
             </section>
             """,
             unsafe_allow_html=True,
