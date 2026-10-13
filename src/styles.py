@@ -562,6 +562,136 @@ def get_custom_css() -> str:
         transition-duration: 0.01ms !important;
       }}
     }}
+
+    /* Amberglass surface and responsive polish */
+    :root {{
+      --sash-shadow-sm:
+        inset 0 1px 0 rgba(255,255,255,.85),
+        inset 0 -1px 0 rgba(108,68,34,.08),
+        0 8px 20px rgba(82,49,16,.10);
+      --sash-shadow:
+        inset 0 1px 0 rgba(255,255,255,.90),
+        0 14px 32px rgba(82,49,16,.15);
+    }}
+
+    [data-testid="stMainBlockContainer"] {{
+      padding: clamp(1.25rem,3vw,3rem) clamp(1rem,3vw,3rem) 3rem;
+    }}
+
+    .sash-card,
+    [data-testid="stMetric"],
+    [data-testid="stForm"],
+    [data-testid="stExpander"] {{
+      border-color: #B98A68;
+      border-radius: 1.25rem;
+      box-shadow: var(--sash-shadow-sm);
+    }}
+
+    .sash-card {{
+      background: linear-gradient(
+        145deg, rgba(255,252,243,.86), rgba(255,241,210,.74)
+      );
+      padding: clamp(1.25rem,2.4vw,2rem);
+      margin: 0 0 1.25rem;
+    }}
+
+    .sash-card:hover,
+    [data-testid="stMetric"]:hover {{
+      border-color: #B98A68;
+      transform: none;
+      box-shadow: var(--sash-shadow);
+    }}
+
+    .sash-home-card {{
+      box-sizing: border-box;
+      height: 100%;
+    }}
+
+    .sash-home-card h2 {{
+      font-size: clamp(1.5rem,2.2vw,2rem);
+      margin: .55rem 0 1rem;
+      padding: 0;
+      border: 0;
+      line-height: 1.2;
+    }}
+
+    .sash-eyebrow {{
+      color: #4B3529;
+      font-size: .72rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      line-height: 1.5;
+    }}
+
+    .sash-home-card p {{ margin: 0 0 .8rem; }}
+    .sash-home-card ul,
+    .sash-home-card ol {{ padding-left: 1.3rem; margin: 0; }}
+    .sash-home-card li {{ padding-left: .15rem; margin-bottom: .55rem; }}
+
+    .sash-home-card .sash-card-footer {{
+      border-top: 1px solid rgba(185,138,104,.55);
+      margin: 1.25rem 0 0;
+      padding-top: 1rem;
+    }}
+
+    [data-testid="stMarkdownContainer"] > div[style*="text-align: center"] {{
+      background: linear-gradient(
+        145deg, rgba(255,252,243,.86), rgba(255,241,210,.74)
+      ) !important;
+      border: 1px solid #B98A68 !important;
+      border-radius: 1.25rem !important;
+      padding: 1.5rem !important;
+      box-shadow: var(--sash-shadow-sm);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }}
+
+    [data-testid="stHorizontalBlock"] {{
+      gap: clamp(1rem,2vw,1.75rem);
+      align-items: stretch;
+    }}
+
+    [data-testid="stColumn"],
+    [data-testid="column"] {{
+      min-width: 0;
+    }}
+
+    [data-testid="stSidebar"] :focus-visible {{
+      outline-color: #FEBD3C !important;
+    }}
+
+    [data-testid="stButton"] button[kind="primary"] p,
+    [data-testid="stFormSubmitButton"] button[kind="primary"] p,
+    [data-testid="stTabs"] [aria-selected="true"] p {{
+      color: #FFFFFF;
+    }}
+
+    @media (max-width: 760px) {{
+      [data-testid="stMainBlockContainer"] {{
+        padding: 1.25rem 1rem 2rem;
+      }}
+
+      [data-testid="stHorizontalBlock"] {{
+        flex-direction: column;
+        gap: 1rem;
+      }}
+
+      [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+      [data-testid="stHorizontalBlock"] > [data-testid="column"] {{
+        width: 100% !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+      }}
+
+      .sash-home-card {{ height: auto; }}
+      .sash-card {{ padding: 1.25rem; margin-bottom: .5rem; }}
+      h1 {{ font-size: 2.1rem; }}
+    }}
+
+    @supports not (backdrop-filter: blur(1px)) {{
+      .sash-card {{ background: #FFF7E5; }}
+    }}
+
     </style>
     """
 

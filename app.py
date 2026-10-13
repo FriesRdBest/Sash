@@ -68,7 +68,6 @@ page = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Version:** v0.18.0")
-st.sidebar.markdown("**Phase:** 18 - Quality, Accessibility & Polish")
 
 # Main content
 if page == "Home":
@@ -78,44 +77,50 @@ if page == "Home":
     )
 
     # Main content sections
-    st.markdown("## Purpose")
+    purpose_col, scenario_col = st.columns(2, gap="large")
 
-    col1, col2 = st.columns(2)
-
-    with col1:
+    with purpose_col:
         st.markdown(
             """
-            Sash demonstrates how an engineer can:
-
-            - **Qualify** customer engagements
-            - **Design** API-driven architectures
-            - **Build** resilient communication workflows
-            - **Test** failure modes
-            - **Instrument** operations
-            - **Produce** customer handoff packages
-
-            Built for the **Senior Forward Deployed Engineer** role at Sinch.
-            """
+            <section class="sash-card sash-home-card">
+                <div class="sash-eyebrow">WHAT SASH DOES</div>
+                <h2>Purpose</h2>
+                <p>Sash demonstrates how an engineer can:</p>
+                <ul>
+                    <li><strong>Qualify</strong> customer engagements</li>
+                    <li><strong>Design</strong> API-driven architectures</li>
+                    <li><strong>Build</strong> resilient communication workflows</li>
+                    <li><strong>Test</strong> failure modes</li>
+                    <li><strong>Instrument</strong> operations</li>
+                    <li><strong>Produce</strong> customer handoff packages</li>
+                </ul>
+                <p class="sash-card-footer">Built for the
+                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.</p>
+            </section>
+            """,
+            unsafe_allow_html=True,
         )
 
-    with col2:
+    with scenario_col:
         st.markdown(
             """
-            ### Flagship Scenario
-
-            **Aurora Marketplace** user verification:
-
-            1. SMS primary channel
-            2. WhatsApp or email fallback
-            3. Delivery-status webhooks
-            4. Internal customer database
-            5. Operations dashboard
-            6. Fraud and abuse controls
-            7. Supportable production deployment
-            """
+            <section class="sash-card sash-home-card">
+                <div class="sash-eyebrow">REFERENCE JOURNEY</div>
+                <h2>Flagship Scenario</h2>
+                <p><strong>Aurora Marketplace</strong> user verification:</p>
+                <ol>
+                    <li>SMS primary channel</li>
+                    <li>WhatsApp or email fallback</li>
+                    <li>Delivery-status webhooks</li>
+                    <li>Internal customer database</li>
+                    <li>Operations dashboard</li>
+                    <li>Fraud and abuse controls</li>
+                    <li>Supportable production deployment</li>
+                </ol>
+            </section>
+            """,
+            unsafe_allow_html=True,
         )
-
-    st.markdown("---")
 
     # Quick links
     st.markdown("## Quick Links")
