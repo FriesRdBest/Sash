@@ -739,6 +739,42 @@ def get_custom_css() -> str:
       }}
     }}
 
+
+    /* Dedicated Quick Links grid: four desktop cards, stacked mobile cards. */
+    .sash-quick-links {{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(.75rem, 1.5vw, 1.25rem);
+      margin-bottom: 1.5rem;
+      width: 100%;
+    }}
+
+    .sash-quick-links .sash-link-card {{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      box-sizing: border-box;
+      min-width: 0;
+      min-height: 7rem;
+      margin: 0;
+      padding: 1.25rem .75rem;
+      text-align: center;
+    }}
+
+    @media (max-width: 600px) {{
+      .sash-quick-links {{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }}
+    }}
+
+    @media (max-width: 380px) {{
+      .sash-quick-links {{
+        grid-template-columns: minmax(0, 1fr);
+      }}
+    }}
+
     </style>
     """
 

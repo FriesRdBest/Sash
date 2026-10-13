@@ -69,22 +69,6 @@ page = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Version:** v0.18.0")
 
-# Application footer
-st.markdown(
-    """
-    <footer class="sash-app-footer">
-        <span class="sash-footer-product">Sash</span>
-        <span class="sash-footer-separator">—</span>
-        <span>Production readiness and deployment accelerator</span>
-        <span class="sash-footer-separator">·</span>
-        <span>Built for the Senior Forward Deployed Engineer role at Sinch</span>
-        <span class="sash-footer-separator">·</span>
-        <span class="sash-footer-byline">by Robin Sylvester</span>
-    </footer>
-    """,
-    unsafe_allow_html=True,
-)
-
 # Main content
 if page == "Home":
     st.title("Sash")
@@ -140,52 +124,33 @@ if page == "Home":
 
     # Quick links
     st.markdown("## Quick Links")
-
-    link_col1, link_col2, link_col3, link_col4 = st.columns(4)
-
-    with link_col1:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>README</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
+    st.markdown(
+        """
+        <div class="sash-quick-links">
+            <div class="sash-card sash-link-card">
+                <strong>README</strong>
+                <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md"
+                   target="_blank" rel="noopener noreferrer">View on GitHub</a>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col2:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>Changelog</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
+            <div class="sash-card sash-link-card">
+                <strong>Changelog</strong>
+                <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md"
+                   target="_blank" rel="noopener noreferrer">View on GitHub</a>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col3:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>Architecture</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
+            <div class="sash-card sash-link-card">
+                <strong>Architecture</strong>
+                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture"
+                   target="_blank" rel="noopener noreferrer">View docs</a>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with link_col4:
-        st.markdown(
-            f"""
-            <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <strong>Research</strong><br>
-                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
+            <div class="sash-card sash-link-card">
+                <strong>Research</strong>
+                <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research"
+                   target="_blank" rel="noopener noreferrer">View docs</a>
             </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 elif page == "Domain Models":
     st.title("Domain Models")
@@ -1427,7 +1392,7 @@ st.markdown(
     f"""
     <div style="text-align: center; color: {COLOR_TEXT_MUTED}; font-size: 0.875rem; padding: 1rem;">
         <strong>Sash</strong> — Production readiness and deployment accelerator<br>
-        Built for the Senior Forward Deployed Engineer role at Sinch<br>
+        Built for the Senior Forward Deployed Engineer role at Sinch by Robin Sylvester.<br>
         <a href="https://github.com/FriesRdBest/Sash" style="color: {COLOR_PRIMARY};">View source on GitHub</a>
     </div>
     """,
