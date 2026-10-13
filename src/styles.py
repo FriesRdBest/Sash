@@ -1,4 +1,5 @@
-# Phase 3 light-glass design system for Sash.
+# Phase 4 shared visual component refinement for Sash.
+# Builds on the Phase 3 light-glass design foundation.
 COLOR_PRIMARY = "#3A6FF3"
 COLOR_PRIMARY_LIGHT = "#CED5E8"
 COLOR_PRIMARY_DARK = "#1D2240"
@@ -84,13 +85,15 @@ def get_custom_css() -> str:
 
     h2 {{
       font-size: clamp(1.5rem, 2.8vw, 2.15rem);
-      margin-top: 1.9rem;
-      margin-bottom: 0.65rem;
+      margin-top: 2rem;
+      margin-bottom: 0.7rem;
+      padding-bottom: 0.55rem;
+      border-bottom: 1px solid rgba(206, 213, 232, 0.80);
     }}
 
     h3 {{
       font-size: 1.25rem;
-      margin-top: 1.35rem;
+      margin-top: 1.4rem;
       margin-bottom: 0.55rem;
     }}
 
@@ -130,6 +133,8 @@ def get_custom_css() -> str:
       font-size: 1.55rem;
       letter-spacing: -0.05em;
       margin-bottom: 0.12rem;
+      border: 0;
+      padding: 0;
     }}
 
     [data-testid="stSidebar"] [role="radiogroup"] {{ gap: 0.18rem; }}
@@ -174,20 +179,53 @@ def get_custom_css() -> str:
       box-shadow: var(--sash-shadow-sm);
       backdrop-filter: blur(18px) saturate(118%);
       -webkit-backdrop-filter: blur(18px) saturate(118%);
+      transition: box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease;
+    }}
+
+    .sash-card:hover {{
+      border-color: rgba(58, 111, 243, 0.22);
+      box-shadow: var(--sash-shadow);
+      transform: translateY(-2px);
     }}
 
     .sash-card {{
       margin: 0.55rem 0 1.1rem;
       overflow-wrap: anywhere;
-      padding: clamp(1.1rem, 2.1vw, 1.7rem);
+      padding: clamp(1.15rem, 2.1vw, 1.75rem);
     }}
 
-    .sash-card h4 {{ margin-top: 0; }}
+    .sash-card h4 {{
+      align-items: center;
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0;
+    }}
+
+    .sash-card h4::before {{
+      background: linear-gradient(180deg, var(--sash-blue), var(--sash-indigo));
+      border-radius: 999px;
+      content: "";
+      display: inline-block;
+      flex: 0 0 auto;
+      height: 1.05rem;
+      width: 0.22rem;
+    }}
+
     .sash-card p {{ margin: 0.35rem 0; }}
     .sash-card ul, .sash-card ol {{ margin: 0.5rem 0 0; padding-left: 1.25rem; }}
     .sash-card li {{ margin-bottom: 0.32rem; }}
 
-    .metric-card {{ color: var(--sash-indigo); padding: 1.3rem; }}
+    .metric-card {{
+      color: var(--sash-indigo);
+      padding: 1.35rem;
+    }}
+
+    .metric-card:hover {{
+      border-color: rgba(58, 111, 243, 0.24);
+      box-shadow: var(--sash-shadow);
+      transform: translateY(-2px);
+    }}
+
     .metric-value {{
       color: var(--sash-indigo);
       font-size: clamp(2rem, 4vw, 2.75rem);
@@ -195,6 +233,7 @@ def get_custom_css() -> str:
       letter-spacing: -0.06em;
       line-height: 1;
     }}
+
     .metric-label {{
       color: var(--sash-muted);
       font-size: 0.76rem;
@@ -206,6 +245,7 @@ def get_custom_css() -> str:
 
     .status-badge {{
       align-items: center;
+      border: 1px solid transparent;
       border-radius: var(--sash-radius-full);
       display: inline-flex;
       font-size: 0.76rem;
@@ -213,7 +253,12 @@ def get_custom_css() -> str:
       letter-spacing: 0.02em;
       padding: 0.34rem 0.72rem;
     }}
-    .status-info {{ background: rgba(58, 111, 243, 0.13); color: var(--sash-blue-deep); }}
+
+    .status-info {{
+      background: rgba(58, 111, 243, 0.13);
+      border-color: rgba(58, 111, 243, 0.22);
+      color: var(--sash-blue-deep);
+    }}
 
     .empty-state {{
       background: rgba(255, 255, 255, 0.62);
@@ -221,8 +266,13 @@ def get_custom_css() -> str:
       border-radius: var(--sash-radius);
       color: var(--sash-muted);
       margin: 0.7rem 0 1.1rem;
-      padding: 2rem 1.25rem;
+      padding: 2.25rem 1.25rem;
       text-align: center;
+    }}
+
+    .empty-state-icon {{
+      font-size: 2.1rem;
+      margin-bottom: 0.55rem;
     }}
 
     [data-testid="stButton"] button,
@@ -310,6 +360,7 @@ def get_custom_css() -> str:
       border: 1px solid rgba(206, 213, 232, 0.95);
       border-radius: var(--sash-radius-sm);
       box-shadow: var(--sash-shadow-sm);
+      margin: 0.65rem 0 1rem;
     }}
 
     [data-testid="stExpander"] {{
@@ -317,10 +368,21 @@ def get_custom_css() -> str:
       border: 1px solid rgba(206, 213, 232, 0.92);
       border-radius: var(--sash-radius-sm);
       box-shadow: 0 4px 14px rgba(29, 34, 64, 0.045);
+      margin: 0.65rem 0 1rem;
       overflow: hidden;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
     }}
 
-    [data-testid="stExpander"] summary {{ border-radius: var(--sash-radius-sm); font-weight: 680; }}
+    [data-testid="stExpander"]:hover {{
+      border-color: rgba(58, 111, 243, 0.24);
+      box-shadow: var(--sash-shadow-sm);
+    }}
+
+    [data-testid="stExpander"] summary {{
+      border-radius: var(--sash-radius-sm);
+      font-weight: 680;
+    }}
+
     [data-testid="stExpander"] summary:hover {{ background: rgba(58, 111, 243, 0.06); }}
 
     [data-testid="stMetric"] {{
@@ -329,7 +391,14 @@ def get_custom_css() -> str:
       border-radius: var(--sash-radius-sm);
       box-shadow: var(--sash-shadow-sm);
       min-height: 100%;
-      padding: 1rem;
+      padding: 1.05rem;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }}
+
+    [data-testid="stMetric"]:hover {{
+      border-color: rgba(58, 111, 243, 0.24);
+      box-shadow: var(--sash-shadow);
+      transform: translateY(-2px);
     }}
 
     [data-testid="stMetricLabel"] {{ color: var(--sash-muted); font-weight: 680; }}
@@ -347,9 +416,10 @@ def get_custom_css() -> str:
     }}
 
     [data-testid="stTabs"] [data-baseweb="tab-list"] {{
+      border-bottom: 1px solid rgba(206, 213, 232, 0.80);
       gap: 0.35rem;
       overflow-x: auto;
-      padding-bottom: 0.35rem;
+      padding-bottom: 0.45rem;
     }}
 
     [data-testid="stTabs"] [data-baseweb="tab"] {{
@@ -360,6 +430,12 @@ def get_custom_css() -> str:
       font-weight: 650;
       height: 2.5rem;
       padding: 0.35rem 0.85rem;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+    }}
+
+    [data-testid="stTabs"] [data-baseweb="tab"]:hover {{
+      background: rgba(58, 111, 243, 0.08);
+      color: var(--sash-indigo);
     }}
 
     [data-testid="stTabs"] [aria-selected="true"] {{
@@ -386,9 +462,11 @@ def get_custom_css() -> str:
     @media (max-width: 640px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1rem 0.85rem 2rem; }}
       h1 {{ font-size: 2.05rem; }}
+      h2 {{ margin-top: 1.5rem; }}
       [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; gap: 0.8rem; }}
       [data-testid="stHorizontalBlock"] > [data-testid="column"] {{ flex: 1 1 100%; min-width: min(100%, 18rem); }}
       .sash-card {{ padding: 1rem; }}
+      .sash-card:hover {{ transform: none; }}
       [data-testid="stButton"] button,
       [data-testid="stDownloadButton"] button,
       [data-testid="stFormSubmitButton"] button {{ width: 100%; }}
