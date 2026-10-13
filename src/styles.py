@@ -310,6 +310,48 @@ def get_custom_css() -> str:
       justify-content: center;
     }}
 
+    /* Phase 5: Qualification and Engagements page refinement */
+    [data-testid="stForm"] {{
+      margin-bottom: 1.25rem;
+    }}
+
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] {{
+      gap: 1rem;
+    }}
+
+    .metric-card {{
+      border: 1px solid rgba(29, 34, 64, 0.12);
+      border-radius: 0.85rem;
+      box-shadow: 0 6px 18px rgba(29, 34, 64, 0.09);
+    }}
+
+    .metric-card .metric-value,
+    .metric-card .metric-label {{
+      color: #FFFFFF;
+    }}
+
+    .metric-card .metric-label {{
+      opacity: 0.92;
+    }}
+
+    .sash-card h4 {{
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }}
+
+    .sash-card p {{
+      margin-top: 0.35rem;
+      margin-bottom: 0.35rem;
+    }}
+
+    .sash-card .status-badge {{
+      margin-top: 0.35rem;
+    }}
+
+    .empty-state {{
+      margin: 0.5rem 0 1rem;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
