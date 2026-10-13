@@ -93,7 +93,8 @@ if page == "Home":
                     <li><strong>Instrument</strong> operations</li>
                     <li><strong>Produce</strong> customer handoff packages</li>
                 </ul>
-                
+                <p class="sash-card-footer">Built for the
+                <strong>Senior Forward Deployed Engineer</strong> role at Sinch.</p>
             </section>
             """,
             unsafe_allow_html=True,
