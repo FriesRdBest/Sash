@@ -272,7 +272,7 @@ Do not set an artificial coverage target simply to display a high percentage. Pr
 - Redaction
 - Qualification scoring
 
-## What Brett should see
+## What a reviewer should see
 
 When a reviewer opens the repository, the first five minutes should reveal:
 
