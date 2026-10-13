@@ -352,6 +352,33 @@ def get_custom_css() -> str:
       margin: 0.5rem 0 1rem;
     }}
 
+    /* Phase 5: Workflows and Run Workflow page refinement */
+    [data-testid="stMarkdownContainer"] div.sash-card + div.sash-card {{
+      margin-top: 0.75rem;
+    }}
+
+    [data-testid="stForm"] {{
+      margin-bottom: 1.5rem;
+    }}
+
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] {{
+      gap: 1rem;
+    }}
+
+    [data-testid="stMarkdownContainer"] h3 {{
+      margin-top: 1.5rem;
+      margin-bottom: 0.65rem;
+    }}
+
+    [data-testid="stDataFrame"] {{
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }}
+
+    [data-testid="stInfo"] {{
+      margin-top: 1rem;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
