@@ -88,14 +88,14 @@ class QualificationAssessment:
     def get_recommendation(self) -> str:
         """Get human-readable recommendation."""
         if self.decision == "proceed":
-            return f"✅ PROCEED - Score {self.score}/100. No critical risks identified."
+            return f"PROCEED — Score {self.score}/100. No critical risks identified."
         elif self.decision == "proceed_with_conditions":
             conditions_str = "; ".join(self.conditions)
-            return f"⚠️ PROCEED WITH CONDITIONS - Score {self.score}/100. Conditions: {conditions_str}"
+            return f"PROCEED WITH CONDITIONS — Score {self.score}/100. Conditions: {conditions_str}"
         else:
             critical = [r for r in self.rule_results if not r.passed]
             reasons = "; ".join([r.message for r in critical])
-            return f"❌ DECLINE - Score {self.score}/100. Critical issues: {reasons}"
+            return f"DECLINE — Score {self.score}/100. Critical issues: {reasons}"
 
 
 def assess_engagement(engagement_data: dict[str, Any]) -> QualificationAssessment:

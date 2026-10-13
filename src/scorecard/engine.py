@@ -141,11 +141,14 @@ class ScorecardResult:
             lines.append(f"### {dim.dimension.value}")
             lines.append("")
             for check in dim.checks:
-                icon = {"pass": "✅", "fail": "❌", "blocking": "🚫", "skip": "⏭️"}.get(
-                    check.status.value, "❓"
-                )
+                icon = {
+                    "pass": "Passed",
+                    "fail": "Failed",
+                    "blocking": "Blocked",
+                    "skip": "Skipped",
+                }.get(check.status.value, "Unknown")
                 lines.append(
-                    f"- {icon} **{check.definition.name}**: {check.message} "
+                    f"- {icon} — **{check.definition.name}**: {check.message} "
                     f"(weight={check.definition.weight:.2f})"
                 )
                 if check.evidence_url or check.definition.evidence_path:

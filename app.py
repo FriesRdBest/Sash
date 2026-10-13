@@ -35,7 +35,7 @@ from src.workflow.designer import create_sample_workflow
 
 # Page configuration
 st.set_page_config(
-    page_title="Sash", page_icon="🔗", layout="wide", initial_sidebar_state="expanded"
+    page_title="Sash", page_icon="", layout="wide", initial_sidebar_state="expanded"
 )
 
 # Apply custom CSS
@@ -83,7 +83,7 @@ if page == "Home":
         st.markdown(
             f"""
             <div style="background-color: {COLOR_PRIMARY}10; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid {COLOR_PRIMARY};">
-                <strong>🚧 Under Active Development</strong><br>
+                <strong>Under Active Development</strong><br>
                 Phase 10: workflow design, mock execution, webhooks, and event/audit timelines available.
             </div>
             """,
@@ -103,7 +103,7 @@ if page == "Home":
     st.markdown("---")
 
     # Main content sections
-    st.markdown("## 🎯 Purpose")
+    st.markdown("## Purpose")
 
     col1, col2 = st.columns(2)
 
@@ -143,7 +143,7 @@ if page == "Home":
     st.markdown("---")
 
     # Feature roadmap
-    st.markdown("## 📋 Feature Roadmap")
+    st.markdown("## Feature Roadmap")
 
     roadmap_col1, roadmap_col2, roadmap_col3 = st.columns(3)
 
@@ -151,7 +151,7 @@ if page == "Home":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">✅ Phase 0-10 Complete</h4>
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">Phase 0-10 Complete</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
                     <li>Operating charter</li>
                     <li>Repository foundation</li>
@@ -175,7 +175,7 @@ if page == "Home":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">🚧 Current Capabilities</h4>
+                <h4 style="color: {COLOR_WARNING}; margin-top: 0;">Current Capabilities</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
                     <li>Retry and fallback policies</li>
                     <li>Duplicate webhook detection</li>
@@ -190,7 +190,7 @@ if page == "Home":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_TEXT_MUTED}; margin-top: 0;">⏳ Planned</h4>
+                <h4 style="color: {COLOR_TEXT_MUTED}; margin-top: 0;">Planned</h4>
                 <ul style="margin-bottom: 0; padding-left: 1.25rem;">
                     <li>Failure and resilience lab</li>
                     <li>Production-readiness scorecard</li>
@@ -205,7 +205,7 @@ if page == "Home":
     st.markdown("---")
 
     # Quick links
-    st.markdown("## 🔗 Quick Links")
+    st.markdown("## Quick Links")
 
     link_col1, link_col2, link_col3, link_col4 = st.columns(4)
 
@@ -213,7 +213,6 @@ if page == "Home":
         st.markdown(
             f"""
             <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
                 <strong>README</strong><br>
                 <a href="https://github.com/FriesRdBest/Sash/blob/main/README.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
             </div>
@@ -225,7 +224,6 @@ if page == "Home":
         st.markdown(
             f"""
             <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
                 <strong>Changelog</strong><br>
                 <a href="https://github.com/FriesRdBest/Sash/blob/main/CHANGELOG.md" target="_blank" style="color: {COLOR_PRIMARY};">View on GitHub</a>
             </div>
@@ -237,7 +235,6 @@ if page == "Home":
         st.markdown(
             f"""
             <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏗️</div>
                 <strong>Architecture</strong><br>
                 <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/architecture" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
             </div>
@@ -249,7 +246,6 @@ if page == "Home":
         st.markdown(
             f"""
             <div style="text-align: center; padding: 1.5rem; background-color: {COLOR_SURFACE}; border-radius: 0.5rem; border: 1px solid {COLOR_BORDER};">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
                 <strong>Research</strong><br>
                 <a href="https://github.com/FriesRdBest/Sash/tree/main/docs/research" target="_blank" style="color: {COLOR_PRIMARY};">View docs</a>
             </div>
@@ -260,7 +256,7 @@ if page == "Home":
     st.markdown("---")
 
     # Next steps
-    st.markdown("## ▶️ Next Steps")
+    st.markdown("## Next Steps")
 
     st.markdown(
         f"""
@@ -291,7 +287,7 @@ elif page == "Domain Models":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">👤 Customer</h4>
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">Customer</h4>
                 <p>End-user entity in a workflow with contact information.</p>
                 <ul>
                     <li><code>phone_number</code> (required)</li>
@@ -309,7 +305,7 @@ elif page == "Domain Models":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">🔀 Workflow</h4>
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">Workflow</h4>
                 <p>Definition of communication steps and logic.</p>
                 <ul>
                     <li><code>name</code>, <code>description</code></li>
@@ -328,7 +324,7 @@ elif page == "Domain Models":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">▶️ WorkflowExecution</h4>
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">WorkflowExecution</h4>
                 <p>Runtime execution of a workflow for a customer.</p>
                 <ul>
                     <li><code>workflow_id</code>, <code>customer_id</code></li>
@@ -345,7 +341,7 @@ elif page == "Domain Models":
         st.markdown(
             f"""
             <div class="sash-card">
-                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">📬 Event</h4>
+                <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">Event</h4>
                 <p>Single communication event (message sent/delivered).</p>
                 <ul>
                     <li><code>execution_id</code>, <code>step_index</code></li>
@@ -376,7 +372,7 @@ elif page == "Qualification":
     st.markdown("---")
 
     # Intake form
-    st.markdown("### 📝 Intake Form")
+    st.markdown("### Intake Form")
 
     col1, col2 = st.columns(2)
 
@@ -437,16 +433,11 @@ elif page == "Qualification":
             )
 
         with score_col2:
-            decision_emoji = (
-                "✅"
-                if assessment.decision == "proceed"
-                else ("⚠️" if assessment.decision == "proceed_with_conditions" else "❌")
-            )
+            decision_label = assessment.decision.replace("_", " ").title()
             st.markdown(
                 f"""
                 <div class="sash-card" style="text-align: center;">
-                    <div style="font-size: 2rem;">{decision_emoji}</div>
-                    <strong>{assessment.decision.replace("_", " ").title()}</strong>
+                    <strong>{decision_label}</strong>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -472,7 +463,7 @@ elif page == "Qualification":
         st.markdown("---")
 
         # Recommendation
-        st.markdown("### 📊 Assessment Details")
+        st.markdown("### Assessment Details")
         st.info(assessment.get_recommendation())
 
         # Conditions
@@ -484,13 +475,13 @@ elif page == "Qualification":
         # Rule results
         st.markdown("**Rule Results:**")
         for result in assessment.rule_results:
-            icon = "✅" if result.passed else "❌"
-            st.markdown(f"{icon} **{result.rule_name}**: {result.message}")
+            status_label = "Passed" if result.passed else "Failed"
+            st.markdown(f"**{status_label} — {result.rule_name}**: {result.message}")
 
         # Export
         st.markdown("---")
         st.download_button(
-            label="📥 Export Report (JSON)",
+            label="Export Report (JSON)",
             data=assessment.to_json(),
             file_name=f"qualification_{customer_name.replace(' ', '_')}.json",
             mime="application/json",
@@ -503,7 +494,7 @@ elif page == "Engagements":
     st.markdown("---")
 
     # Load seed data button
-    if st.button("🔄 Load Seed Data"):
+    if st.button("Load Seed Data"):
         result = load_seed_data()
         st.success(
             f"Loaded {result['engagements']} engagements, {result['customers']} customers, {result['workflows']} workflows"
@@ -512,13 +503,13 @@ elif page == "Engagements":
     st.markdown("---")
 
     # List engagements
-    st.markdown("### 📋 Existing Engagements")
+    st.markdown("### Existing Engagements")
 
     engagements = engagement_repo.get_all()
 
     if not engagements:
         st.markdown(
-            "<div class='empty-state'><div class='empty-state-icon'>📭</div><p>No engagements yet. Load seed data or create a new assessment.</p></div>",
+            "<div class='empty-state'><p>No engagements yet. Load seed data or create a new assessment.</p></div>",
             unsafe_allow_html=True,
         )
     else:
@@ -548,7 +539,7 @@ elif page == "Workflows":
     st.markdown(
         f"""
         <div class="sash-card">
-            <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">🔀 Workflow Designer</h4>
+            <h4 style="color: {COLOR_PRIMARY}; margin-top: 0;">Workflow Designer</h4>
             <p><strong>{workflow.name}</strong> — version {workflow.version}</p>
             <p>{workflow.description}</p>
         </div>
@@ -574,18 +565,18 @@ elif page == "Workflows":
         )
 
     st.download_button(
-        "⬇️ Download workflow JSON",
+        "Download workflow JSON",
         data=workflow.to_json(),
         file_name="sash-workflow.json",
         mime="application/json",
     )
 
-    if st.button("↻ Reset to Aurora sample workflow"):
+    if st.button("Reset to Aurora sample workflow"):
         st.session_state.workflow_draft = create_sample_workflow()
         st.rerun()
 
 elif page == "Run Workflow":
-    st.title("▶️ Run Workflow")
+    st.title("Run Workflow")
     st.markdown(
         "Run the Aurora Marketplace verification journey in deterministic mock mode."
     )
@@ -644,7 +635,7 @@ elif page == "Run Workflow":
             )
 
 elif page == "Event Timeline":
-    st.title("📜 Event Timeline & Audit View")
+    st.title("Event Timeline & Audit View")
     st.markdown(
         "Search a correlation ID to inspect events, audit records, "
         "state transitions, and derived metrics."
@@ -732,7 +723,7 @@ elif page == "Event Timeline":
         st.dataframe(results, width="stretch")
 
 elif page == "Failure Lab":
-    st.title("🧪 Failure & Resilience Laboratory")
+    st.title("Failure & Resilience Laboratory")
     st.markdown(
         "Run deterministic failure simulations against the mock integration "
         "boundaries. Every result documents detection, behavior, impact, "
@@ -839,8 +830,8 @@ elif page == "Failure Lab":
         st.dataframe(result_rows, width="stretch")
 
         for result in results:
-            icon = "✅" if result["passed"] else "❌"
-            with st.expander(f"{icon} {result['scenario']}"):
+            icon = "Passed" if result["passed"] else "Failed"
+            with st.expander(f"{icon} — {result['scenario']}"):
                 st.markdown(f"**Correlation ID:** `{result['correlation_id']}`")
                 st.markdown(f"**Behavior:** {result['behavior']}")
 
@@ -865,7 +856,7 @@ elif page == "Failure Lab":
         )
 
 elif page == "Scorecard":
-    st.title("📊 Production Readiness Scorecard")
+    st.title("Production Readiness Scorecard")
     st.markdown(
         "Convert engineering quality into an evidence-backed delivery decision. "
         "API, webhook, reliability, security, scalability, observability, testing, "
@@ -1018,13 +1009,13 @@ elif page == "Scorecard":
             ):
                 for check in dim.checks:
                     icon = {
-                        "pass": "✅",
-                        "fail": "❌",
-                        "blocking": "🚫",
-                        "skip": "⏭️",
-                    }.get(check.status.value, "❓")
+                        "pass": "Passed",
+                        "fail": "Failed",
+                        "blocking": "Blocked",
+                        "skip": "Skipped",
+                    }.get(check.status.value, "Unknown")
                     st.markdown(
-                        f"{icon} **{check.definition.name}** (weight={check.definition.weight:.2f}): "
+                        f"{icon} — **{check.definition.name}** (weight={check.definition.weight:.2f}): "
                         f"{check.message}"
                     )
                     if check.evidence_url or check.definition.evidence_path:
@@ -1042,7 +1033,7 @@ elif page == "Scorecard":
             )
 
 elif page == "Observability":
-    st.title("📈 Observability Console")
+    st.title("Observability Console")
     st.markdown(
         "Operator view of system health and next actions. "
         "Metrics derive from event data; simulated data is labelled."
@@ -1151,11 +1142,11 @@ elif page == "Observability":
         if snap_data["recommendations"]:
             st.markdown("### Recommendations")
             for r in snap_data["recommendations"]:
-                icon = {"low": "🟢", "medium": "🟠", "high": "🔴"}.get(
-                    r["priority"], "⚪"
+                icon = {"low": "Low", "medium": "Medium", "high": "High"}.get(
+                    r["priority"], "Unknown"
                 )
                 st.markdown(
-                    f"{icon} **{r['title']}** — {r['reason']} (action: {r['action']})"
+                    f"{icon} — **{r['title']}** — {r['reason']} (action: {r['action']})"
                 )
 
         st.markdown("### Channel breakdown")
@@ -1196,7 +1187,7 @@ elif page == "Observability":
         )
 
 elif page == "Security Review":
-    st.title("🔒 Security & Compliance Review")
+    st.title("Security & Compliance Review")
     st.markdown(
         "Demonstrate trust-boundary, privacy, consent, and secret-handling discipline. "
         "No secret is committed; sensitive fields are redacted; threat-model risks map to controls."
@@ -1215,24 +1206,27 @@ elif page == "Security Review":
 
         st.markdown("### Threat model")
         for t in review_data["threats"]:
-            icon = {"low": "🟢", "medium": "🟠", "high": "🔴", "critical": "🚫"}.get(
-                t["risk_level"], "⚪"
-            )
+            icon = {
+                "low": "Low",
+                "medium": "Medium",
+                "high": "High",
+                "critical": "Critical",
+            }.get(t["risk_level"], "Unknown")
             st.markdown(
-                f"{icon} **{t['title']}** (`{t['id']}`, {t['risk_level']}): "
+                f"{icon} — **{t['title']}** (`{t['id']}`, {t['risk_level']}): "
                 f"{t['description']} (asset: {t['affected_asset']})"
             )
 
         st.markdown("### Controls")
         for c in review_data["controls"]:
             icon = {
-                "implemented": "✅",
-                "partial": "🟠",
-                "missing": "❌",
-                "not_applicable": "⚪",
-            }.get(c["status"], "❓")
+                "implemented": "Implemented",
+                "partial": "Partial",
+                "missing": "Missing",
+                "not_applicable": "Not applicable",
+            }.get(c["status"], "Unknown")
             st.markdown(
-                f"{icon} **{c['title']}** (`{c['id']}`): {c['description']} "
+                f"{icon} — **{c['title']}** (`{c['id']}`): {c['description']} "
                 f"(status: {c['status']})"
             )
             if c["linked_threats"]:
@@ -1274,7 +1268,7 @@ elif page == "Security Review":
         )
 
 elif page == "AI Review":
-    st.title("🤖 AI Engineering Review")
+    st.title("AI Engineering Review")
     st.markdown(
         "Responsible AI-assisted development: deterministic checks are authoritative, "
         "AI output is advisory, and no secrets/PII are exposed to models."
@@ -1327,12 +1321,12 @@ elif page == "AI Review":
         else:
             for f in review_data["findings"]:
                 icon = {
-                    "info": "ℹ️",
-                    "low": "🟢",
-                    "medium": "🟠",
-                    "high": "🔴",
-                    "critical": "🚫",
-                }.get(f["severity"], "❓")
+                    "info": "Info",
+                    "low": "Low",
+                    "medium": "Medium",
+                    "high": "High",
+                    "critical": "Critical",
+                }.get(f["severity"], "Unknown")
                 loc = f" (line {f['line']})" if f["line"] else ""
                 st.markdown(
                     f"{icon} **{f['title']}** `{f['id']}`{loc}: {f['description']} "
@@ -1368,7 +1362,7 @@ elif page == "AI Review":
         )
 
 elif page == "Handoff Package":
-    st.title("📦 Handoff Package Generator")
+    st.title("Handoff Package Generator")
     st.markdown(
         "Prove the customer can operate and extend the solution independently. "
         "All documents reflect current project state; ownership and rollback are explicit."
@@ -1463,7 +1457,7 @@ elif page == "Handoff Package":
         )
 
 elif page == "Deployment":
-    st.title("🚀 Deployment & Operational Packaging")
+    st.title("Deployment & Operational Packaging")
     st.markdown(
         "Make Sash easy for evaluators and customers to run. "
         "Fresh clone works; one-command startup is documented; demo works without secrets."

@@ -99,15 +99,15 @@ class AIReviewResult:
             lines.append("")
             for f in self.findings:
                 icon = {
-                    "info": "ℹ️",
-                    "low": "🟢",
-                    "medium": "🟠",
-                    "high": "🔴",
-                    "critical": "🚫",
-                }.get(f.severity.value, "❓")
+                    "info": "Info",
+                    "low": "Low",
+                    "medium": "Medium",
+                    "high": "High",
+                    "critical": "Critical",
+                }.get(f.severity.value, "Unknown")
                 loc = f" (line {f.line})" if f.line else ""
                 lines.append(
-                    f"- {icon} **{f.title}** `{f.id}`{loc}: {f.description} "
+                    f"- {icon} — **{f.title}** `{f.id}`{loc}: {f.description} "
                     f"(source: {f.source.value}, severity: {f.severity.value})"
                 )
                 if f.evidence:

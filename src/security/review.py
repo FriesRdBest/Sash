@@ -122,13 +122,13 @@ class SecurityReviewResult:
         lines.append("")
         for c in self.controls:
             icon = {
-                "implemented": "✅",
-                "partial": "🟠",
-                "missing": "❌",
-                "not_applicable": "⚪",
-            }.get(c.status.value, "❓")
+                "implemented": "Implemented",
+                "partial": "Partial",
+                "missing": "Missing",
+                "not_applicable": "Not applicable",
+            }.get(c.status.value, "Unknown")
             lines.append(
-                f"- {icon} **{c.title}** (`{c.id}`): {c.description} "
+                f"- {icon} — **{c.title}** (`{c.id}`): {c.description} "
                 f"(status: {c.status.value})"
             )
         lines.append("")
