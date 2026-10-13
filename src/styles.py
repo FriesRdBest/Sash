@@ -917,6 +917,202 @@ def get_custom_css() -> str:
       }}
     }}
 
+
+    /* Final operational page polish */
+    .sash-card,
+    .metric-card,
+    [data-testid="stForm"],
+    [data-testid="stMetric"],
+    [data-testid="stAlert"],
+    [data-testid="stExpander"],
+    [data-testid="stDataFrame"],
+    [data-testid="stTable"] {{
+      border-color: #B98A68;
+    }}
+
+    [data-testid="stForm"] {{
+      overflow: visible;
+    }}
+
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] {{
+      align-items: flex-start;
+      gap: clamp(.85rem, 1.75vw, 1.35rem);
+    }}
+
+    [data-testid="stTextInput"],
+    [data-testid="stTextArea"],
+    [data-testid="stNumberInput"],
+    [data-testid="stSelectbox"],
+    [data-testid="stMultiselect"],
+    [data-testid="stDateInput"],
+    [data-testid="stTimeInput"] {{
+      min-width: 0;
+    }}
+
+    [data-testid="stTextInput"] input,
+    [data-testid="stTextArea"] textarea,
+    [data-testid="stNumberInput"] input {{
+      background: rgba(255,252,244,.96);
+      border: 1px solid rgba(185,138,104,.86);
+      box-sizing: border-box;
+      color: #000000;
+    }}
+
+    [data-testid="stTextInput"] input:hover,
+    [data-testid="stTextArea"] textarea:hover,
+    [data-testid="stNumberInput"] input:hover {{
+      border-color: #000000;
+    }}
+
+    [data-testid="stTextInput"] input:disabled,
+    [data-testid="stTextArea"] textarea:disabled,
+    [data-testid="stNumberInput"] input:disabled {{
+      background: rgba(243,223,192,.84);
+      color: rgba(0,0,0,.58);
+      cursor: not-allowed;
+    }}
+
+    [data-testid="stSelectbox"] [data-baseweb="select"] > div,
+    [data-testid="stMultiselect"] [data-baseweb="select"] > div {{
+      background: rgba(255,252,244,.96) !important;
+      border-color: rgba(185,138,104,.86) !important;
+      color: #000000 !important;
+    }}
+
+    [data-testid="stSelectbox"] [data-baseweb="select"]:focus-within > div,
+    [data-testid="stMultiselect"] [data-baseweb="select"]:focus-within > div {{
+      border-color: #000000 !important;
+      box-shadow: 0 0 0 3px rgba(254,189,60,.65) !important;
+    }}
+
+    [data-testid="stDataFrame"],
+    [data-testid="stTable"] {{
+      background: rgba(255,252,244,.92);
+      border-radius: 1rem;
+      max-width: 100%;
+      overflow: auto;
+    }}
+
+    [data-testid="stDataFrame"] > div,
+    [data-testid="stTable"] > div {{
+      max-width: 100%;
+      overflow: auto;
+    }}
+
+    [data-testid="stJson"] {{
+      background: rgba(255,252,244,.94);
+      border: 1px solid rgba(185,138,104,.78);
+      border-radius: .8rem;
+      color: #000000;
+      max-width: 100%;
+      overflow-x: auto;
+      padding: .8rem;
+    }}
+
+    [data-testid="stCodeBlock"],
+    [data-testid="stMarkdownContainer"] pre {{
+      border: 1px solid rgba(185,138,104,.82);
+      border-radius: .8rem;
+      max-width: 100%;
+      overflow-x: auto;
+    }}
+
+    [data-testid="stAlert"] {{
+      border-left-width: 4px;
+      overflow-wrap: anywhere;
+    }}
+
+    [data-testid="stAlert"] p,
+    [data-testid="stAlert"] div {{
+      color: #000000;
+    }}
+
+    [data-testid="stSuccess"] {{ border-left-color: #1E7A46; }}
+    [data-testid="stWarning"] {{ border-left-color: #8A5A00; }}
+    [data-testid="stError"] {{ border-left-color: #B42318; }}
+    [data-testid="stInfo"] {{ border-left-color: #1F4F8F; }}
+
+    [data-testid="stDownloadButton"],
+    [data-testid="stFormSubmitButton"],
+    [data-testid="stButton"] {{
+      min-width: 0;
+    }}
+
+    [data-testid="stDownloadButton"] button,
+    [data-testid="stFormSubmitButton"] button,
+    [data-testid="stButton"] button {{
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }}
+
+    [data-testid="stButton"] button:disabled,
+    [data-testid="stDownloadButton"] button:disabled,
+    [data-testid="stFormSubmitButton"] button:disabled {{
+      background: rgba(75,53,41,.28) !important;
+      border-color: rgba(75,53,41,.34) !important;
+      box-shadow: none !important;
+      color: rgba(0,0,0,.62) !important;
+      cursor: not-allowed;
+      opacity: 1;
+    }}
+
+    [data-testid="stExpander"] details > summary {{
+      color: #000000;
+      font-weight: 720;
+      padding: .18rem .12rem;
+    }}
+
+    [data-testid="stExpander"] [data-testid="stMarkdownContainer"],
+    [data-testid="stExpander"] [data-testid="stJson"] {{
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }}
+
+    [data-testid="stMarkdownContainer"] code,
+    [data-testid="stMarkdownContainer"] pre,
+    .sash-card code,
+    .sash-card pre {{
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }}
+
+    [data-testid="stMarkdownContainer"] > div[style*="border-left: 3px solid"],
+    [data-testid="stMarkdownContainer"] > div[style*="border-left: 4px solid"] {{
+      margin-bottom: .75rem !important;
+      margin-top: .4rem !important;
+      padding: 1rem 1.1rem !important;
+    }}
+
+    [data-testid="stHorizontalBlock"] [data-testid="stMetric"],
+    [data-testid="stHorizontalBlock"] .sash-card {{
+      min-width: 0;
+    }}
+
+    @media (max-width: 760px) {{
+      [data-testid="stForm"] {{
+        padding: 1rem;
+      }}
+
+      [data-testid="stDataFrame"],
+      [data-testid="stTable"] {{
+        border-radius: .8rem;
+      }}
+
+      [data-testid="stMetric"] {{
+        min-height: auto;
+      }}
+
+      [data-testid="stExpander"] {{
+        margin-bottom: .8rem;
+      }}
+
+      [data-testid="stMarkdownContainer"] pre,
+      [data-testid="stJson"] {{
+        font-size: .82rem;
+      }}
+    }}
+
     </style>
     """
 
