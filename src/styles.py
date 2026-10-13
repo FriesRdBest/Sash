@@ -274,6 +274,42 @@ def get_custom_css() -> str:
       margin-bottom: 0.5rem;
     }}
 
+    /* Phase 5: Home and Domain Models page refinement */
+    [data-testid="stMainBlockContainer"] > div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlock"] {{
+      gap: 0.75rem;
+    }}
+
+    .sash-card h4 {{
+      margin-bottom: 0.65rem;
+    }}
+
+    .sash-card ul,
+    .sash-card ol {{
+      margin-top: 0.35rem;
+      margin-bottom: 0;
+      padding-left: 1.25rem;
+    }}
+
+    .sash-card li {{
+      margin-bottom: 0.3rem;
+    }}
+
+    [data-testid="stMarkdown"] hr {{
+      border-color: var(--sash-border);
+      margin: 1.25rem 0;
+    }}
+
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] > div[data-testid="stVerticalBlock"] > div[data-testid="stMarkdown"] > div[data-testid="stMarkdownContainer"] > div.sash-card {{
+      height: 100%;
+    }}
+
+    [data-testid="stHorizontalBlock"] > [data-testid="column"] > div[data-testid="stVerticalBlock"] > div[data-testid="stMarkdown"] > div[data-testid="stMarkdownContainer"] > div[style*="text-align: center"] {{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
