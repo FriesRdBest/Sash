@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Any
 
 try:
-    from pydantic import BaseModel, Field, field_validator
+    from pydantic import BaseModel, ConfigDict, Field, field_validator
 
     PYDANTIC_AVAILABLE = True
 except ImportError:
@@ -78,8 +78,7 @@ if PYDANTIC_AVAILABLE:
                 raise ValueError("Phone number must be at least 10 digits")
             return v
 
-        class Config:
-            use_enum_values = True
+        model_config = ConfigDict(use_enum_values=True)
 
     class Workflow(BaseModel):
         """Workflow definition with steps and configuration."""
@@ -99,8 +98,7 @@ if PYDANTIC_AVAILABLE:
             self.steps.append(step)
             self.updated_at = now()
 
-        class Config:
-            use_enum_values = True
+        model_config = ConfigDict(use_enum_values=True)
 
     class WorkflowExecution(BaseModel):
         """Runtime execution of a workflow for a specific customer."""
@@ -126,8 +124,7 @@ if PYDANTIC_AVAILABLE:
             self.metadata["failure_reason"] = reason
             self.completed_at = now()
 
-        class Config:
-            use_enum_values = True
+        model_config = ConfigDict(use_enum_values=True)
 
     class Event(BaseModel):
         """Single event in a workflow execution (e.g., message sent)."""
@@ -159,8 +156,7 @@ if PYDANTIC_AVAILABLE:
             self.metadata["failure_reason"] = reason
             self.updated_at = now()
 
-        class Config:
-            use_enum_values = True
+        model_config = ConfigDict(use_enum_values=True)
 
     class Engagement(BaseModel):
         """Customer engagement record for qualification and tracking."""
@@ -179,8 +175,7 @@ if PYDANTIC_AVAILABLE:
         created_at: datetime = Field(default_factory=now)
         updated_at: datetime = Field(default_factory=now)
 
-        class Config:
-            use_enum_values = True
+        model_config = ConfigDict(use_enum_values=True)
 
     class AuditRecord(BaseModel):
         """Audit trail record for tracking state changes."""
@@ -195,8 +190,7 @@ if PYDANTIC_AVAILABLE:
         correlation_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
         timestamp: datetime = Field(default_factory=now)
 
-        class Config:
-            use_enum_values = True
+        model_config = ConfigDict(use_enum_values=True)
 
 else:
     # Fallback to dataclasses
