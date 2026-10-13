@@ -775,6 +775,148 @@ def get_custom_css() -> str:
       }}
     }}
 
+
+    /* All page operational polish */
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] {{
+      gap: clamp(.8rem, 1.6vw, 1.25rem);
+    }}
+
+    [data-testid="stTextInput"],
+    [data-testid="stTextArea"],
+    [data-testid="stNumberInput"],
+    [data-testid="stSelectbox"],
+    [data-testid="stMultiselect"],
+    [data-testid="stDateInput"] {{
+      min-width: 0;
+    }}
+
+    [data-testid="stTextInput"] input,
+    [data-testid="stTextArea"] textarea,
+    [data-testid="stNumberInput"] input {{
+      border: 1px solid rgba(185,138,104,.86);
+      box-sizing: border-box;
+      color: #000000;
+    }}
+
+    [data-testid="stTextInput"] input:hover,
+    [data-testid="stTextArea"] textarea:hover,
+    [data-testid="stNumberInput"] input:hover {{
+      border-color: #000000;
+    }}
+
+    [data-testid="stSelectbox"] [data-baseweb="select"] > div,
+    [data-testid="stMultiselect"] [data-baseweb="select"] > div {{
+      border-color: rgba(185,138,104,.86) !important;
+      color: #000000 !important;
+    }}
+
+    [data-testid="stDataFrame"] {{
+      border-color: #B98A68;
+      border-radius: 1rem;
+      box-shadow: var(--sash-shadow-sm);
+    }}
+
+    [data-testid="stDataFrame"] > div {{
+      border-radius: inherit;
+      max-width: 100%;
+    }}
+
+    [data-testid="stJson"] {{
+      background: rgba(255,252,244,.90);
+      border: 1px solid rgba(185,138,104,.78);
+      border-radius: .8rem;
+      color: #000000;
+      max-width: 100%;
+      overflow-x: auto;
+      padding: .8rem;
+    }}
+
+    [data-testid="stCodeBlock"] {{
+      border: 1px solid rgba(185,138,104,.82);
+      border-radius: .8rem;
+      box-shadow: var(--sash-shadow-sm);
+      max-width: 100%;
+      overflow-x: auto;
+    }}
+
+    [data-testid="stAlert"] {{
+      border-left-width: 4px;
+    }}
+
+    [data-testid="stAlert"] p,
+    [data-testid="stAlert"] div {{
+      color: #000000;
+    }}
+
+    [data-testid="stSuccess"] {{
+      border-left-color: var(--sash-success);
+    }}
+
+    [data-testid="stWarning"] {{
+      border-left-color: var(--sash-warning);
+    }}
+
+    [data-testid="stError"] {{
+      border-left-color: var(--sash-danger);
+    }}
+
+    [data-testid="stInfo"] {{
+      border-left-color: var(--sash-info);
+    }}
+
+    [data-testid="stDownloadButton"],
+    [data-testid="stFormSubmitButton"],
+    [data-testid="stButton"] {{
+      min-width: 0;
+    }}
+
+    [data-testid="stDownloadButton"] button,
+    [data-testid="stFormSubmitButton"] button,
+    [data-testid="stButton"] button {{
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }}
+
+    [data-testid="stSpinner"] > div {{
+      border-top-color: #000000 !important;
+    }}
+
+    [data-testid="stExpander"] details > summary {{
+      color: #000000;
+      padding: .15rem .1rem;
+    }}
+
+    [data-testid="stExpander"] [data-testid="stMarkdownContainer"],
+    [data-testid="stExpander"] [data-testid="stJson"] {{
+      max-width: 100%;
+    }}
+
+    .sash-card [style*="word-break"],
+    .sash-card code,
+    .sash-card pre {{
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }}
+
+    @media (max-width: 760px) {{
+      [data-testid="stForm"] {{
+        padding: 1rem;
+      }}
+
+      [data-testid="stDataFrame"] {{
+        border-radius: .8rem;
+      }}
+
+      [data-testid="stMetric"] {{
+        min-height: auto;
+      }}
+
+      [data-testid="stExpander"] {{
+        margin-bottom: .8rem;
+      }}
+    }}
+
     </style>
     """
 
