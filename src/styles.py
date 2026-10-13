@@ -149,6 +149,48 @@ def get_custom_css() -> str:
       overflow-x: auto;
     }}
 
+    /* Phase 3: application shell and navigation refinement */
+    [data-testid="stSidebar"] [role="radiogroup"] label {{
+      transition: background-color 120ms ease, color 120ms ease;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {{
+      background: var(--sash-periwinkle);
+      color: var(--sash-indigo);
+      box-shadow: inset 0 0 0 1px rgba(29, 34, 64, 0.18);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {{
+      color: var(--sash-indigo);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:focus-within {{
+      outline: 2px solid var(--sash-blue);
+      outline-offset: 2px;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:hover {{
+      background: #EEF1F8;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked):hover {{
+      background: var(--sash-periwinkle);
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label p {{
+      font-weight: 500;
+    }}
+
+    [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {{
+      font-weight: 650;
+    }}
+
+    [data-testid="stAppViewContainer"] :focus-visible,
+    [data-testid="stSidebar"] :focus-visible {{
+      outline: 2px solid var(--sash-blue);
+      outline-offset: 2px;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
