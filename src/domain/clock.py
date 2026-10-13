@@ -1,6 +1,6 @@
 """Deterministic clock for testable time-dependent logic."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 
 class Clock:
@@ -15,14 +15,14 @@ class SystemClock(Clock):
     """Real system clock."""
 
     def now(self) -> datetime:
-        return datetime.now(timezone.utc)
+        return datetime.now(UTC)
 
 
 class DeterministicClock(Clock):
     """Fixed-time clock for deterministic tests."""
 
     def __init__(self, fixed_time: datetime | None = None):
-        self._fixed_time = fixed_time or datetime.now(timezone.utc)
+        self._fixed_time = fixed_time or datetime.now(UTC)
 
     def now(self) -> datetime:
         return self._fixed_time

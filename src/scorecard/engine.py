@@ -1,7 +1,7 @@
 """Production-readiness scorecard: weighted checks, blocking logic, exportable reports."""
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 from uuid import uuid4
@@ -45,7 +45,7 @@ class CheckResult:
     status: CheckStatus
     message: str = ""
     evidence_url: str = ""
-    started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    started_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     completed_at: datetime | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -61,7 +61,9 @@ class CheckResult:
             "evidence_url": self.evidence_url or self.definition.evidence_path,
             "config_path": self.definition.config_path,
             "started_at": self.started_at.isoformat(),
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+            "completed_at": self.completed_at.isoformat()
+            if self.completed_at
+            else None,
         }
 
 
@@ -87,7 +89,7 @@ class ScorecardResult:
     overall_score: float  # 0-100
     dimensions: list[DimensionScore]
     blocking_items: list[CheckResult]
-    started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    started_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     completed_at: datetime | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -98,7 +100,9 @@ class ScorecardResult:
             "dimensions": [d.to_dict() for d in self.dimensions],
             "blocking_items": [b.to_dict() for b in self.blocking_items],
             "started_at": self.started_at.isoformat(),
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+            "completed_at": self.completed_at.isoformat()
+            if self.completed_at
+            else None,
             "metadata": self.metadata,
         }
 
@@ -145,7 +149,9 @@ class ScorecardResult:
                     f"(weight={check.definition.weight:.2f})"
                 )
                 if check.evidence_url or check.definition.evidence_path:
-                    lines.append(f"  - Evidence: `{check.evidence_url or check.definition.evidence_path}`")
+                    lines.append(
+                        f"  - Evidence: `{check.evidence_url or check.definition.evidence_path}`"
+                    )
             lines.append("")
 
         return "\n".join(lines)
@@ -392,7 +398,7 @@ class ScorecardEngine:
         metadata = metadata or {}
 
         run_id = str(uuid4())
-        started_at = datetime.now(timezone.utc)
+        started_at = datetime.now(UTC)
 
         results_by_dim: dict[Dimension, list[CheckResult]] = {
             dim: [] for dim in Dimension
@@ -406,7 +412,7 @@ class ScorecardEngine:
                 message=self._message_for_status(definition, status),
                 evidence_url="",
                 started_at=started_at,
-                completed_at=datetime.now(timezone.utc),
+                completed_at=datetime.now(UTC),
             )
             results_by_dim[definition.dimension].append(result)
 
@@ -440,7 +446,7 @@ class ScorecardEngine:
             dimensions=dimensions,
             blocking_items=blocking_items,
             started_at=started_at,
-            completed_at=datetime.now(timezone.utc),
+            completed_at=datetime.now(UTC),
             metadata=metadata,
         )
 
@@ -468,7 +474,9 @@ class ScorecardEngine:
             return CheckStatus.FAIL
         return CheckStatus.PASS
 
-    def _message_for_status(self, definition: CheckDefinition, status: CheckStatus) -> str:
+    def _message_for_status(
+        self, definition: CheckDefinition, status: CheckStatus
+    ) -> str:
         if status == CheckStatus.PASS:
             return "Check passed."
         if status == CheckStatus.BLOCKING:

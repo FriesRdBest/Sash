@@ -12,7 +12,9 @@ class ProviderTimeoutError(IntegrationError):
 class ProviderApiError(IntegrationError):
     """Raised when a provider returns an API error response."""
 
-    def __init__(self, status_code: int, message: str, raw_response: dict | None = None):
+    def __init__(
+        self, status_code: int, message: str, raw_response: dict | None = None
+    ):
         self.status_code = status_code
         self.message = message
         self.raw_response = raw_response or {}

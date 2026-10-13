@@ -2,7 +2,7 @@
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from src.domain.models import AuditRecord, Customer, WorkflowExecution
@@ -26,20 +26,29 @@ class AuroraSession:
     customer: Customer
     workflow: WorkflowConfig
     execution_result: ExecutionResult
-    started_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    started_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     completed_at: datetime | None = None
     status: str = "running"  # running, completed, failed
 
 
-def register_customer(phone_number: str, email: str | None = None, external_id: str | None = None) -> Customer:
+def register_customer(
+    phone_number: str, email: str | None = None, external_id: str | None = None
+) -> Customer:
     """Register a new customer and persist."""
     customer = Customer(phone_number=phone_number, email=email, external_id=external_id)
     customer_repo.save(customer.id, customer.model_dump(mode="json"))
-    logger.info(f"[AURORA] Registered customer {customer.id} with phone {customer.phone_number}")
+    logger.info(
+        f"[AURORA] Registered customer {customer.id} with phone {customer.phone_number}"
+    )
     return customer
 
 
-def record_consent(customer: Customer, granted: bool, channel: str = "sms", correlation_id: str | None = None) -> AuditRecord:
+def record_consent(
+    customer: Customer,
+    granted: bool,
+    channel: str = "sms",
+    correlation_id: str | None = None,
+) -> AuditRecord:
     """Record consent audit entry."""
     audit = AuditRecord(
         entity_type="customer",
@@ -51,7 +60,9 @@ def record_consent(customer: Customer, granted: bool, channel: str = "sms", corr
         correlation_id=correlation_id or customer.correlation_id,
     )
     audit_repo.record(audit.model_dump(mode="json"))
-    logger.info(f"[AURORA] Consent recorded for customer {customer.id}: granted={granted}")
+    logger.info(
+        f"[AURORA] Consent recorded for customer {customer.id}: granted={granted}"
+    )
     return audit
 
 
@@ -63,14 +74,19 @@ def run_verification(
 ) -> ExecutionResult:
     """Run verification workflow and persist events/execution."""
     lab = IntegrationLab(mode=mode)
-    result = lab.execute_workflow(workflow, customer_phone=customer.phone_number, correlation_id=correlation_id)
+    result = lab.execute_workflow(
+        workflow, customer_phone=customer.phone_number, correlation_id=correlation_id
+    )
 
     # Persist execution
     execution = WorkflowExecution(
         workflow_id=workflow.id,
         customer_id=customer.id,
         status="completed" if result.success else "failed",
-        metadata={"correlation_id": result.correlation_id, "total_latency_ms": result.total_latency_ms},
+        metadata={
+            "correlation_id": result.correlation_id,
+            "total_latency_ms": result.total_latency_ms,
+        },
     )
     execution_repo.save(execution.id, execution.model_dump(mode="json"))
 
@@ -90,7 +106,9 @@ def run_verification(
     )
     audit_repo.record(audit.model_dump(mode="json"))
 
-    logger.info(f"[AURORA] Verification completed for customer {customer.id} with success={result.success}")
+    logger.info(
+        f"[AURORA] Verification completed for customer {customer.id} with success={result.success}"
+    )
     return result
 
 
@@ -107,24 +125,35 @@ def create_aurora_session(
     correlation_id = str(uuid4())
 
     # 1. Register customer
-    customer = register_customer(phone_number=phone_number, email=email, external_id=external_id)
+    customer = register_customer(
+        phone_number=phone_number, email=email, external_id=external_id
+    )
 
     # 2. Record consent
-    record_consent(customer, granted=True, channel=workflow.steps[0].channel, correlation_id=correlation_id)
+    record_consent(
+        customer,
+        granted=True,
+        channel=workflow.steps[0].channel,
+        correlation_id=correlation_id,
+    )
 
     # 3. Run verification
-    result = run_verification(customer, workflow, correlation_id=correlation_id, mode=mode)
+    result = run_verification(
+        customer, workflow, correlation_id=correlation_id, mode=mode
+    )
 
     session = AuroraSession(
         correlation_id=correlation_id,
         customer=customer,
         workflow=workflow,
         execution_result=result,
-        completed_at=datetime.now(timezone.utc),
+        completed_at=datetime.now(UTC),
         status="completed" if result.success else "failed",
     )
 
-    logger.info(f"[AURORA] Session completed: {session.correlation_id} status={session.status}")
+    logger.info(
+        f"[AURORA] Session completed: {session.correlation_id} status={session.status}"
+    )
     return session
 
 
@@ -159,7 +188,9 @@ def get_session_details(correlation_id: str) -> dict[str, Any]:
     if not execution:
         return {"error": "Execution not found"}
 
-    events = event_repo.find_by(execution_id=execution["workflow_id"])  # approximate for demo
+    events = event_repo.find_by(
+        execution_id=execution["workflow_id"]
+    )  # approximate for demo
     audit = get_audit_timeline(correlation_id)
 
     return {

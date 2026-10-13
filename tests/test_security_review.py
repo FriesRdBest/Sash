@@ -21,7 +21,9 @@ def test_review_has_threats_and_controls(review):
 
 def test_findings_derived_from_control_gaps(review):
     missing_or_partial = [
-        c for c in review.controls if c.status in {ControlStatus.MISSING, ControlStatus.PARTIAL}
+        c
+        for c in review.controls
+        if c.status in {ControlStatus.MISSING, ControlStatus.PARTIAL}
     ]
     assert len(missing_or_partial) > 0
     assert len(review.findings) >= len(missing_or_partial)
