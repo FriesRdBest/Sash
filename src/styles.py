@@ -191,6 +191,89 @@ def get_custom_css() -> str:
       outline-offset: 2px;
     }}
 
+    /* Phase 4: shared visual component refinement */
+    .stAlert {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.6rem;
+      box-shadow: 0 2px 8px rgba(29, 34, 64, 0.05);
+    }}
+
+    [data-testid="stExpander"] {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.6rem;
+      background: var(--sash-surface);
+      box-shadow: 0 2px 8px rgba(29, 34, 64, 0.04);
+    }}
+
+    [data-testid="stExpander"] summary {{
+      border-radius: 0.6rem;
+    }}
+
+    [data-testid="stExpander"] summary:hover {{
+      background: #EEF1F8;
+    }}
+
+    [data-testid="stDataFrame"],
+    [data-testid="stTable"] {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.6rem;
+      overflow: hidden;
+    }}
+
+    [data-testid="stForm"] {{
+      border: 1px solid var(--sash-border);
+      border-radius: 0.85rem;
+      background: var(--sash-surface);
+      padding: 1rem;
+    }}
+
+    [data-testid="stForm"] label,
+    [data-testid="stTextInput"] label,
+    [data-testid="stTextArea"] label,
+    [data-testid="stSelectbox"] label,
+    [data-testid="stMultiselect"] label,
+    [data-testid="stNumberInput"] label {{
+      color: var(--sash-text);
+      font-weight: 550;
+    }}
+
+    [data-testid="stTextInput"] input,
+    [data-testid="stTextArea"] textarea,
+    [data-testid="stNumberInput"] input,
+    [data-testid="stSelectbox"] div[data-baseweb="select"],
+    [data-testid="stMultiselect"] div[data-baseweb="select"] {{
+      border-radius: 0.5rem;
+    }}
+
+    [data-testid="stTextInput"] input:focus-visible,
+    [data-testid="stTextArea"] textarea:focus-visible,
+    [data-testid="stNumberInput"] input:focus-visible {{
+      outline: 2px solid var(--sash-blue);
+      outline-offset: 2px;
+    }}
+
+    [data-testid="stButton"] button[kind="secondary"],
+    [data-testid="stDownloadButton"] button {{
+      background: var(--sash-surface);
+      color: var(--sash-indigo);
+      border: 1px solid var(--sash-border);
+    }}
+
+    [data-testid="stButton"] button[kind="secondary"]:hover,
+    [data-testid="stDownloadButton"] button:hover {{
+      background: #EEF1F8;
+      border-color: var(--sash-periwinkle);
+    }}
+
+    .empty-state {{
+      box-shadow: 0 2px 8px rgba(29, 34, 64, 0.04);
+    }}
+
+    .empty-state-icon {{
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }}
+
     @media (max-width: 900px) {{
       [data-testid="stMainBlockContainer"] {{ padding: 1.25rem; }}
     }}
