@@ -77,6 +77,46 @@ if page == "Home":
         "Production readiness and deployment accelerator for programmable customer communications"
     )
 
+    # Main content sections
+    st.markdown("## Purpose")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown(
+            """
+            Sash demonstrates how an engineer can:
+
+            - **Qualify** customer engagements
+            - **Design** API-driven architectures
+            - **Build** resilient communication workflows
+            - **Test** failure modes
+            - **Instrument** operations
+            - **Produce** customer handoff packages
+
+            Built for the **Senior Forward Deployed Engineer** role at Sinch.
+            """
+        )
+
+    with col2:
+        st.markdown(
+            """
+            ### Flagship Scenario
+
+            **Aurora Marketplace** user verification:
+
+            1. SMS primary channel
+            2. WhatsApp or email fallback
+            3. Delivery-status webhooks
+            4. Internal customer database
+            5. Operations dashboard
+            6. Fraud and abuse controls
+            7. Supportable production deployment
+            """
+        )
+
+    st.markdown("---")
+
     # Quick links
     st.markdown("## Quick Links")
 
