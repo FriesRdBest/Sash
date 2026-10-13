@@ -20,7 +20,6 @@ from src.styles import (
     COLOR_ERROR,
     COLOR_PRIMARY,
     COLOR_SUCCESS,
-    COLOR_SURFACE,
     COLOR_TEXT_MUTED,
     COLOR_WARNING,
     get_custom_css,
